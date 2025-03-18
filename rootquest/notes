@@ -1,0 +1,15 @@
+creer le network des vm 
+
+docker network create -d bridge my-net
+
+
+
+
+vpn : 
+
+ docker-compose run --rm openvpn ovpn_genconfig -u udp://rnvaz-46-193-4-121.a.free.pinggy.link:32909 -r 172.18.0.0/16
+ docker-compose run --rm openvpn ovpn_initpki
+
+ créer un fichier client 
+ docker-compose run --rm openvpn easyrsa build-client-full client1 nopass  
+ docker-compose run --rm openvpn ovpn_getclient client1 > client1.ovpn   
