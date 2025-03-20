@@ -1,14 +1,16 @@
 version: '3'
 
+networks:
+  vm-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+
 services:
   openvpn:
-    image: kylemanna/openvpn
+    image: vpn-image
     container_name: openvpn-server
-    environment:
-      - OVPN_NETWORK=172.18.0.0
-      - OVPN_SUBNET=255.255.0.0
-      - OVPN_ROUTES=172.18.0.0/16
-      - OVPN_MODE=tap 
     volumes:
       - ./data:/etc/openvpn
     ports:
@@ -20,7 +22,3 @@ services:
     restart: always
     sysctls:
       - net.ipv4.ip_forward=1
-
-networks:
-  vm-net:
-    external: true
