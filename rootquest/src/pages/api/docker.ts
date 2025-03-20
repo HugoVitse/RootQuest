@@ -11,7 +11,7 @@ export default function handler(
   res: NextApiResponse<ResponseData>
 ) {
 
-    const command = "docker run -d --rm --network vm-net --privileged --name ubuntu_container ubuntu-test";
+    const command = "docker run -d --rm --network rootquest_vm-net --privileged --name ubuntu_container ubuntu-test";
 
     exec(command, (error, stdout, stderr) => {
         if (error) {
