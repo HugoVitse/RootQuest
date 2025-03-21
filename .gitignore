@@ -1,8 +1,9 @@
 node_modules/
 .next/
 
-/rootquest/data/
-/rootquest/my-db/
+/data/
+/my-db/
+/notes
 pinggy
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
