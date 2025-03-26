@@ -1,37 +1,18 @@
 import React from "react";
+import Link from "next/link";
 
 interface PictureProfilProps {
   imageUrl: string;
-  size?: number; // Optional size prop for the circle
+  size?: number; // Taille optionnelle du cercle
 }
 
-const PictureProfil: React.FC<PictureProfilProps> = ({
-  imageUrl,
-  size = 100,
-}) => {
+const PictureProfil: React.FC<PictureProfilProps> = ({ imageUrl, size = 100 }) => {
   return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        overflow: "hidden",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        border: "1px solid #000",
-      }}
-    >
-      <img
-        src={imageUrl}
-        alt="Profile"
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      />
-    </div>
+    <Link href="/profile" className="rounded-full overflow-hidden flex justify-center items-center border border-gray-200 cursor-pointer"
+    style={{ width: `${size}px`, height: `${size}px` }}>
+
+      <img src={imageUrl} alt="Profile" className="w-full h-full object-cover" />
+    </Link>
   );
 };
 
