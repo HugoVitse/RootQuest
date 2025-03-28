@@ -1,7 +1,7 @@
 body {
-    background: url('https://preview.redd.it/imkv74m4q5g41.png?auto=webp&s=81c7eeea375a30ad48a907c2ac913e0395f5cc5a') no-repeat center center fixed;
+    background: url('https://www.papierpeintpanoramique.fr/media/catalog/product/cache/871f459736130e239a3f5e6472128962/w/0/w09375_-_small_1.jpg') no-repeat center center fixed;
     background-size: cover;
-    font-family: Arial, sans-serif;
+    font-family: 'Orbitron', sans-serif;
     text-align: center;
     color: white;
     margin: 0;
@@ -10,9 +10,21 @@ body {
 
 .container {
     position: absolute;
-    top: 50%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+}
+
+.intro {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 5px solid cyan;
+    font-weight: bold;
 }
 
 .buttons {
@@ -29,13 +41,31 @@ body {
     font-weight: bold;
     text-decoration: none;
     color: white;
-    background: rgba(0, 0, 0, 0.6);
+    background: linear-gradient(90deg, #0033cc, #0066ff);
     border: 2px solid white;
     border-radius: 10px;
     transition: 0.3s;
+    box-shadow: 0px 0px 10px rgba(0, 102, 255, 0.8);
 }
 
 .btn:hover {
     background: white;
     color: black;
+    box-shadow: 0px 0px 15px rgba(0, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+@keyframes blink {
+    0% { text-shadow: 0 0 10px cyan; }
+    50% { text-shadow: 0 0 20px cyan; }
+    100% { text-shadow: 0 0 10px cyan; }
+}
+
+h1 {
+    text-shadow: 0 0 15px cyan;
+    animation: blink 1.5s infinite;
+}
+
+#sam {
+    background: rgb(198, 204, 15);
 }
