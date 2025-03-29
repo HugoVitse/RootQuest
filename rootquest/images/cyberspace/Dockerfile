@@ -12,7 +12,7 @@ COPY . /var/www/html/
 COPY nginx.conf /etc/nginx/sites-available/default
 
 # Donner les bons droits aux fichiers importants
-RUN chmod 777 database.db flag.txt
+RUN chmod 777 database.db
 
 # Exposer le port 80
 EXPOSE 80

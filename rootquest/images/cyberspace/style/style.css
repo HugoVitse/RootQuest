@@ -1,5 +1,6 @@
 body {
-    background: url('https://www.papierpeintpanoramique.fr/media/catalog/product/cache/871f459736130e239a3f5e6472128962/w/0/w09375_-_small_1.jpg') no-repeat center center fixed;
+    background: url('https://www.papierpeintpanoramique.fr/media/catalog/product/cache/871f459736130e239a3f5e6472128962/w/0/w09375_-_small_1.jpg') 
+                no-repeat center center fixed;
     background-size: cover;
     font-family: 'Orbitron', sans-serif;
     text-align: center;
@@ -10,13 +11,26 @@ body {
 
 .container {
     position: absolute;
-    top: 52%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.85);
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+    width: 450px;
+    text-align: center;
+}
+
+h1 {
+    text-shadow: 0 0 15px cyan;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { text-shadow: 0 0 10px cyan; }
+    50% { text-shadow: 0 0 20px cyan; }
+    100% { text-shadow: 0 0 10px cyan; }
 }
 
 .intro {
@@ -55,15 +69,83 @@ body {
     transform: scale(1.1);
 }
 
-@keyframes blink {
-    0% { text-shadow: 0 0 10px cyan; }
-    50% { text-shadow: 0 0 20px cyan; }
-    100% { text-shadow: 0 0 10px cyan; }
+.login-box {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+    width: 350px;
+    margin: auto;
+    text-align: center;
 }
 
-h1 {
-    text-shadow: 0 0 15px cyan;
-    animation: blink 1.5s infinite;
+input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid cyan;
+    border-radius: 5px;
+    background: black;
+    color: cyan;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0 0 8px cyan;
+    outline: none;
+    transition: 0.3s;
+}
+
+input::placeholder {
+    color: rgba(0, 255, 255, 0.5);
+    font-style: italic;
+}
+
+input:focus {
+    box-shadow: 0 0 15px white;
+    border-color: white;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #0033cc, #0066ff);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px cyan;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: white;
+    color: black;
+    box-shadow: 0 0 15px white;
+    transform: scale(1.05);
+}
+
+.message-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.success {
+    background: rgba(0, 255, 0, 0.2);
+    border-left: 5px solid lime;
+    color: lime;
+    text-shadow: 0 0 5px lime;
+}
+
+.error {
+    background: rgba(255, 0, 0, 0.2);
+    border-left: 5px solid red;
+    color: red;
+    text-shadow: 0 0 5px red;
 }
 
 #sam {
