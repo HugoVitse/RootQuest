@@ -70,23 +70,23 @@ services:
     depends_on:
       - db
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: web-app
-    ports:
-      - "80:3000"
-    volumes:
-      - ./userProfiles:/app/userProfiles
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - default
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 10s
-      retries: 5
-      start_period: 20s
-      timeout: 5s
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: web-app
+  #   ports:
+  #     - "80:3000"
+  #   volumes:
+  #     - ./userProfiles:/app/userProfiles
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   networks:
+  #     - default
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:3000"]
+  #     interval: 10s
+  #     retries: 5
+  #     start_period: 20s
+  #     timeout: 5s
