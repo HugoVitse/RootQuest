@@ -6,6 +6,8 @@ export type SignUpData = {
 
 export type SessionPayload = {
     username: string;
+    iat: number;
+    exp: number;    
 }
 
 export type AuthResponse = {

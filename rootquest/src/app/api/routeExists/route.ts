@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DockerData, DockerResponse } from "@/app/types/docker";
-import { startContainer } from "@/app/lib/docker";
+import { containerExists, startContainer } from "@/app/lib/docker";
 import { decrypt } from "@/app/lib/session";
 import { SessionPayload } from "@/app/types/auth";
 
@@ -19,21 +19,19 @@ export async function POST(req: NextRequest) {
             throw new Error("Unauthorized");
         }
         const username  = decrypted.username;
-        const rep : DockerResponse = await startContainer(image, username);
+        const image_name = `${image}_${username}`
+        const rep : boolean = await containerExists(image_name);
         
-        if( rep.success) {
-            return NextResponse.json({ success: true, ip : rep.ip }, { status: 200 });
+        if( rep) {
+            return NextResponse.json({ running: true}, { status: 200 });
         }
         else {
-            throw new Error(rep.message);
+            throw new Error("Container already running");
         }
 
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ success: false, message: "Error" }, { status: 500 });
-        }
+    } catch (error: unknown) {   
+        return NextResponse.json({ running: false }, { status: 500 });
+       
     }
 
 

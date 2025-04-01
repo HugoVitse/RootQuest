@@ -49,6 +49,11 @@ services:
       # Where our data will be persisted
     volumes:
       - ./my-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 20s
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -64,3 +69,24 @@ services:
       - "8080:80"
     depends_on:
       - db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web-app
+    ports:
+      - "80:3000"
+    volumes:
+      - ./userProfiles:/app/userProfiles
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+      timeout: 5s

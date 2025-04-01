@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/env": "^15.2.4",
     "dotenv": "^16.4.7",
     "jose": "^6.0.10",
     "mysql2": "^3.14.0",
