@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DockerData, DockerResponse } from "@/app/types/docker";
-import { containerExists, startContainer } from "@/app/lib/docker";
-import { decrypt } from "@/app/lib/session";
-import { SessionPayload } from "@/app/types/auth";
+import { DockerData, DockerResponse } from "@/types/docker";
+import { containerExists, startContainer } from "@/lib/docker";
+import { decrypt } from "@/lib/session";
+import { SessionPayload } from "@/types/auth";
 
 export async function POST(req: NextRequest) {
 

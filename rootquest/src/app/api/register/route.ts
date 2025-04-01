@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import signUp  from '../../lib/signUp';
-import { AuthResponse, SignUpData } from "@/app/types/auth";
-import { createSession } from "@/app/lib/session";
+import signUp  from '../../../lib/signUp';
+import { AuthResponse, SignUpData } from "@/types/auth";
+import { createSession } from "@/lib/session";
 
 
 export async function POST(req: NextRequest) {

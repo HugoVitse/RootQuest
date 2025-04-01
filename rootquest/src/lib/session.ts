@@ -1,6 +1,6 @@
 import 'server-only'
 import { SignJWT, jwtVerify } from 'jose'
-import { SessionPayload } from '@/app/types/auth'
+import { SessionPayload } from '@/types/auth'
 import { cookies } from 'next/headers'
 
 
@@ -35,7 +35,7 @@ export async function createSession(username: string) {
  
   cookieStore.set('session', session, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     expires: expiresAt,
     sameSite: 'lax',
     path: '/',

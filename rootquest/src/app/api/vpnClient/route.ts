@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "@/app/lib/session";
+import { decrypt } from "@/lib/session";
 import path from "path";
 import fs from 'fs/promises';
-import { vpnResponse } from "@/app/types/vpn";
-import { createVpnClient } from "@/app/lib/vpnClient";
+import { vpnResponse } from "@/types/vpn";
+import { createVpnClient } from "@/lib/vpnClient";
 
 export async function POST(req: NextRequest) {
 

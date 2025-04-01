@@ -1,13 +1,23 @@
-"use client";
+'use client';
 import { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+  
   const [stateSignIn, setStateSignIn] = useState(true);
   const [stateSignUp, setStateSignUp] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [positionLeft, setPositionLeft] = useState(false); // Nouvel état pour la position
   const [positionRight, setPositionRight] = useState(false); // Nouvel état pour la position
+  const [error, setError] = useState("");
+
+  const [username, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  
 
   // Fonction de gestion du clic
   const handleClick = () => {
@@ -27,6 +37,30 @@ export default function LoginPage() {
     setTimeout(() => {
       setHidden(false); // Remettre la div à sa position initiale
     }, 2500);
+  };
+
+  const SignIn = async () => {
+    try {
+
+      const req  = await axios.post("http://localhost:3000/api/login", {
+        username: username,
+        password: password
+      });
+
+      router.push('/');
+    }
+
+    catch (error: unknown) {
+      console.log(error);
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        setError("Invalid password");
+      } else {
+        setError("Error");
+      }
+    }
+    
+
+
   };
 
   return (
@@ -53,6 +87,8 @@ export default function LoginPage() {
                   </label>
                   <div className="mt-2">
                     <input
+                      value={username}
+                      onChange={(e) => setEmail(e.target.value)}
                       type="email"
                       name="email"
                       id="email"
@@ -82,6 +118,8 @@ export default function LoginPage() {
                   </div>
                   <div className="mt-2">
                     <input
+                      value={password} 
+                      onChange={(e) => setPassword(e.target.value)}
                       type="password"
                       name="password"
                       id="password"
@@ -96,6 +134,7 @@ export default function LoginPage() {
                   <button
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-blue-700"
+                    onClick={SignIn}
                   >
                     Sign in
                   </button>
@@ -111,6 +150,10 @@ export default function LoginPage() {
                   {" "}
                   Sign up here
                 </span>
+              </p>
+              <p className="mt-2 text-sm text-red-500">
+                {error}
+                
               </p>
             </div>
           </div>
