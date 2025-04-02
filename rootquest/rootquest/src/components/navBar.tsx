@@ -1,18 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import PictureProfil from "./pictureProfil";
 import Link from "next/link";
+import { MdOutlineLock, MdOutlineLogout } from "react-icons/md"; // Icônes Connexion & Déconnexion
 
 const NavBar: React.FC = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const isAuthenticated = false; // Remplace ça par la vraie logique d'authentification
 
   return (
     <nav className="py-4 px-6 bg-gray-900 text-white flex items-center justify-between shadow-lg fixed top-0 left-0 w-full z-50">
       
       {/* Logo */}
-      <Link href="/">
-        <h1 className="text-2xl font-extrabold text-blue-400 cursor-pointer">RootQuest</h1>
+      <Link href="/" className="text-2xl font-extrabold text-blue-400 cursor-pointer">
+        RootQuest
       </Link>
 
       {/* Navigation */}
@@ -20,9 +21,7 @@ const NavBar: React.FC = () => {
         <Link href="/" className="hover:text-blue-400 transition">Home</Link>
 
         {/* DROPDOWN Challenges */}
-        <div 
-          className="relative group"
-        >
+        <div className="relative group">
           <button className="hover:text-blue-400 transition focus:outline-none">
             Challenges ▼
           </button>
@@ -37,13 +36,33 @@ const NavBar: React.FC = () => {
         <Link href="/contact" className="hover:text-blue-400 transition">Contact</Link>
       </div>
 
-      {/* Profil */}
-      <Link href="/profile">
-        <PictureProfil
-          imageUrl="https://www.portraitprofessionnel.fr/wp-content/uploads/2020/02/portrait-professionnel-corporate-4.jpg"
-          size={50}
-        />
-      </Link>
+      {/* Profil + Auth */}
+      <div className="flex items-center space-x-4">
+        {/* Login / Logout */}
+        {isAuthenticated ? (
+          // 🚪 Icône Déconnexion si connecté
+          <button className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition">
+            <MdOutlineLogout className="text-2xl text-red-400" />
+          </button>
+        ) : (
+          // 🔐 Icône Connexion si pas connecté
+          <Link href="/login">
+            <button className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition">
+              <MdOutlineLock className="text-2xl text-white" />
+            </button>
+          </Link>
+        )}
+
+        {/* Avatar Profil (visible que si connecté) */}
+        {isAuthenticated && (
+          <Link href="/profile">
+            <PictureProfil
+              imageUrl="https://www.portraitprofessionnel.fr/wp-content/uploads/2020/02/portrait-professionnel-corporate-4.jpg"
+              size={50}
+            />
+          </Link>
+        )}
+      </div>
     </nav>
   );
 };
