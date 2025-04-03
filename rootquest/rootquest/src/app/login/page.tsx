@@ -39,7 +39,8 @@ export default function LoginPage() {
     }, 2500);
   };
 
-  const SignIn = async () => {
+  const SignIn = async (e:any) => {
+    e.preventDefault()
     try {
 
       const req  = await axios.post("http://localhost:3000/api/login", {
@@ -83,13 +84,13 @@ export default function LoginPage() {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-900"
                   >
-                    Email address
+                    Username
                   </label>
                   <div className="mt-2">
                     <input
                       value={username}
                       onChange={(e) => setEmail(e.target.value)}
-                      type="email"
+                      // type="email"
                       name="email"
                       id="email"
                       autoComplete="email"
