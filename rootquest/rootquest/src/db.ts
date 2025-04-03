@@ -1,9 +1,4 @@
 import mysql from 'mysql2/promise';
-import path from 'path';
-import dotenv from 'dotenv'
-
-const projectDir =  path.resolve(process.cwd(), '../')
-dotenv.config({ path: `${projectDir}/.env` })
 
 const connection = await mysql.createConnection({
     host: process.env.DB_HOST,

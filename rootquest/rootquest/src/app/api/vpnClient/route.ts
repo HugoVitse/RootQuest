@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const token = req.cookies.get("session")?.value
+        const PATH = process.env.PATH  || '';
 
         if (token === undefined) {
             throw new Error("Unauthorized");
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
         const rep : vpnResponse = await createVpnClient(username);
         
         if( rep) {
-            const filePath = path.join("/home/hugo/RootQuest", 'userProfiles', `${username}.ovpn`);
+            const filePath = path.join(PATH, 'userProfiles', `${username}.ovpn`);
             const fileBuffer = await fs.readFile(filePath);
 
             const response = new NextResponse(fileBuffer, {
