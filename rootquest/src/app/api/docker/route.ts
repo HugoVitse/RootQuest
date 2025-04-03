@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const { image } : DockerData = await req.json();
+        console.log(image)
         const token = req.cookies.get("session")?.value
 
         if (token === undefined) {
