@@ -39,7 +39,8 @@ export default function LoginPage() {
     }, 2500);
   };
 
-  const SignIn = async () => {
+  const SignIn = async (e:any) => {
+    e.preventDefault()
     try {
 
       const req  = await axios.post("http://localhost:3000/api/login", {
@@ -89,7 +90,7 @@ export default function LoginPage() {
                     <input
                       value={username}
                       onChange={(e) => setEmail(e.target.value)}
-                      type="email"
+                      
                       name="email"
                       id="email"
                       autoComplete="email"
