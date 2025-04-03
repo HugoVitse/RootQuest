@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const token = req.cookies.get("session")?.value
-        const PATH = process.env.PATH;
+        const PATH = process.env.PATH  || '';
 
         if (token === undefined) {
             throw new Error("Unauthorized");
