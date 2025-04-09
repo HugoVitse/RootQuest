@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
             throw new Error(rep.message);
         }
     } catch (error: unknown) {
+        console.log(error);
         if (error instanceof Error) {
             if(error.message == 'Invalid password') {   
                 return NextResponse.json({ success: false, message: 'Invalid password' }, { status: 401 });

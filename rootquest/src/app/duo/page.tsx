@@ -12,6 +12,8 @@ const duoChallenges = [
 ];
 
 const ChallengeDuo: React.FC = () => {
+
+
   const [difficulty, setDifficulty] = useState("All");
 
   // Filtrer les challenges par difficulté
