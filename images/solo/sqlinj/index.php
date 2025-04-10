@@ -1,8 +1,7 @@
 <?php
-// Connexion à la base SQLite
-$db = new SQLite3('database.db');  // Assure-toi que le chemin de la base est correct
+$db = new SQLite3('database.db'); 
 
-$flag = "Fl4g_87687";  // Le flag à afficher si l'attaque réussit
+$flag = "Fl4g_87687"; 
 $error = "";
 $successMessage = "";
 
@@ -10,12 +9,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // REQUÊTE SQL VULNÉRABLE (pour le CTF)
     $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
     $result = $db->query($query);
 
     if ($result->fetchArray()) {
-        // Si l'utilisateur existe, afficher un message de succès avec le flag
         $successMessage = "🎉 Connexion réussie ! Voici votre flag : <strong>$flag</strong>";
     } else {
         $error = "Échec de la connexion. Accès refusé.";
@@ -29,7 +26,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
-    <link rel="stylesheet" href="style.css">  <!-- Lien vers ton fichier CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
