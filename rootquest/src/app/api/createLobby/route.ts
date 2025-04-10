@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DockerData, DockerResponse } from "@/types/docker";
-import { startContainer } from "@/lib/docker";
 import { decrypt } from "@/lib/session";
 import { SessionPayload } from "@/types/auth";
+import { createGameSession } from "@/lib/gameSession";
 
 export async function POST(req: NextRequest) {
 
-
     try {
         const { image } : DockerData = await req.json();
-        console.log(image)
         const token = req.cookies.get("session")?.value
 
         if (token === undefined) {
@@ -20,17 +18,13 @@ export async function POST(req: NextRequest) {
             throw new Error("Unauthorized");
         }
         const username  = decrypted.username;
-        const rep : DockerResponse = await startContainer(image, username);
-        
-        if( rep.success) {
-            return NextResponse.json({ success: true, ip : rep.ip }, { status: 200 });
-        }
-        else {
-            throw new Error(rep.message);
-        }
+        const sessionId = await createGameSession(image, username);
+
+        return NextResponse.json({ success: true, sessionId :sessionId  }, { status: 200 });
+      
 
     } catch (error: unknown) {
-        console.error("Error starting container:", error);
+        console.error("Error creating session:", error);
         if (error instanceof Error) {
             return NextResponse.json({ success: false, message: error.message }, { status: 500 });
         } else {

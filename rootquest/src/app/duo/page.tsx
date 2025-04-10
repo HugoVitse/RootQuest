@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "@/components/navBar";
 import axios from "axios";
+import { io } from 'socket.io-client';
+import { useRouter } from "next/router";
 
 const duoChallenges = [
   { title: "Cyberspace", difficulty: "Easy", image_name:"cyberspace" },
@@ -14,9 +16,18 @@ const duoChallenges = [
 
 const ChallengeDuo: React.FC = () => {
 
-
+  const router = useRouter();
   const [difficulty, setDifficulty] = useState("All");
+  const [username, setUsername] = useState("");
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.post("/api/infoClient");
+      setUsername(response.data.username);
+    };
+    fetchData();
+  }, []);
   // Filtrer les challenges par difficulté
   const filteredChallenges = difficulty === "All"
     ? duoChallenges
@@ -25,13 +36,15 @@ const ChallengeDuo: React.FC = () => {
 
   const launchContainer = async (image: string) => {
     try {
-      const response = await axios.post("/api/docker", { image });
+      const response = await axios.post("/api/createLobby", { image });
+      console.log(response.data);
       console.log("Container launched successfully:", response.data);
+      router.push(`/lobby/${response.data.sessionId}`);
     } catch (error) {
       console.error("Error launching container:", error);
     }
   };
-
+ 
   return (
     <div className="min-h-screen bg-[#0a0f1d] text-white font-sans">
       <NavBar />
