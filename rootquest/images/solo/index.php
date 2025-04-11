@@ -2,227 +2,325 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CTF Cyber Sécurité</title>
+  <title>CTF Cybersécurité – Enquête numérique</title>
   <style>
-    /* Global Styles */
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f7fc;
+      font-family: 'Courier New', Courier, monospace;
       margin: 0;
       padding: 0;
-      color: #333;
+      background-color: #0d0d0d;
+      color: #f2f2f2;
     }
 
-    a {
-      text-decoration: none;
-    }
-
-    h1, h2, h3 {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    /* Header Styles */
-    .main-header {
-      background-color: #343a40;
-      color: white;
+    header {
+      background-color: #1a1a1a;
       padding: 40px 20px;
       text-align: center;
+      border-bottom: 4px solid #FFD700;
     }
 
-    .title {
-      font-size: 3rem;
+    h1 {
+      font-size: 2.8em;
       margin: 0;
+      color: #FFD700;
+      letter-spacing: 2px;
     }
 
     .subtitle {
-      font-size: 1.2rem;
       margin-top: 10px;
-      color: #adb5bd;
+      font-size: 1.1em;
+      color: #ccc;
+      font-style: italic;
     }
 
-    /* Theme Container */
-    .theme-container {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      padding: 20px;
+    section {
+      padding: 50px 20px;
+      max-width: 1100px;
+      margin: auto;
     }
 
-    .theme-card {
-      background-color: black;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin: 20px;
-      width: 48%; /* Ajustez la largeur pour que les cartes tiennent côte à côte */
-      padding: 20px;
-      transition: transform 0.3s ease-in-out;
-      text-align: center;
-    }
-
-    .theme-card:hover {
-      transform: translateY(-10px);
-    }
-
-    .theme-title {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-    }
-
-    .theme-description {
-      font-size: 1rem;
-      color: #6c757d;
+    h2 {
+      font-size: 1.8em;
+      border-left: 6px solid #FFD700;
+      padding-left: 15px;
       margin-bottom: 20px;
     }
 
-    .challenge-list {
-      list-style-type: none;
-      padding: 0;
+    p {
+      line-height: 1.6;
     }
 
-    .challenge-item {
-      background-color: #f8f9fa;
-      padding: 15px;
-      border-radius: 5px;
+    .challenge-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .challenge-card {
+      background-color: #1b1b1b;
+      border: 2px solid #FFD700;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .challenge-card::before {
+      content: "DOSSIER";
+      position: absolute;
+      top: -15px;
+      left: 15px;
+      font-size: 0.75em;
+      background: #FFD700;
+      color: #000;
+      padding: 2px 8px;
+      font-weight: bold;
+      border-radius: 3px;
+    }
+
+    .challenge-card:hover {
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+      transform: translateY(-5px);
+    }
+
+    .challenge-title {
+      font-size: 1.3em;
+      color: #FFD700;
       margin-bottom: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .challenge-item h3 {
-      font-size: 1.2rem;
-      color: #495057;
     }
 
     .difficulty {
+      font-size: 0.9em;
+      padding: 4px 8px;
+      border-radius: 5px;
+      background-color: #333;
       display: inline-block;
-      font-size: 0.9rem;
-      padding: 5px 10px;
-      margin-top: 5px;
-      border-radius: 20px;
-      text-transform: uppercase;
+      margin-bottom: 10px;
+      border: 1px solid #FFD700;
+      color: #FFD700;
     }
 
-    .easy {
-      background-color: #28a745;
-      color: white;
+    .theme {
+      font-size: 0.95em;
+      margin-bottom: 10px;
+      color: #ccc;
+      font-style: italic;
     }
 
-    .medium {
-      background-color: #ffc107;
-      color: white;
+    a {
+      color: #FFD700;
+      text-decoration: none;
+      font-weight: bold;
     }
 
-    .hard {
-      background-color: #dc3545;
-      color: white;
+    a:hover {
+      text-decoration: underline;
     }
 
-    .expert {
-      background-color: #007bff;
-      color: white;
-    }
-
-    /* Footer */
-    .main-footer {
-      background-color: #343a40;
-      color: white;
-      padding: 20px;
+    footer {
       text-align: center;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
+      padding: 20px;
+      background-color: #111;
+      color: #888;
+      font-size: 0.9em;
+      border-top: 2px solid #FFD700;
     }
+
+    .flag-validation {
+      margin-top: 30px;
+      background-color: #1b1b1b;
+      border: 2px solid #FFD700;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .flag-input {
+      padding: 10px;
+      font-size: 1em;
+      margin-bottom: 10px;
+      border: 1px solid #FFD700;
+      border-radius: 5px;
+      background-color: #333;
+      color: #FFD700;
+    }
+
+    .flag-submit {
+      padding: 10px 20px;
+      background-color: #FFD700;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .flag-submit:hover {
+      background-color: #e6b800;
+    }
+
+    .validation-result {
+      margin-top: 15px;
+      font-size: 1.2em;
+    }
+
+    /* Styles spécifiques à Apocalypse Cybernétique */
+    .theme-card.apocalypse .challenge-card {
+      border: 2px solid #FF5722; /* Contours des dossiers en orange */
+    }
+
+    .theme-card.apocalypse {
+      margin-top: 100px;
+      margin-bottom: 80px;
+    }
+
+    .theme-card.apocalypse .difficulty {
+      border: 1px solid #FF5722; /* Contours des difficultés en orange */
+      color: #FF5722; /* Texte en blanc pour ressortir */
+
+    }
+
+    .theme-card.apocalypse .challenge-title {
+      color: #FF5722; /* Couleur des titres des dossiers en orange */
+    }
+
+    .theme-card.apocalypse a {
+      color: #FF5722; /* Couleur des liens en orange */
+    }
+
+
+    .theme-card.apocalypse .challenge-card::before {
+      background: #FF5722; /* Changer le fond "DOSSIER" en orange pour Apocalypse */
+      color: #fff; /* Texte en blanc pour ressortir */
+    }
+
   </style>
 </head>
 <body>
 
-  <header class="main-header">
-    <h1 class="title">CTF Cyber Sécurité</h1>
-    <p class="subtitle">Choisissez un thème et relevez les défis pour tester vos compétences en cybersécurité !</p>
+  <header>
+    <h1>🕵️ CTF : Enquêtes Cyber Sécurité</h1>
+    <p class="subtitle">Infiltrez, interceptez, analysez. Montrez que vous êtes le meilleur enquêteur numérique.</p>
   </header>
 
-  <section class="theme-container">
-    <!-- Thème 1 : Détective -->
-    <div class="theme-card detective">
-      <h2 class="theme-title" style="font-size: 2.8em; color: #FFD700; margin-bottom: 15px; letter-spacing: 2px;">🕵️‍♂️ Détective</h2>
-      <p class="theme-description" style="font-size: 1.1em; color: #ccc; font-style: italic; margin-bottom: 25px;">Un mystère se cache derrière chaque défi. Détectez des indices, résolvez des énigmes, et déjouez les pièges pour résoudre l'affaire.</p>
+  <section>
+    <h2>🎯 Objectif de la mission</h2>
+    <p>
+      Bienvenue agent. la réalité numérique est pleine de mystères que seuls les plus aguerris peuvent résoudre. Vous êtes sur le point d'affronter des défis où la frontière entre le bien et le mal se brouille. Chaque dossier que vous ouvrez cache une vulnérabilité que des cybercriminels auraient pu exploiter. Votre mission ? Infiltrer les systèmes, déchiffrer les codes, et découvrir des failles invisibles à l’œil nu. Le temps est compté, les secrets sont enfouis, et vous êtes notre dernier espoir. Serez-vous à la hauteur ?
+    </p>
 
-      <div class="challenge-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; margin-top: 30px;">
-        <div class="challenge-card" style="background-color: #1b1b1b; border: 2px solid #FFD700; border-radius: 10px; padding: 25px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); transition: all 0.3s ease; position: relative;">
-          <div class="challenge-title" style="font-size: 1.3em; color: #FFD700; margin-bottom: 10px;">Dossier 01 : Authentification JS</div>
-          <div class="difficulty" style="font-size: 0.9em; padding: 4px 8px; border-radius: 5px; background-color: #333; border: 1px solid #FFD700; color: #FFD700; display: inline-block; margin-bottom: 10px;">Facile</div>
-          <div class="theme" style="font-size: 0.95em; margin-bottom: 10px; color: #ccc; font-style: italic;">Thème : JavaScript côté client</div>
-          <p style="line-height: 1.6;">Un script caché dans le front-end vous offre une porte d’entrée. Analysez-le pour contourner l’authentification.</p>
-          <a href="challenge1.php" style="color: #FFD700; text-decoration: none; font-weight: bold;">Accéder au dossier →</a>
-        </div>
-
-        <div class="challenge-card" style="background-color: #1b1b1b; border: 2px solid #FFD700; border-radius: 10px; padding: 25px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); transition: all 0.3s ease; position: relative;">
-          <div class="challenge-title" style="font-size: 1.3em; color: #FFD700; margin-bottom: 10px;">Dossier 02 : Obfuscation Encodée</div>
-          <div class="difficulty" style="font-size: 0.9em; padding: 4px 8px; border-radius: 5px; background-color: #333; border: 1px solid #FFD700; color: #FFD700; display: inline-block; margin-bottom: 10px;">Moyen</div>
-          <div class="theme" style="font-size: 0.95em; margin-bottom: 10px; color: #ccc; font-style: italic;">Thème : Analyse de chaîne et décodage</div>
-          <p style="line-height: 1.6;">Un mot de passe caché derrière des chaînes codées en pourcentage. Trouvez la clé pour déverrouiller l’accès.</p>
-          <a href="challenge2.php" style="color: #FFD700; text-decoration: none; font-weight: bold;">Accéder au dossier →</a>
-        </div>
-
-        <div class="challenge-card" style="background-color: #1b1b1b; border: 2px solid #FFD700; border-radius: 10px; padding: 25px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); transition: all 0.3s ease; position: relative;">
-          <div class="challenge-title" style="font-size: 1.3em; color: #FFD700; margin-bottom: 10px;">Dossier 03 : Cookies Mystérieux</div>
-          <div class="difficulty" style="font-size: 0.9em; padding: 4px 8px; border-radius: 5px; background-color: #333; border: 1px solid #FFD700; color: #FFD700; display: inline-block; margin-bottom: 10px;">Difficile</div>
-          <div class="theme" style="font-size: 0.95em; margin-bottom: 10px; color: #ccc; font-style: italic;">Thème : Contrôle d'accès par cookies</div>
-          <p style="line-height: 1.6;">Des cookies mystérieux détiennent la clé d’un contrôle d’accès. Manipulez-les pour découvrir des privilèges cachés.</p>
-          <a href="challenge3.php" style="color: #FFD700; text-decoration: none; font-weight: bold;">Accéder au dossier →</a>
-        </div>
-
-        <div class="challenge-card" style="background-color: #1b1b1b; border: 2px solid #FFD700; border-radius: 10px; padding: 25px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); transition: all 0.3s ease; position: relative;">
-          <div class="challenge-title" style="font-size: 1.3em; color: #FFD700; margin-bottom: 10px;">Dossier 04 : Attaque sur JWT</div>
-          <div class="difficulty" style="font-size: 0.9em; padding: 4px 8px; border-radius: 5px; background-color: #333; border: 1px solid #FFD700; color: #FFD700; display: inline-block; margin-bottom: 10px;">Expert</div>
-          <div class="theme" style="font-size: 0.95em; margin-bottom: 10px; color: #ccc; font-style: italic;">Thème : Exploitation de JWT et contrôle d'accès via cookies</div>
-          <p style="line-height: 1.6;">Exploitez un JWT mal configuré pour gagner des droits administrateur et obtenir des informations sensibles.</p>
-          <a href="challenge4.php" style="color: #FFD700; text-decoration: none; font-weight: bold;">Accéder au dossier →</a>
-        </div>
+    <div class="challenge-container">
+      <div class="challenge-card">
+        <div class="challenge-title">Dossier 01 : Authentification JS</div>
+        <div class="difficulty">Facile</div>
+        <div class="theme">Thème : JavaScript côté client</div>
+        <p>La porte d’entrée semble protégée… mais le code révèle ses secrets. Analysez le script et infiltrez-vous.</p>
+        <a href="challenge1.php">Accéder au dossier →</a>
       </div>
+
+      <div class="challenge-card">
+        <div class="challenge-title">Dossier 02 : Obfuscation Encodée</div>
+        <div class="difficulty">Moyen</div>
+        <div class="theme">Thème : Analyse de chaîne et décodage</div>
+        <p>Un mot de passe dissimulé sous des codes percent-encoding. Saurez-vous lire entre les octets ?</p>
+        <a href="challenge2.php">Accéder au dossier →</a>
+      </div>
+
+      <div class="challenge-card">
+        <div class="challenge-title">Dossier 03 : Cookies Mystérieux</div>
+        <div class="difficulty">Difficile</div>
+        <div class="theme">Thème : Contrôle d'accès par cookies</div>
+        <p>Un simple cookie peut-il vraiment tout changer ? Explorez les permissions cachées pour découvrir le flag...</p>
+        <a href="challenge3.php">Accéder au dossier →</a>
+      </div>
+
+      <div class="challenge-card">
+        <div class="challenge-title">Dossier 04 : Attaque sur JWT - Manipulation des cookies et contrôle d'accès</div>
+        <div class="difficulty">Expert</div>
+        <div class="theme">Thème : Exploitation de JWT et contrôle d'accès via cookies</div>
+        <p>Exploitez un cookie contenant un JWT pour manipuler les privilèges d'accès et obtenir un flag secret en devenant administrateur.</p>
+        <a href="challenge4.php">Accéder au dossier →</a>
+      </div>
+
     </div>
 
     <!-- Thème 2 : Apocalypse Cybernétique -->
     <div class="theme-card apocalypse">
-    <h2 class="theme-title" style="font-size: 2.8em; color: #FF5722; margin-bottom: 15px; letter-spacing: 2px; text-transform: uppercase;">💻 Apocalypse Cybernétique</h2>
-    <p class="theme-description" style="font-size: 1.1em; color: #BDBDBD; font-style: italic; margin-bottom: 25px;">Un virus informatique ravage les systèmes mondiaux. Votre mission : analyser les données, résoudre des défis et sauver les informations vitales.</p>
+      <h2>💻 Apocalypse Cybernétique</h2>
+      <p>Le monde numérique s'effondre sous le poids d'une attaque virale sans précédent. Un virus insidieux se propage, dévastant tout sur son passage, et des informations cruciales disparaissent à chaque instant. Au milieu du chaos, des données essentielles sont dissimulées, cachées dans les recoins sombres du réseau. Vous êtes l'unique rempart contre cette catastrophe mondiale. Plongez dans un tourbillon d'énigmes, analysez des codes corrompus et découvrez des vérités qui pourraient changer l'avenir de la cybersécurité. Êtes-vous prêt à affronter l'apocalypse numérique ?</p>
 
-    <div class="challenge-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; margin-top: 40px;">
-        <div class="challenge-card" style="background-color: #2A2A2A; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; position: relative;">
-        <div class="challenge-title" style="font-size: 1.5em; color: #FF5722; margin-bottom: 10px;">Dossier 01 : Contamination des Fichiers</div>
-        <div class="difficulty" style="font-size: 1em; padding: 5px 15px; border-radius: 50px; background-color: #FF5722; color: #000; margin-bottom: 10px;">Facile</div>
-        <p style="line-height: 1.6; color: #BDBDBD;">Un fichier infecté contient des secrets. Explorez les métadonnées et trouvez ce qui se cache dedans.</p>
-        <a href="apocalypse_challenge1.php" style="color: #FF5722; text-decoration: none; font-weight: bold; border: 2px solid #FF5722; padding: 5px 15px; border-radius: 5px; transition: background-color 0.3s ease;">Accéder au dossier →</a>
+      <div class="challenge-container">
+        <div class="challenge-card">
+          <div class="challenge-title">Dossier 01 : Contamination des Fichiers</div>
+          <div class="difficulty">Facile</div>
+          <p>Un fichier infecté contient des secrets. Explorez les métadonnées et trouvez ce qui se cache dedans.</p>
+          <a href="apocalypse1.php">Accéder au dossier →</a>
         </div>
 
-        <div class="challenge-card" style="background-color: #2A2A2A; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; position: relative;">
-        <div class="challenge-title" style="font-size: 1.5em; color: #FF5722; margin-bottom: 10px;">Dossier 02 : Message Caché</div>
-        <div class="difficulty" style="font-size: 1em; padding: 5px 15px; border-radius: 50px; background-color: #FF5722; color: #000; margin-bottom: 10px;">Moyen</div>
-        <p style="line-height: 1.6; color: #BDBDBD;">Un message codé est caché dans le code source d'un site. Résolvez l'énigme pour obtenir un flag secret.</p>
-        <a href="apocalypse_challenge2.php" style="color: #FF5722; text-decoration: none; font-weight: bold; border: 2px solid #FF5722; padding: 5px 15px; border-radius: 5px; transition: background-color 0.3s ease;">Accéder au dossier →</a>
+        <div class="challenge-card">
+          <div class="challenge-title">Dossier 02 : Message Caché</div>
+          <div class="difficulty">Moyen</div>
+          <p>Un message codé est caché dans le code source d'un site. Résolvez l'énigme pour obtenir un flag secret.</p>
+          <a href="apocalypse2.php">Accéder au dossier →</a>
         </div>
 
-        <div class="challenge-card" style="background-color: #2A2A2A; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; position: relative;">
-        <div class="challenge-title" style="font-size: 1.5em; color: #FF5722; margin-bottom: 10px;">Dossier 03 : Trafic de Virus</div>
-        <div class="difficulty" style="font-size: 1em; padding: 5px 15px; border-radius: 50px; background-color: #FF5722; color: #000; margin-bottom: 10px;">Difficile</div>
-        <p style="line-height: 1.6; color: #BDBDBD;">Analysez un paquet réseau corrompu pour découvrir des informations cruciales sur le virus qui se propage.</p>
-        <a href="apocalypse_challenge3.php" style="color: #FF5722; text-decoration: none; font-weight: bold; border: 2px solid #FF5722; padding: 5px 15px; border-radius: 5px; transition: background-color 0.3s ease;">Accéder au dossier →</a>
+        <div class="challenge-card">
+          <div class="challenge-title">Dossier 03 : Trafic de Virus</div>
+          <div class="difficulty">Difficile</div>
+          <p>Analysez un paquet réseau corrompu pour découvrir des informations cruciales sur le virus qui se propage.</p>
+          <a href="apocalypse3.php">Accéder au dossier →</a>
         </div>
 
-        <div class="challenge-card" style="background-color: #2A2A2A; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; position: relative;">
-        <div class="challenge-title" style="font-size: 1.5em; color: #FF5722; margin-bottom: 10px;">Dossier 04 : Exploitation de Backdoor</div>
-        <div class="difficulty" style="font-size: 1em; padding: 5px 15px; border-radius: 50px; background-color: #FF5722; color: #000; margin-bottom: 10px;">Expert</div>
-        <p style="line-height: 1.6; color: #BDBDBD;">Un backdoor est installé dans le réseau. Utilisez des outils d'exploitation pour pénétrer dans le système et en sortir indemne.</p>
-        <a href="apocalypse_challenge4.php" style="color: #FF5722; text-decoration: none; font-weight: bold; border: 2px solid #FF5722; padding: 5px 15px; border-radius: 5px; transition: background-color 0.3s ease;">Accéder au dossier →</a>
+        <div class="challenge-card">
+          <div class="challenge-title">Dossier 04 : Exploitation de Backdoor</div>
+          <div class="difficulty">Expert</div>
+          <p>Un backdoor est installé dans le réseau. Utilisez des outils d'exploitation pour pénétrer dans le système et en sortir indemne.</p>
+          <a href="apocalypse4.php">Accéder au dossier →</a>
         </div>
+      </div>
     </div>
+
+    <!-- Module de validation des flags -->
+    <div class="flag-validation">
+      <h3>🔑 Validation de Flag</h3>
+      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <input type="text" name="flag" class="flag-input" placeholder="Entrez votre flag" required />
+        <button type="submit" class="flag-submit">Vérifier le Flag</button>
+      </form>
+
+      <div class="validation-result">
+        <?php
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $flag = $_POST['flag'];
+
+            // Validation des flags
+            $flags = [
+              'Authentification JS' => 'admin_password123',
+              'Obfuscation Encodée' => 'encodage_maîtrisé_007',
+              'Cookies Mystérieux' => 'c00kies_unlocked_admin_mode',
+              'Attaque sur JWT' => 'jwt_decrypt_code_master',
+              'Contamination des Fichiers' => 'infected_file_found',
+              'Message Caché' => 'secret_message_decoded',
+              'Trafic de Virus' => 'virus_traffic_analyzed',
+              'Exploitation de Backdoor' => 'backdoor_exploited'
+            ];
+
+            if (in_array($flag, $flags)) {
+              echo "<p style='color: green;'>Bravo, vous avez validé le flag du challenge $flag!</p>";
+            } else {
+              echo "<p style='color: red;'>Ce flag n'est pas valide, essayez encore.</p>";
+            }
+          }
+        ?>
+      </div>
     </div>
 
   </section>
 
-  <footer class="main-footer">
-    <p>&copy; 2025 CTF Cyber Sécurité. Tous droits réservés.</p>
+  <footer>
+    <p>&copy; 2025 CTF Challenge - Tous droits réservés. | Créé par votre équipe d'enquêteurs numériques</p>
   </footer>
 
 </body>

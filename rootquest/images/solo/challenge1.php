@@ -21,12 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dossier 01 – Authentification JS</title>
   <style>
-    body {
+   body {
       font-family: 'Courier New', Courier, monospace;
       margin: 0;
       padding: 0;
       background-color: #0d0d0d;
       color: #f2f2f2;
+      height: 100vh; /* Assure que le body prend toute la hauteur de la fenêtre */
+      display: flex;
+      flex-direction: column;
     }
 
     header {
@@ -53,17 +56,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       padding: 50px 20px;
       max-width: 600px;
       margin: auto;
+      height: 100vh; /* Assure que la section prend toute la hauteur de l'écran */
+      position: relative; /* Nécessaire pour superposer l'image floutée */
+      background-color: rgba(0, 0, 0, 0.6); /* Optionnel : semi-transparence sur fond */
+      z-index: 1;
     }
 
-    h2 {
-      font-size: 1.8em;
-      border-left: 6px solid #FFD700;
-      padding-left: 15px;
-      margin-bottom: 20px;
+    section::before {
+      content: ''; /* Nécessaire pour créer un pseudo-élément */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('detective.webp'); /* Image de fond */
+      background-size: cover;
+      background-position: center;
+      filter: blur(5px); /* Applique le flou uniquement sur l'image */
+      z-index: -1; /* Met l'image derrière le contenu */
     }
 
     form {
-      background-color: #1b1b1b;
+      background-color: #1b1b1b; /* Fond noir du formulaire */
       padding: 25px;
       border: 2px solid #FFD700;
       border-radius: 10px;
@@ -116,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border-top: 2px solid #FFD700;
       font-size: 0.9em;
     }
+
   </style>
 </head>
 <body>

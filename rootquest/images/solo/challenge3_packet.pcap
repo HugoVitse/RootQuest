@@ -1,0 +1,11 @@
+from scapy.all import *
+
+# Création d'un paquet IP simple avec un message
+packet = IP(dst="192.168.1.1")/TCP(dport=80, sport=RandShort())/Raw(load="GET / HTTP/1.1\r\nHost: example.com\r\n\r\n")
+
+# Corruption du paquet (modification de la somme de contrôle TCP)
+packet[TCP].chksum = None  # Cela corrompt le checksum TCP
+
+# Sauvegarde du paquet dans un fichier .pcap
+wrpcap("challenge3_packet.pcap", packet)
+
