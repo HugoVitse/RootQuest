@@ -1,5 +1,6 @@
 <?php
 $flag = null;
+$error = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
@@ -7,9 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($username === 'admin' && $password === 'password123') {
         $flag = 'FLAG{admin_password123}';
-        echo "<script>alert('Connexion réussie, agent. Flag : $flag'); window.location.href = \"/\";</script>";
     } else {
-        echo "<script>document.getElementById('errorMessage').style.display = 'block';</script>";
+        $error = true;
     }
 }
 ?>
@@ -21,13 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dossier 01 – Authentification JS</title>
   <style>
-   body {
+    body {
       font-family: 'Courier New', Courier, monospace;
       margin: 0;
       padding: 0;
       background-color: #0d0d0d;
       color: #f2f2f2;
-      height: 100vh; /* Assure que le body prend toute la hauteur de la fenêtre */
+      height: 100vh;
       display: flex;
       flex-direction: column;
     }
@@ -56,28 +56,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       padding: 50px 20px;
       max-width: 600px;
       margin: auto;
-      height: 100vh; /* Assure que la section prend toute la hauteur de l'écran */
-      position: relative; /* Nécessaire pour superposer l'image floutée */
-      background-color: rgba(0, 0, 0, 0.6); /* Optionnel : semi-transparence sur fond */
+      height: 100vh;
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.6);
       z-index: 1;
     }
 
     section::before {
-      content: ''; /* Nécessaire pour créer un pseudo-élément */
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('detective.webp'); /* Image de fond */
+      background-image: url('detective.webp');
       background-size: cover;
       background-position: center;
-      filter: blur(5px); /* Applique le flou uniquement sur l'image */
-      z-index: -1; /* Met l'image derrière le contenu */
+      filter: blur(5px);
+      z-index: -1;
     }
 
     form {
-      background-color: #1b1b1b; /* Fond noir du formulaire */
+      background-color: #1b1b1b;
       padding: 25px;
       border: 2px solid #FFD700;
       border-radius: 10px;
@@ -119,7 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     #errorMessage {
       color: red;
       margin-top: 10px;
-      display: none;
+    }
+
+    .flag {
+      background-color: #2c2c2c;
+      border-left: 4px solid limegreen;
+      padding: 15px;
+      font-weight: bold;
+      margin-top: 30px;
     }
 
     footer {
@@ -131,9 +138,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       font-size: 0.9em;
     }
 
+    .back-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #FFD700;
+      color: #000;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2em;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #e6c200;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
+
+  <a href="/" class="back-button" title="Retour à l'accueil">↩</a>
 
   <header>
     <h1>🕵️ Dossier 01 : Accès restreint</h1>
@@ -154,8 +182,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="password" id="password" name="password" required>
 
       <button type="submit">Se connecter</button>
-      <p id="errorMessage">Nom d'utilisateur ou mot de passe incorrect.</p>
+
+      <?php if (!empty($error)): ?>
+        <p id="errorMessage">Nom d'utilisateur ou mot de passe incorrect.</p>
+      <?php endif; ?>
     </form>
+
+    <?php if (!empty($flag)): ?>
+      <div class="flag">🎉 Flag : <?= htmlspecialchars($flag) ?></div>
+    <?php endif; ?>
   </section>
 
   <footer>
@@ -164,9 +199,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </body>
 </html>
-
-
-<script>
-    const correctUsername = "admin";
-    const correctPassword = "password123";
-</script>

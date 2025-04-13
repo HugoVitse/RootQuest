@@ -156,9 +156,30 @@
       font-size: 1.2em;
     }
 
+    .back-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #FF5722;
+      color: #212121;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2em;
+      box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #FF3D00;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
+
+<a href="/" class="back-button" title="Retour à l'accueil">↩</a>
 
   <header>
     <h1>🕵️ Dossier 03 : Trafic de Virus</h1>

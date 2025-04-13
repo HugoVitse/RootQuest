@@ -131,21 +131,27 @@
     .flag-validation {
       margin-top: 30px;
       background-color: #1b1b1b;
-      border: 2px solid #FFD700;
       padding: 25px;
       border-radius: 10px;
       text-align: center;
+      border: 4px solid;
+      border-image: linear-gradient(to right, #FFD700, #FF5722);
+      border-image-slice: 1;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
     }
 
     .flag-input {
       padding: 10px;
       font-size: 1em;
       margin-bottom: 10px;
-      border: 1px solid #FFD700;
+      border: 3px solid;
+      border-image: linear-gradient(to right, #FFD700, #FF5722);
+      border-image-slice: 1;
       border-radius: 5px;
       background-color: #333;
       color: #FFD700;
     }
+
 
     .flag-submit {
       padding: 10px 20px;
@@ -168,7 +174,7 @@
 
     /* Styles spécifiques à Apocalypse Cybernétique */
     .theme-card.apocalypse .challenge-card {
-      border: 2px solid #FF5722; /* Contours des dossiers en orange */
+      border: 2px solid #FF5722; 
     }
 
     .theme-card.apocalypse {
@@ -177,23 +183,24 @@
     }
 
     .theme-card.apocalypse .difficulty {
-      border: 1px solid #FF5722; /* Contours des difficultés en orange */
-      color: #FF5722; /* Texte en blanc pour ressortir */
-
+      border: 1px solid #FF5722; 
+      color: #FF5722; 
     }
 
     .theme-card.apocalypse .challenge-title {
-      color: #FF5722; /* Couleur des titres des dossiers en orange */
+      color: #FF5722; 
     }
 
     .theme-card.apocalypse a {
-      color: #FF5722; /* Couleur des liens en orange */
+      color: #FF5722; 
+    }
+    .theme-card.apocalypse h2 {
+      border-left: 6px solid #FF5722;
     }
 
-
     .theme-card.apocalypse .challenge-card::before {
-      background: #FF5722; /* Changer le fond "DOSSIER" en orange pour Apocalypse */
-      color: #fff; /* Texte en blanc pour ressortir */
+      background: #FF5722; 
+      color: #fff; 
     }
 
   </style>
@@ -246,7 +253,6 @@
 
     </div>
 
-    <!-- Thème 2 : Apocalypse Cybernétique -->
     <div class="theme-card apocalypse">
       <h2>💻 Apocalypse Cybernétique</h2>
       <p>Le monde numérique s'effondre sous le poids d'une attaque virale sans précédent. Un virus insidieux se propage, dévastant tout sur son passage, et des informations cruciales disparaissent à chaque instant. Au milieu du chaos, des données essentielles sont dissimulées, cachées dans les recoins sombres du réseau. Vous êtes l'unique rempart contre cette catastrophe mondiale. Plongez dans un tourbillon d'énigmes, analysez des codes corrompus et découvrez des vérités qui pourraient changer l'avenir de la cybersécurité. Êtes-vous prêt à affronter l'apocalypse numérique ?</p>

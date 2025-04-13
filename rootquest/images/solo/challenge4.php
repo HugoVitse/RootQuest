@@ -1,3 +1,53 @@
+<?php
+session_start();
+
+$flag = null;
+$error = false;
+
+// Fonction de validation du JWT
+function validerJWT($jwt) {
+  $sections = explode('.', $jwt);
+  if (count($sections) !== 3) return false;
+
+  [$headerB64, $payloadB64, $signature] = $sections;
+
+  $payloadJson = base64_decode(strtr($payloadB64, '-_', '+/'));
+  $payload = json_decode($payloadJson, true);
+
+  // Vérifie simplement si le rôle est "admin"
+  if (isset($payload['role']) && $payload['role'] === 'admin') {
+    return true;
+  }
+
+  return false;
+}
+
+// Simulation de login (aucune base de données ici)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $username = $_POST['username'] ?? '';
+  $password = $_POST['password'] ?? '';
+
+  // Simule un utilisateur légitime
+  if ($username === 'admin' && $password === 'jwtmaster') {
+    // Simule un JWT avec rôle admin (aucune signature réelle ici)
+    $header = base64_encode(json_encode(['alg' => 'none', 'typ' => 'JWT']));
+    $payload = base64_encode(json_encode(['username' => $username, 'role' => 'admin']));
+    $jwt = "$header.$payload.signature";
+
+    setcookie('session', $jwt, time() + 3600, '/');
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
+  } else {
+    $error = true;
+  }
+}
+
+// Vérifie si l'utilisateur est authentifié avec un rôle admin
+if (isset($_COOKIE['session']) && validerJWT($_COOKIE['session'])) {
+  $flag = "FLAG{contrôle_d'accès_révélé}";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -87,10 +137,19 @@
       background-color: #e6c200;
     }
 
-    #errorMessage {
+    .error {
       color: red;
+      font-weight: bold;
       margin-top: 10px;
-      display: none;
+    }
+
+    .flag {
+      margin-top: 30px;
+      background-color: #222;
+      border-left: 5px solid limegreen;
+      padding: 20px;
+      font-weight: bold;
+      font-size: 1.2em;
     }
 
     footer {
@@ -101,23 +160,45 @@
       border-top: 2px solid #FFD700;
       font-size: 0.9em;
     }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #FFD700;
+      color: #000;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2em;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #e6c200;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🕵️ Dossier 04 : Attaque de session et contrôle d'accès</h1>
-    <p class="subtitle">Challenge expert – Manipulation avancée des cookies et des tokens JWT...</p>
-  </header>
+<a href="/" class="back-button" title="Retour à l'accueil">↩</a>
 
-  <section>
-    <h2>🔐 Contrôle d'accès via JWT</h2>
-    <p>
-      Vous avez intercepté un cookie contenant un JWT. Ce cookie est utilisé pour maintenir la session et contrôler l'accès aux pages protégées. 
-      Mais que se passerait-il si vous pouviez manipuler ce JWT pour devenir un administrateur ?
-      Votre mission : exploiter cette faiblesse pour obtenir un accès privilégié et découvrir le flag.
-    </p>
+<header>
+  <h1>🕵️ Dossier 04 : Attaque de session et contrôle d'accès</h1>
+  <p class="subtitle">Challenge expert – Manipulation avancée des cookies et des tokens JWT...</p>
+</header>
 
-    <form id="loginForm">
+<section>
+  <h2>🔐 Contrôle d'accès via JWT</h2>
+  <p>
+    Vous avez intercepté un cookie contenant un JWT. Ce cookie est utilisé pour maintenir la session et contrôler l'accès aux pages protégées.
+    Mais que se passerait-il si vous pouviez manipuler ce JWT pour devenir un administrateur ?
+  </p>
+
+  <?php if (!$flag): ?>
+    <form method="POST">
       <label for="username">Nom d'utilisateur :</label>
       <input type="text" id="username" name="username" required />
 
@@ -125,42 +206,18 @@
       <input type="password" id="password" name="password" required />
 
       <button type="submit">Se connecter</button>
-      <p id="errorMessage">Accès refusé. Données incorrectes.</p>
+
+      <?php if ($error): ?>
+        <p class="error">❌ Accès refusé. Données incorrectes.</p>
+      <?php endif; ?>
     </form>
-  </section>
+  <?php else: ?>
+    <div class="flag">🎉 Flag : <?= htmlspecialchars($flag) ?></div>
+  <?php endif; ?>
+</section>
 
-  <footer>
-    <p>&copy; 2025 - CTF Enquête & Sécurité - Tous droits réservés</p>
-  </footer>
-
-  <?php
-  // Le code PHP pour injecter le script JavaScript permettant de manipuler le cookie JWT
-  echo "<script type='text/javascript'>";
-  echo "(function() {";
-  echo "  var cookie = document.cookie;";
-  echo "  var jwt = cookie.split('=')[1];"; // Extraction du JWT du cookie
-
-  echo "  // Analyser et manipuler le JWT (peut-être en modifiant le rôle ou d'autres données)";
-  echo "  // Par exemple, nous allons décoder la partie du payload du JWT et essayer de la manipuler";
-  echo "  function decodeJWT(token) {";
-  echo "    var base64Url = token.split('.')[1];";
-  echo "    var base64 = base64Url.replace('-', '+').replace('_', '/');";
-  echo "    return JSON.parse(window.atob(base64));";
-  echo "  }";
-
-  echo "  // Décodage du JWT";
-  echo "  var decodedJWT = decodeJWT(jwt);";
-
-  // Manipulation des données JWT pour simuler un rôle admin
-  echo "  decodedJWT.role = 'admin';"; // Changer le rôle en 'admin'
-  
-  // Recréer le JWT modifié et envoyer la requête avec le cookie modifié
-  echo "  var modifiedJWT = jwt.split('.')[0] + '.' + btoa(JSON.stringify(decodedJWT)) + '.' + jwt.split('.')[2];";
-  echo "  document.cookie = 'session=' + modifiedJWT + ';path=/;';";
-  echo "  alert('Vous êtes désormais un administrateur ! Redirigez-vous vers la page protégée pour trouver le flag.');";
-  echo "})();";
-  echo "</script>";
-  ?>
-
+<footer>
+  <p>&copy; 2025 - CTF Enquête & Sécurité - Tous droits réservés</p>
+</footer>
 </body>
 </html>

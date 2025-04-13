@@ -1,3 +1,18 @@
+<?php
+$flag = null;
+$error = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $motDePasseCorrect = "cpasbiendurmotdepasse";
+
+  if (isset($_POST['password']) && $_POST['password'] === $motDePasseCorrect) {
+    $flag = "FLAG{encodage_maîtrisé_007}";
+  } else {
+    $error = true;
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -93,6 +108,20 @@
       transform: scale(1.05);
     }
 
+    .flag {
+      background-color: #2c2c2c;
+      border-left: 4px solid limegreen;
+      padding: 15px;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+
+    .error {
+      color: red;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -101,50 +130,65 @@
       border-top: 2px solid #FFD700;
       font-size: 0.9em;
     }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #FFD700;
+      color: #000;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2em;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #e6c200;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🕵️ Dossier 02 : Obfuscation Encodée</h1>
-    <p class="subtitle">Challenge moyen – Des secrets bien camouflés...</p>
-  </header>
 
-  <section>
-    <h2>🧠 Analyse cryptée</h2>
-    <p>
-      Le mot de passe semble illisible à première vue. Mais tout bon analyste sait que les apparences sont trompeuses...
-    </p>
+<a href="/" class="back-button" title="Retour à l'accueil">↩</a>
 
-    <div class="form-container">
-      <form method="POST">
-        <label for="password">🔐 Entrez le mot de passe :</label>
-        <input type="password" name="password" id="password" placeholder="•••••••••••••••••" required />
-        <div style="text-align: center;">
-          <button type="submit">🕵️‍♂️ Décrypter</button>
-        </div>
-      </form>
-    </div>
-  </section>
+<header>
+  <h1>🕵️ Dossier 02 : Obfuscation Encodée</h1>
+  <p class="subtitle">Challenge moyen – Des secrets bien camouflés...</p>
+</header>
 
-  <footer>
-    <p>&copy; 2025 - CTF Enquête & Sécurité - Tous droits réservés <!-- var pass = '%63%70%61%73%62%69%65%6e%64%75%72%70%61%73%73%77%6f%72%64'--> </p>
-  </footer>
+<section>
+  <h2>🧠 Analyse cryptée</h2>
+  <p>
+    Le mot de passe semble illisible à première vue. Mais tout bon analyste sait que les apparences sont trompeuses...
+  </p>
 
-  <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      $motDePasseCorrect = "cpasbiendurmotdepasse";
+  <div class="form-container">
+    <form method="POST">
+      <label for="password">🔐 Entrez le mot de passe :</label>
+      <input type="password" name="password" id="password" placeholder="•••••••••••••••••" required />
+      <div style="text-align: center;">
+        <button type="submit">🕵️‍♂️ Décrypter</button>
+      </div>
 
-      if (isset($_POST['password']) && $_POST['password'] === $motDePasseCorrect) {
-        echo "<script>
-          alert('✔️ Mot de passe accepté ! Voici ton flag : FLAG{encodage_maîtrisé_007}');
-          window.location.href = '/';
-        </script>";
-      } else {
-        echo "<script>
-          alert('❌ Mauvais mot de passe / Wrong password');
-        </script>";
-      }
-    }
-  ?>
+      <?php if ($error): ?>
+        <p class="error">❌ Mauvais mot de passe / Wrong password</p>
+      <?php endif; ?>
+    </form>
+
+    <?php if (!empty($flag)): ?>
+      <div class="flag">🎉 Flag : <?= htmlspecialchars($flag) ?></div>
+    <?php endif; ?>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 - CTF Enquête & Sécurité - Tous droits réservés <!-- var pass = '%63%70%61%73%62%69%65%6e%64%75%72%70%61%73%73%77%6f%72%64'--></p>
+</footer>
+
 </body>
 </html>

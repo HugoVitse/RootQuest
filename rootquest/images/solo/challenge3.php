@@ -1,3 +1,13 @@
+<?php
+// Placer setcookie tout en haut du fichier, avant le moindre HTML
+if (!isset($_COOKIE['admin'])) {
+  setcookie("admin", "false", time() + 3600, "/");
+}
+
+// Vérification si l'utilisateur est admin
+$isAdmin = isset($_COOKIE['admin']) && $_COOKIE['admin'] === 'true';
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -70,9 +80,31 @@
       border-top: 2px solid #FFD700;
       font-size: 0.9em;
     }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #FFD700;
+      color: #000;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2em;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #e6c200;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
+<a href="/" class="back-button" title="Retour à l'accueil">↩</a>
+
   <header>
     <h1>🧁 Dossier 03 : Cookies Mystérieux</h1>
     <p class="subtitle">Challenge difficile – Un simple cookie... vraiment ?</p>
@@ -92,14 +124,6 @@
     </div>
 
     <?php
-      // Si le cookie 'admin' n'existe pas, on le crée avec une valeur par défaut
-      if (!isset($_COOKIE['admin'])) {
-        setcookie("admin", "false", time() + 3600, "/");
-      }
-
-      // Vérification si l'utilisateur est admin
-      $isAdmin = isset($_COOKIE['admin']) && $_COOKIE['admin'] === 'true';
-
       if ($isAdmin) {
         echo "<div class='flag'>🎉 Flag : FLAG{c00kies_unlocked_admin_mode}</div>";
       } else {
@@ -108,7 +132,6 @@
         echo "</script>";
       }
     ?>
-
 
     <p style="margin-top: 30px;">🔁 Vous pouvez rafraîchir la page une fois les bons cookies en place.</p>
   </section>
