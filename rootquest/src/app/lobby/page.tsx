@@ -2,11 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
-interface Player {
-  id: string;
-  name: string;
-}
 
 const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
   <div className={`bg-white/10 rounded-2xl p-4 shadow ${className}`}>{children}</div>
@@ -48,36 +45,14 @@ const Input: React.FC<{
   />
 );
 
-const Avatar: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white">
-    {children}
-  </div>
-);
-
-const AvatarFallback: React.FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>;
-
 const Lobby = () => {
-  const [players, setPlayers] = useState<Player[]>([]);
+  const router = useRouter();
   const [name, setName] = useState("");
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const fakePlayers = [
-      { id: "1", name: "Alice" },
-      { id: "2", name: "Bob" },
-    ];
-    setPlayers(fakePlayers);
-  }, []);
 
   const handleJoin = () => {
-    if (name.trim()) {
-      setPlayers((prev) => [...prev, { id: Date.now().toString(), name }]);
-    }
+    router.push(`/lobby/${name}`);
   };
 
-  const handleReady = () => {
-    setIsReady(true);
-  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">

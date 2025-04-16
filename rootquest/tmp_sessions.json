@@ -1,7 +1,32 @@
 {
-  "ynzuv5r4gws": {
+  "pmzbbplg6ca": {
     "host": "Evawdunos",
     "image": "cyberspace",
-    "players": []
+    "players": [
+      "Evawdunos",
+      "hugo",
+      "username"
+    ],
+    "team1": [
+      "Evawdunos"
+    ],
+    "team2": [
+      "hugo",
+      "username"
+    ],
+    "messages": [
+      {
+        "message": "lol",
+        "sender": "hugo"
+      },
+      {
+        "message": "fdp",
+        "sender": "hugo"
+      },
+      {
+        "message": "ntm pd",
+        "sender": "Evawdunos"
+      }
+    ]
   }
 }

@@ -1,13 +1,54 @@
 import { Socket } from "socket.io";
-import { addPlayerToSession, setSession , getAllSessions} from "./sessionStore.ts";
+import { addPlayerToSession, setSession , getAllSessions, getSession} from "./sessionStore.ts";
 
 export async function handleSocket(socket : Socket<any>) {
-    socket.on('join', (sessionId:any, username: string) => {
+    socket.on('join', async (sessionId:any, username: string) => {
         console.log(`user joined session ${sessionId}`);
-        addPlayerToSession(sessionId, username);
-        console.log(getAllSessions())
-        socket.broadcast.emit('joiners', username);
+        const hasBeenAdded = await addPlayerToSession(sessionId, username);
+        if(hasBeenAdded) {
+            socket.broadcast.emit('joiners', username);
+        }
     });
+
+    socket.on('playerRequest', async (sessionId:string) => {
+        const session = await getSession(sessionId);
+        if(session) {
+            socket.emit('playerList', session.players);
+        }
+    })
+
+    socket.on('teamsRequest', async (sessionId:string) => {
+        const session = await getSession(sessionId);
+        if(session) {
+            socket.emit('updateTeam', sessionId, session.team1, session.team2);
+        }
+    })
+
+    socket.on('disconnect', () => {
+
+        
+    });
+
+    socket.on('updateTeam', async (sessionId: string ,team1:string[], team2:string[]) => {
+        const session = await getSession(sessionId);   
+        if (session) {
+            session.team1 = team1;
+            session.team2 = team2;
+            await setSession(sessionId, session);
+        }
+        socket.broadcast.emit('updateTeam', sessionId, team1, team2);   
+    });
+
+    socket.on('message', async (sessionId: string, message: string, sender: string) => {
+        const session = await getSession(sessionId);
+        console.log("ok", session)
+        if (session) {
+            session.messages.push({message, sender});
+            await setSession(sessionId, session);
+        }
+        socket.broadcast.emit('message', session?.messages);   
+        }
+    );
 }
 
 export async function createGameSession(image: string, username: string) {
@@ -23,7 +64,7 @@ export async function createGameSession(image: string, username: string) {
 
 
     const sessionId = Math.random().toString(36).substring(2, 15);
-    setSession(sessionId, { host:username, image, players: [] });
+    setSession(sessionId, { host:username, image, players: [username] , team1: [username], team2: [], messages: []});
     return sessionId;
 }
 

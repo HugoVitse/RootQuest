@@ -40,12 +40,17 @@ export async function setSession(id: string, session: Session) {
   await fs.writeFile(SESSION_FILE, JSON.stringify(sessions, null, 2));
 }
 
-export async function addPlayerToSession(id: string, username: string) {
+export async function addPlayerToSession(id: string, username: string)  : Promise<boolean>{
   const sessions = await getAllSessions();
   if (sessions[id]) {
     if (!sessions[id].players.includes(username)) {
       sessions[id].players.push(username);
+      sessions[id].team2.push(username);
+      await fs.writeFile(SESSION_FILE, JSON.stringify(sessions, null, 2));
+      return true;
+      
     }
-    await fs.writeFile(SESSION_FILE, JSON.stringify(sessions, null, 2));
+    return false;
   }
+  return false;
 }

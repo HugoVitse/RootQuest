@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "@/components/navBar";
 import axios from "axios";
-import { io } from 'socket.io-client';
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const duoChallenges = [
   { title: "Cyberspace", difficulty: "Easy", image_name:"cyberspace" },

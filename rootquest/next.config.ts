@@ -7,7 +7,7 @@ const projectDir =  path.resolve(process.cwd(), '../')
 dotenv.config({ path: `${projectDir}/.env` })
 
 initStore();
-clearStore();
+//clearStore();
 
 const nextConfig: NextConfig = {
   /* config options here */

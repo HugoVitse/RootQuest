@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { socket } from "@/lib/socket";
 import { useParams } from "next/navigation";
+import { fetchUsername } from "@/lib/infoClient";
 
 interface Player {
-  id: string;
+  team: number;
   name: string;
 }
 
@@ -63,27 +65,71 @@ const Lobby = () => {
   const id = params.id;
   console.log(id);
   
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [players, setPlayers] = useState<string[]>([]);
+  const [team1, setTeam1] = useState<string[]>([]);
+  const [team2, setTeam2] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [isReady, setIsReady] = useState(false);
+  const [username, setUsername] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
+  
+  const addPlayer = (player: string) => {
+    console.log(players,player, players.includes(player))
+    if(!players.includes(player)) {
+      setPlayers((prev) => [...prev, player]);
+    }
+  }
 
   useEffect(() => {
-    const fakePlayers = [
-      { id: "1", name: "Alice" },
-      { id: "2", name: "Bob" },
-    ];
-    setPlayers(fakePlayers);
+    const wrap = async () => {
+      const username_ = await fetchUsername();
+      setUsername(username_);
+      console.log("ok")
+      socket.emit("playerRequest", id);
+      socket.emit("teamsRequest", id);
+    }
+
+    socket.on("playerList", (playerList: string[]) => {
+      setPlayers(playerList);
+      setTeam1(playerList[0] ? [playerList[0]] : []);
+      setTeam2(playerList[1] ? [playerList[1]] : []);
+    });
+    socket.on("joiners", (username: string) => {
+      addPlayer(username);
+      setTeam2((prev) => [...prev, username]);
+    })
+    socket.on("updateTeam", (idSession:string, team1_: string[], team2_:string[]) => {
+      if(idSession === id){
+        setTeam1(team1_);
+        setTeam2(team2_);
+      }
+      
+    })
+
+
+    wrap();
   }, []);
 
   const handleJoin = () => {
-    if (name.trim()) {
-      setPlayers((prev) => [...prev, { id: Date.now().toString(), name }]);
+    if (username.trim()) {
+      socket.emit("join", id, username);
     }
   };
+
 
   const handleReady = () => {
     setIsReady(true);
   };
+
+  useEffect(() => {
+    if (players.includes(username)) {
+      setIsDisabled(true);
+    }
+    if(players.length >=2) {
+      setIsDisabled(true);
+    }
+  },[players]);
+
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
@@ -97,29 +143,75 @@ const Lobby = () => {
 
       <Card className="w-full max-w-xl p-6 mb-6">
         <CardContent>
-          <div className="flex gap-2 mb-4">
-            <Input
-              placeholder="Entrez votre pseudo"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <Button onClick={handleJoin}>Rejoindre</Button>
+          <div className="flex justify-center mb-4">
+           
+            <Button disabled={isDisabled} onClick={handleJoin}>Rejoindre</Button>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            {players.map((player) => (
+            <div className="grid grid-cols-2 gap-4">
+            <div>
+              <h2 className="text-center text-xl font-bold mb-4">Équipe 1</h2>
+              {team1.map((player) => (
               <motion.div
-                key={player.id}
-                className="flex items-center gap-4 p-2 bg-gray-800 rounded-xl shadow"
+                key={player}
+                className="flex items-center gap-4 p-2 bg-gray-800 rounded-xl shadow mb-2"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
                 <Avatar>
-                  <AvatarFallback>{player.name[0]}</AvatarFallback>
+                <AvatarFallback>{player[0]}</AvatarFallback>
                 </Avatar>
-                <span className="text-lg font-semibold">{player.name}</span>
+                <span className="text-lg font-semibold">{player}</span>
+                <Button
+                  onClick={() => {
+                    let newTeam1 = team1.filter((p) => p !== player);
+                    let newTeam2 = [...team2, player];
+                    setTeam1(newTeam1);
+                    setTeam2(newTeam2);
+                    console.log(newTeam1, newTeam2);
+                    if(players.length !== 0){
+                      socket.emit("updateTeam", id, newTeam1, newTeam2);
+                    }
+                  }}
+                >
+                Changer d'équipe
+                </Button>
               </motion.div>
-            ))}
-          </div>
+              ))}
+            </div>
+            <div>
+              <h2 className="text-center text-xl font-bold mb-4">Équipe 2</h2>
+              {team2.map((player) => (
+              <motion.div
+                key={player}
+                className="flex items-center gap-4 p-2 bg-gray-800 rounded-xl shadow mb-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Avatar>
+                <AvatarFallback>{player[0]}</AvatarFallback>
+                </Avatar>
+                <span className="text-lg font-semibold">{player}</span>
+                <Button
+                onClick={() => {
+                  let newTeam2 = team2.filter((p) => p !== player);
+                  let newTeam1 = [...team1, player];
+                  setTeam1(newTeam1);
+                  setTeam2(newTeam2);
+                 
+                
+
+                  if(players.length !== 0){
+                    socket.emit("updateTeam", id, newTeam1, newTeam2);
+                  }
+                  
+                }}
+                >
+                Changer d'équipe
+                </Button>
+              </motion.div>
+              ))}
+            </div>
+            </div>
         </CardContent>
       </Card>
 

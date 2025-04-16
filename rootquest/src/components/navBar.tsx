@@ -3,25 +3,18 @@
 import React from "react";
 import PictureProfil from "./pictureProfil";
 import Link from "next/link";
-import axios, { AxiosError } from "axios";
+import { fetchUsername } from "@/lib/infoClient";
 
 const NavBar: React.FC = () => {
 
   const [username, setUsername] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    const fetchUsername = async () => {
-      try {
-        const response = await axios.post("/api/infoClient");
-        setUsername(response.data.username);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          console.error("Error fetching username:", error.message);
-        }
-      }
-    };
-
-    fetchUsername();
+    
+    const wrap = async () => { 
+      const username = await fetchUsername();
+      setUsername(username); };
+    wrap();
   }, []);
 
 
