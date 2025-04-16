@@ -14,13 +14,8 @@ export default function LoginPage() {
   const [positionRight, setPositionRight] = useState(false); // Nouvel état pour la position
   const [error, setError] = useState("");
 
-  const [usernameSignIn, setEmailSignIn] = useState("");
-  const [passwordSignIn, setPasswordSignIn] = useState("");
-
-  const [usernameSignUp, setUsernameSignUp] = useState("");
-  const [passwordSignUp, setPasswordSignUp] = useState("");
-  const [emailSignUp, setEmailSignUp] = useState("");
-  const [passwordRetypeSignUp, setPasswordRetypeSignUp] = useState("");
+  const [username, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   
 
@@ -48,9 +43,9 @@ export default function LoginPage() {
     e.preventDefault()
     try {
 
-      const req  = await axios.post("api/login", {
-        username: usernameSignIn,
-        password: passwordSignIn
+      const req  = await axios.post("http://localhost:3000/api/login", {
+        username: username,
+        password: password
       });
 
       router.push('/');
@@ -60,39 +55,6 @@ export default function LoginPage() {
       console.log(error);
       if (error instanceof AxiosError && error.response?.status === 401) {
         setError("Invalid password");
-      } else {
-        setError("Error");
-      }
-    }
-    
-
-
-  };
-
-  const SignUp = async (e:any) => {
-    e.preventDefault()
-    try {
-
-      if(passwordSignUp !== passwordRetypeSignUp) {
-        throw new Error("Passwords do not match");    
-      }
-
-      const req  = await axios.post("/api/register", {
-        username: usernameSignUp,
-        email : emailSignUp,
-        password: passwordSignUp
-      });
-
-      router.push('/');
-    }
-
-    catch (error: unknown) {
-      console.log(error);
-      
-      if (error instanceof AxiosError && error.response?.status === 401) {
-        setError("Invalid password");
-      } else if (error instanceof Error) {
-        setError(error.message);
       } else {
         setError("Error");
       }
@@ -122,13 +84,13 @@ export default function LoginPage() {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-900"
                   >
-                    Email address
+                    Username
                   </label>
                   <div className="mt-2">
                     <input
-                      value={usernameSignIn}
-                      onChange={(e) => setEmailSignIn(e.target.value)}
-                      
+                      value={username}
+                      onChange={(e) => setEmail(e.target.value)}
+                      // type="email"
                       name="email"
                       id="email"
                       autoComplete="email"
@@ -157,8 +119,8 @@ export default function LoginPage() {
                   </div>
                   <div className="mt-2">
                     <input
-                      value={passwordSignIn} 
-                      onChange={(e) => setPasswordSignIn(e.target.value)}
+                      value={password} 
+                      onChange={(e) => setPassword(e.target.value)}
                       type="password"
                       name="password"
                       id="password"
@@ -221,8 +183,6 @@ export default function LoginPage() {
                   </label>
                   <div className="mt-2">
                     <input
-                      value={usernameSignUp}
-                      onChange={(e) => setUsernameSignUp(e.target.value)}
                       type="text"
                       name="username"
                       id="username"
@@ -242,8 +202,6 @@ export default function LoginPage() {
                   </label>
                   <div className="mt-2">
                     <input
-                      value={emailSignUp}
-                      onChange={(e) => setEmailSignUp(e.target.value)}
                       type="email"
                       name="email"
                       id="email"
@@ -265,8 +223,6 @@ export default function LoginPage() {
                   </div>
                   <div className="mt-2">
                     <input
-                      value={passwordSignUp}
-                      onChange={(e) => setPasswordSignUp(e.target.value)}
                       type="password"
                       name="password"
                       id="password"
@@ -286,8 +242,6 @@ export default function LoginPage() {
                   </label>
                   <div className="mt-2">
                     <input
-                      value={passwordRetypeSignUp}
-                      onChange={(e) => setPasswordRetypeSignUp(e.target.value)}
                       type="password"
                       name="retype-password"
                       id="retype-password"
@@ -300,7 +254,6 @@ export default function LoginPage() {
 
                 <div>
                   <button
-                    onClick={SignUp}
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-red-700 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-red-600 focus-visible:outline-2 focus-visible:outline-red-700"
                   >
@@ -335,7 +288,7 @@ export default function LoginPage() {
       >
         {stateSignIn && (
           <img
-            src="Cyber attack-pana-blue.svg"
+            src="Cyber_attack-pana-blue.svg"
             alt="Photo hacking"
             className={`child w-full h-full object-cover transition-opacity duration-500 ${
               hidden ? "opacity-0" : "opacity-100"
@@ -345,7 +298,7 @@ export default function LoginPage() {
 
         {stateSignUp && (
           <img
-            src="Cyber attack-pana-red.svg"
+            src="Cyber_attack-pana-red.svg"
             alt="Photo hacking"
             className={`child w-full h-full object-cover transition-opacity duration-500 ${
               hidden ? "opacity-0" : "opacity-100"

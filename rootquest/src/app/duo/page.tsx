@@ -1,49 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import NavBar from "@/components/navBar";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 
 const duoChallenges = [
-  { title: "Cyberspace", difficulty: "Easy", image_name:"cyberspace" },
-  { title: "Red vs Blue Team", difficulty: "Hard",image_name:"cyberspace" },
-  { title: "Pentest Coop", difficulty: "Medium",image_name:"cyberspace" },
-  { title: "Capture the Flag", difficulty: "Hard",image_name:"cyberspace" },
-  { title: "Cyber Puzzle", difficulty: "Medium",image_name:"cyberspace" }
+  { title: "Cyberspace", difficulty: "Easy" },
+  { title: "Red vs Blue Team", difficulty: "Hard" },
+  { title: "Pentest Coop", difficulty: "Medium" },
+  { title: "Capture the Flag", difficulty: "Hard" },
+  { title: "Cyber Puzzle", difficulty: "Medium" }
 ];
 
 const ChallengeDuo: React.FC = () => {
-
-  const router = useRouter();
   const [difficulty, setDifficulty] = useState("All");
-  const [username, setUsername] = useState("");
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.post("/api/infoClient");
-      setUsername(response.data.username);
-    };
-    fetchData();
-  }, []);
   // Filtrer les challenges par difficulté
   const filteredChallenges = difficulty === "All"
     ? duoChallenges
     : duoChallenges.filter(challenge => challenge.difficulty === difficulty);
 
-
-  const launchContainer = async (image: string) => {
-    try {
-      const response = await axios.post("/api/createLobby", { image });
-      console.log(response.data);
-      console.log("Container launched successfully:", response.data);
-      router.push(`/lobby/${response.data.sessionId}`);
-    } catch (error) {
-      console.error("Error launching container:", error);
-    }
-  };
- 
   return (
     <div className="min-h-screen bg-[#0a0f1d] text-white font-sans">
       <NavBar />
@@ -83,12 +58,9 @@ const ChallengeDuo: React.FC = () => {
                   </span>
                 </p>
               </div>
-                <button 
-                className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400"
-                onClick={() => launchContainer(challenge.image_name)}
-                >
+              <button className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400">
                 Trouver un partenaire
-                </button>
+              </button>
             </div>
           ))}
         </div>
