@@ -78,28 +78,7 @@
       font-style: italic;
       color: #ccc68b;
     }
-
-    .flag-validation {
-      background: rgba(30, 30, 30, 0.95);
-      border: 2px dotted #e0c97a;
-      padding: 25px;
-      margin-top: 50px;
-      border-radius: 8px;
-      box-shadow: inset 0 0 20px rgba(255, 255, 204, 0.05);
-      text-align: center;
-    }
-
-    input[type="text"] {
-      width: 80%;
-      padding: 12px;
-      background: #333;
-      border: 2px solid #c2ad5d;
-      color: #f8f0c6;
-      font-size: 1em;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-
+    
     button {
       background-color: #bfa741;
       color: #1a1a1a;
@@ -110,11 +89,6 @@
       border-radius: 5px;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .result {
-      margin-top: 20px;
-      font-size: 1.1em;
     }
 
     .difficulty {
@@ -181,34 +155,6 @@
     <p style="margin-top: 12px; color: #f0e68c; font-weight: bold;">🔎 Accéder au dossier confidentiel →</p>
   </a>
 
-
-    <div class="flag-validation">
-      <h3>🔐 Validation de Flag</h3>
-      <form method="POST">
-        <input type="text" name="flag" placeholder="Entrez votre flag ici..." required />
-        <br />
-        <button type="submit">Valider</button>
-      </form>
-
-      <div class="result">
-        <?php
-          if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $flag = trim($_POST['flag']);
-            $valid_flags = [
-              'admin_password123',
-              'encodage_maîtrisé_007',
-              'c00kies_unlocked_admin_mode',
-              'jwt_decrypt_code_master'
-            ];
-            if (in_array($flag, $valid_flags)) {
-              echo "<p style='color: #adff2f;'>✅ Flag valide, mission réussie !</p>";
-            } else {
-              echo "<p style='color: #ff5555;'>❌ Mauvais flag. Indice : vérifiez les indices dans les dossiers…</p>";
-            }
-          }
-        ?>
-      </div>
-    </div>
   </main>
 </body>
 </html>
