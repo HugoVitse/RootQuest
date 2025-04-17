@@ -166,7 +166,7 @@
     <p>📁 <strong>Contexte :</strong> Un fichier mystérieux est tombé entre nos mains. Il semble inoffensif… mais nos scanners ont détecté des anomalies. Métadonnées anormales, structures corrompues, chaînes suspectes. Votre rôle : inspecter, analyser, fouiller chaque bit.</p>
   </div>
 
-  <a href="contamination_fichier_corrompu.txt" download class="download-link">⬇ Télécharger le fichier corrompu</a>
+  <a href="./apocalypse1.jpg" download class="download-link">⬇ Télécharger le fichier corrompu</a>
   
 </div>
 
