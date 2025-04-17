@@ -28,5 +28,17 @@
         "sender": "Evawdunos"
       }
     ]
+  },
+  "hjaza8v5ld5": {
+    "host": "aqssel",
+    "image": "cyberspace",
+    "players": [
+      "aqssel"
+    ],
+    "team1": [
+      "aqssel"
+    ],
+    "team2": [],
+    "messages": []
   }
 }
