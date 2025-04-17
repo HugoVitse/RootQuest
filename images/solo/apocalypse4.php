@@ -1,23 +1,25 @@
 <?php
-session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-// Génère un flag et simule un service vulnérable
-$port = rand(5000, 6000);
+$admin_flag = "CTF{H1dd3n_Adm1n_Access}";
 
-if (!isset($_SESSION['flag'])) {
-    $_SESSION['flag'] = "FLAG{backdoor_" . bin2hex(random_bytes(4)) . "}";
-    file_put_contents("/tmp/flag_" . session_id() . ".txt", $_SESSION['flag']);
-    $cmd = "nohup bash -c 'echo Welcome agent. The secret lies in /tmp/flag_" . session_id() . ".txt && nc -l -p $port -q 0 < /tmp/flag_" . session_id() . ".txt' >/dev/null 2>&1 &";
-    exec($cmd);
+function check_vulnerability($param) {
+    return isset($param) && $param === 'admin';
+}
+
+function check_secret($param) {
+    $decoded_param = urldecode($param);
+    return isset($param) && strpos($decoded_param, '?rootquest') !== false;
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Dossier 04 : Exploitation de Backdoor</title>
+  <title>Dossier 04 : Port Caché Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: #0d0d0d;
@@ -25,66 +27,29 @@ if (!isset($_SESSION['flag'])) {
       font-family: 'Courier New', Courier, monospace;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     header {
       background-color: #1a1a1a;
-      padding: 40px 20px;
+      padding: 50px 20px;
       text-align: center;
       border-bottom: 4px solid #00ffc3;
+      box-shadow: 0 4px 20px rgba(0, 255, 195, 0.4);
     }
 
     header h1 {
-      font-size: 2.8em;
+      font-size: 3em;
       margin: 0;
       color: #00ffc3;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
     }
 
     header .subtitle {
-      margin-top: 10px;
-      font-size: 1.1em;
+      margin-top: 15px;
+      font-size: 1.2em;
       color: #ccc;
       font-style: italic;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 60px auto;
-      padding: 40px;
-      background-color: #1b1b1b;
-      border: 2px solid #00ffc3;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255, 87, 34, 0.3);
-    }
-
-    h1 {
-      color: #00ffc3;
-      text-align: center;
-      font-size: 2.2em;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-style: italic;
-      color: #aaa;
-      margin-bottom: 30px;
-    }
-
-    .highlight {
-      background-color: #111;
-      padding: 15px;
-      border-left: 5px solid #00ffc3;
-      margin-bottom: 30px;
-    }
-
-    pre {
-      background-color: #111;
-      padding: 15px;
-      border-radius: 5px;
-      border: 1px dashed #00ffc3;
-      overflow-x: auto;
     }
 
     .back-button {
@@ -102,8 +67,8 @@ if (!isset($_SESSION['flag'])) {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 46px;
-      height: 46px;
+      width: 50px;
+      height: 50px;
     }
 
     .back-button:hover {
@@ -111,15 +76,75 @@ if (!isset($_SESSION['flag'])) {
       transform: scale(1.1);
     }
 
-    @media (max-width: 600px) {
-      .back-button {
-        font-size: 1.2em;
-      }
+    .container {
+      max-width: 1000px;
+      margin: 70px auto;
+      padding: 40px;
+      background-color: #1b1b1b;
+      border: 2px solid #00ffc3;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(255, 87, 34, 0.3);
+    }
 
-      h1 {
-        font-size: 1.8em;
-        text-align: center;
-      }
+    h2 {
+      text-align: center;
+      font-size: 2.5em;
+      color: #00ffc3;
+      margin-bottom: 30px;
+    }
+
+    .highlight {
+      background-color: #121212;
+      padding: 20px 25px;
+      margin: 30px 0;
+      border-left: 5px solid #00ffc3;
+      border-radius: 8px;
+      color: #ccc;
+      font-size: 1.1em;
+      line-height: 1.6;
+      box-shadow: 0 0 15px rgba(0,255,195,0.1);
+    }
+
+    .flag-container {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .flag-box {
+      background-color: #0f0f0f;
+      padding: 40px 30px;
+      border-radius: 15px;
+      border: 2px solid #00ffc3;
+      box-shadow: 0 0 25px rgba(0,255,195,0.3);
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .flag-box h2 {
+      color: #00ffc3;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #00ffc3;
+    }
+
+    .flag {
+      background-color: #121212;
+      padding: 25px 20px;
+      border-radius: 10px;
+      border: 3px dashed #00ffc3;
+      display: inline-block;
+      box-shadow: 0 0 20px rgba(0, 255, 127, 0.4);
+      font-size: 2em;
+      color: #00ffc3;
+      letter-spacing: 1.5px;
+      font-weight: bold;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     footer {
@@ -131,41 +156,79 @@ if (!isset($_SESSION['flag'])) {
       border-top: 2px solid #00ffc3;
       margin-top: 60px;
     }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2em;
+      }
+
+      h2 {
+        font-size: 2em;
+      }
+
+      .back-button {
+        font-size: 1.2em;
+      }
+
+      .container {
+        padding: 30px 20px;
+      }
+    }
   </style>
 </head>
 <body>
 
 <header>
   <a href="/apocalypse.php" class="back-button" title="Retour à l'accueil">↩</a>
-  <h1>🕵️ Dossier 04 : Exploitation de Backdoor</h1>
-  <p class="subtitle">Quelque chose rôde sur le réseau. Une présence silencieuse. Saurez-vous écouter ?</p>
+  <h1>🕵️ Dossier 04 : Port Caché Admin</h1>
+  <p class="subtitle">Un faux service vous détourne... mais le vrai est bien caché.</p>
 </header>
 
 <div class="container">
-  <h1>Mission clandestine : écoute suspecte détectée</h1>
-  <p class="subtitle">Niveau : 🟥 Expert | Spécialité : Pentest Réseau</p>
+  <h2>Mission : Trouver le bon port</h2>
+  <p class="subtitle">Niveau : 🟩 Débutant | Spécialité : Pentest Réseau</p>
 
   <div class="highlight">
-    <p>🔍 <strong>Contexte :</strong> Un service backdoor inconnu a été identifié. Il se cache, prêt à livrer un secret... mais seulement aux oreilles les plus attentives. Ce service écoute sur un port aléatoire, quelque part entre <code>5000</code> et <code>6000</code>.</p>
+    🔍 <strong>Contexte :</strong> La machine cible expose deux ports : l'un "visiteur", accessible et sans danger. L'autre, plus discret, mène à une interface d’administration protégée. Le flag se cache derrière cette interface.
   </div>
 
-  <p>🎯 <strong>Objectif :</strong> Retrouvez le port utilisé. Écoutez. Obtenez le flag.</p>
+  <?php
+  if (isset($_GET['page'])) {
+    $page = $_GET['page'];
 
-  <p><strong>🔧 Outils d’enquête recommandés :</strong></p>
-  <ul>
-    <li><code>nmap -p 5000-6000 [adresse_du_serveur]</code> : pour balayer les ports en quête de l’intru.</li>
-    <li><code>nc [adresse_du_serveur] [port]</code> : pour établir un contact et extraire l’information.</li>
-  </ul>
+    if (check_vulnerability($page)) {
+      echo "<div class='highlight'>";
+      echo "<h3 style='color:#00ffc3;'>🔓 Accès partiel obtenu</h3>";
+      echo "<p>Vous avez franchi la première porte... mais le chemin vers l'accès total reste dissimulé.</p>";
+      echo "<p><strong>Indice :</strong> Seuls les plus curieux atteignent les privilèges suprêmes. Une <em>quête vers le root</em> vous attend... certains noms de plateforme peuvent éclairer votre chemin 🤫</p>";
+      echo "<p>💡 Essayez d’enrichir cette URL avec un paramètre supplémentaire. Le point d’interrogation est souvent un bon début.<br><code>?page=admin%3F...</code></p>";
+      echo "</div>";
+    }
+    elseif (check_secret($page)) {
+      echo "<div class='flag-container'>";
+      echo "<div class='flag-box'>";
+      echo "<h2>✅ Accès Administrateur Autorisé</h2>";
+      echo "<div class='flag'>CTF{H1dd3n_Adm1n_Access}</div>";
+      echo "</div>";
+      echo "</div>";
+    } else {
+      echo "<h2>Page non trouvée</h2>";
+      echo "<p>Il semble que l'URL ne soit pas correcte. Vous devez trouver l'URL exacte pour accéder au flag.</p>";
+    }
+  } else {
+    echo "<div style='text-align: center; margin-top: 100px;'>";
+    echo "<h2>Bienvenue sur Apocalypse 4</h2>";
+    echo "<p>Indiquez un paramètre valide pour accéder à l'information.</p>";
+    echo "</div>";
+  }
+  ?>
 
-  <p><strong>📡 Intelligence en temps réel :</strong> Un port a été ouvert rien que pour vous, agent :</p>
-  <pre><code>nc [adresse_du_serveur] <?php echo $port; ?></code></pre>
-
-  <p>Rappelez-vous : parfois, les secrets sont chuchotés dans les recoins les plus sombres du réseau...</p>
+  <p style="text-align: center; margin-top: 40px;">🧪 Essayez de manipuler les paramètres de l'URL pour découvrir le flag caché :<br><strong>http://localhost:8000/apocalypse4.php?page=...</strong></p>
 </div>
 
 <footer>
-  <p>&copy; 2025 CTF Challenge - Tous droits réservés. | Exercice confidentiel réservé aux agents certifiés</p>
-</footer>
+  <p>&copy; 2025 CTF Challenge - Tous droits réservés. | Apprentissage confidentiel pour futurs experts</p>
+</footer> 
 
 </body>
 </html>
