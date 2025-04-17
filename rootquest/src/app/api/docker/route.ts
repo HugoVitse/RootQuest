@@ -9,10 +9,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const { image } : DockerData = await req.json();
-<<<<<<< HEAD
-=======
         console.log(image)
->>>>>>> origin/development-hugo
         const token = req.cookies.get("session")?.value
 
         if (token === undefined) {
@@ -33,10 +30,7 @@ export async function POST(req: NextRequest) {
         }
 
     } catch (error: unknown) {
-<<<<<<< HEAD
-=======
         console.error("Error starting container:", error);
->>>>>>> origin/development-hugo
         if (error instanceof Error) {
             return NextResponse.json({ success: false, message: error.message }, { status: 500 });
         } else {

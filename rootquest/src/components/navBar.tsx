@@ -25,8 +25,8 @@ const NavBar: React.FC = () => {
         <h1 className="text-2xl font-bold">{username}</h1>
         <div className="flex items-center">
           <Link href="/" className="mx-2">Home</Link>
-          <button className="mx-2">Challenges</button>
-          <button className="mx-2">Contact</button>
+          <Link href="/"><button className="mx-2">Challenges</button></Link>
+          <Link href="/"><button className="mx-2">Contact</button></Link>
         </div>
       </div>
       <div className=" flex items-center justify-end px-5">
