@@ -25,7 +25,6 @@ export async function containerExists(image : string) : Promise<boolean> {
 
 }
 
-
 export async function startContainer(image : string, username: string) : Promise<DockerResponse> {
 
     const querySelectImages : string = `SELECT * FROM images`;
@@ -33,7 +32,7 @@ export async function startContainer(image : string, username: string) : Promise
 
     try {
         const rows : [RowDataPacket[],FieldPacket[]] = await connection.query<RowDataPacket[]>(querySelectImages);
-        const imageExists = (element:any) => element.name === image;
+        const imageExists = (element:any) => element.image === image;
         const exists : boolean = rows[0].some(imageExists);
         if (!exists) {
             throw new Error('Image doesnt exists');
