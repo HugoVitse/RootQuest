@@ -192,24 +192,24 @@
 <main>
   <h2>🎯 Objectif de la mission</h2>
   <p>
-    L’attaque virale s’intensifie, et dans le code source du réseau, un message secret pourrait détenir des informations cruciales pour contrer l’assaut. 
-    Vous devrez fouiller dans le code source du site et découvrir un message caché dans un commentaire ou sous une forme codée.
-    Le temps presse, agent ! Décryptez le message et trouvez le flag caché pour passer au niveau suivant.
+    L’attaque virale prend une tournure inattendue : un nouveau message crypté a été injecté dans le code source. Mais cette fois-ci, les assaillants ont brouillé les pistes avec une double couche de codage.
+    Il vous faudra d’abord identifier la nature de ces encodages, puis les décrypter étape par étape pour obtenir le message final.
   </p>
 
   <div class="challenge-container">
     <div class="challenge-card">
-      <div class="challenge-title">Dossier 02 : Message Caché</div>
-      <div class="difficulty">Moyen</div>
-      <div class="theme">Thème : Analyse de code source et décodage</div>
+      <div class="challenge-title">Dossier 02 : Message Crypté en Cascade</div>
+      <div class="difficulty">Difficile</div>
+      <div class="theme">Thème : Décodage en double encodage (Base64 → Base58)</div>
       <p>
-        Le code source du site cache un message secret dans un commentaire obscur.
-        Utilisez vos compétences en recherche de code source pour le trouver et décoder le message.
+        Le commentaire dans le code source contient une chaîne chiffrée via deux couches d'encodage. Le message original a d’abord été encodé en Base64, puis ce résultat a été transformé en Base58.
+        Analysez, identifiez les formats utilisés et récupérez le flag caché.
       </p>
       <!-- 
-        Voici un commentaire caché. 
-        Le message secret est encodé ici : 
-        U29ycnksX2ludmFsaW9uX2F0dGFja19uZXh0
+        Indice : Deux couches pour brouiller les pistes. D'abord les classiques, puis ceux qui évitent les zéros.
+        Voici la chaîne encodée : 
+        71Cg85zDTi7buTHgwvViXEA6JCHVh1rbGsMGWhLAcZaF
+        (💡 Astuce : du 58 au 64)
       -->
     </div>
   </div>
