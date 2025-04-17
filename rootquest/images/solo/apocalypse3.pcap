@@ -7,5 +7,5 @@ packet = IP(dst="192.168.1.1")/TCP(dport=80, sport=RandShort())/Raw(load="GET / 
 packet[TCP].chksum = None  # Cela corrompt le checksum TCP
 
 # Sauvegarde du paquet dans un fichier .pcap
-wrpcap("challenge3_packet.pcap", packet)
+wrpcap("apocalypse.pcap", packet)
 

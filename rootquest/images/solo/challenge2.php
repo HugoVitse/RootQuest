@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-<a href="/" class="back-button" title="Retour à l'accueil">↩</a>
+<a href="/challenge.php" class="back-button" title="Retour à l'accueil">↩</a>
 
 <header>
   <h1>🕵️ Dossier 02 : Obfuscation Encodée</h1>

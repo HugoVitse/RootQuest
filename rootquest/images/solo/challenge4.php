@@ -183,7 +183,7 @@ if (isset($_COOKIE['session']) && validerJWT($_COOKIE['session'])) {
   </style>
 </head>
 <body>
-<a href="/" class="back-button" title="Retour à l'accueil">↩</a>
+<a href="/challenge.php" class="back-button" title="Retour à l'accueil">↩</a>
 
 <header>
   <h1>🕵️ Dossier 04 : Attaque de session et contrôle d'accès</h1>

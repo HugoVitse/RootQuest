@@ -103,7 +103,7 @@ $isAdmin = isset($_COOKIE['admin']) && $_COOKIE['admin'] === 'true';
   </style>
 </head>
 <body>
-<a href="/" class="back-button" title="Retour à l'accueil">↩</a>
+<a href="/challenge.php" class="back-button" title="Retour à l'accueil">↩</a>
 
   <header>
     <h1>🧁 Dossier 03 : Cookies Mystérieux</h1>
