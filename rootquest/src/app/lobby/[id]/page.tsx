@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { socket } from "@/lib/socket";
 import { useParams } from "next/navigation";
 import { fetchUsername } from "@/lib/infoClient";
+import { isGameExists , isGameLaunched} from "@/lib/infoGame";
+import { useRouter } from "next/navigation";
 
 interface Player {
   team: number;
@@ -61,8 +63,9 @@ const AvatarFallback: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 const Lobby = () => {
 
+  const router = useRouter();
   const params = useParams();
-  const id = params.id;
+  const id = params.id?.toString() || "";
   console.log(id);
   
   const [players, setPlayers] = useState<string[]>([]);
@@ -72,6 +75,8 @@ const Lobby = () => {
   const [isReady, setIsReady] = useState(false);
   const [username, setUsername] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
+  const [error, setError] = useState("");
+  const [isLaunched, setIsLaunched] = useState(false);
   
   const addPlayer = (player: string) => {
     console.log(players,player, players.includes(player))
@@ -82,6 +87,20 @@ const Lobby = () => {
 
   useEffect(() => {
     const wrap = async () => {
+
+      const exists = await isGameExists(id);
+      if(!exists) {
+        router.push("/lobby");
+        console.log("Session does not exist");
+        return;
+      }
+      const launched = await isGameLaunched(id);
+      console.log(launched)
+      if(launched){
+        setError("La partie a déjà commencé !");
+      }
+      setIsLaunched(launched);
+
       const username_ = await fetchUsername();
       setUsername(username_);
       console.log("ok")
@@ -108,7 +127,18 @@ const Lobby = () => {
 
 
     wrap();
+    checkTeams();
   }, []);
+
+  const checkTeams = () => {
+    console.log(team1.length, team2.length);
+    if(team1.length > 1) {
+      setError("Trop de joueurs dans l'équipe 1 !");
+    }
+    else if(team2.length > 1) {
+      setError("Trop de joueurs dans l'équipe 2 !");
+    }
+  }
 
   const handleJoin = () => {
     if (username.trim()) {
@@ -116,6 +146,9 @@ const Lobby = () => {
     }
   };
 
+  const handleRejoin = () => {
+    router.push(`/game/${id}`);
+  }
 
   const handleReady = () => {
     setIsReady(true);
@@ -130,6 +163,14 @@ const Lobby = () => {
     }
   },[players]);
 
+  useEffect(() => {
+    checkTeams();
+  },[team1, team2]);
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
+
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
@@ -141,11 +182,19 @@ const Lobby = () => {
         Lobby Multijoueur
       </motion.h1>
 
+      <motion.h2
+        className="text-1xl font-bold mb-8 text-red-500"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        {error}
+      </motion.h2>
+
       <Card className="w-full max-w-xl p-6 mb-6">
         <CardContent>
           <div className="flex justify-center mb-4">
            
-            <Button disabled={isDisabled} onClick={handleJoin}>Rejoindre</Button>
+            <Button disabled={isDisabled || isLaunched} onClick={handleJoin}>Rejoindre</Button>
           </div>
             <div className="grid grid-cols-2 gap-4">
             <div>
@@ -161,7 +210,7 @@ const Lobby = () => {
                 <AvatarFallback>{player[0]}</AvatarFallback>
                 </Avatar>
                 <span className="text-lg font-semibold">{player}</span>
-                <Button
+                {player === username && (<Button
                   onClick={() => {
                     let newTeam1 = team1.filter((p) => p !== player);
                     let newTeam2 = [...team2, player];
@@ -174,7 +223,7 @@ const Lobby = () => {
                   }}
                 >
                 Changer d'équipe
-                </Button>
+                </Button>)}
               </motion.div>
               ))}
             </div>
@@ -191,7 +240,7 @@ const Lobby = () => {
                 <AvatarFallback>{player[0]}</AvatarFallback>
                 </Avatar>
                 <span className="text-lg font-semibold">{player}</span>
-                <Button
+                {player === username && (<Button
                 onClick={() => {
                   let newTeam2 = team2.filter((p) => p !== player);
                   let newTeam1 = [...team1, player];
@@ -207,7 +256,7 @@ const Lobby = () => {
                 }}
                 >
                 Changer d'équipe
-                </Button>
+                </Button>)}
               </motion.div>
               ))}
             </div>
@@ -217,10 +266,10 @@ const Lobby = () => {
 
       <Button
         variant={isReady ? "outline" : "default"}
-        onClick={handleReady}
-        disabled={isReady || !name.trim()}
+        onClick={isLaunched ? handleRejoin : handleReady}
+        disabled={!isLaunched && (isReady  || error.length > 0)}
       >
-        {isReady ? "Prêt !" : "Je suis prêt"}
+        {isReady ?  "Prêt !" : (isLaunched ? "Revenir en jeu" : "Je suis prêt")}
       </Button>
     </div>
   );

@@ -42,7 +42,7 @@ export async function setSession(id: string, session: Session) {
 
 export async function addPlayerToSession(id: string, username: string)  : Promise<boolean>{
   const sessions = await getAllSessions();
-  if (sessions[id]) {
+  if (sessions[id] && sessions[id].players.length < 2) {
     if (!sessions[id].players.includes(username)) {
       sessions[id].players.push(username);
       sessions[id].team2.push(username);

@@ -1,18 +1,17 @@
 {
   "pmzbbplg6ca": {
     "host": "Evawdunos",
+    "launched": true,
     "image": "cyberspace",
     "players": [
       "Evawdunos",
-      "hugo",
-      "username"
+      "hugo"
     ],
     "team1": [
-      "Evawdunos"
+      "hugo"
     ],
     "team2": [
-      "hugo",
-      "username"
+      "Evawdunos"
     ],
     "messages": [
       {
@@ -28,5 +27,17 @@
         "sender": "Evawdunos"
       }
     ]
+  },
+  "hjaza8v5ld5": {
+    "host": "aqssel",
+    "image": "cyberspace",
+    "players": [
+      "aqssel"
+    ],
+    "team1": [
+      "aqssel"
+    ],
+    "team2": [],
+    "messages": []
   }
 }

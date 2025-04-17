@@ -1,6 +1,7 @@
 import {connection } from '@/db';
 import { ImageResponse, ImageRow, Image } from "@/types/image";
 import { getSession } from './sessionStore';
+import { getImageFromUser } from './gameSession';
 
 
 export async function getImages() : Promise<ImageResponse> {
@@ -32,15 +33,17 @@ export async function getImages() : Promise<ImageResponse> {
 
 }
 
-export async function getNbFlags(id:string) : Promise<number> {
+export async function getNbFlags(id:string, username:string) : Promise<number> {
 
     const session = await getSession(id);
     if (session === undefined) {
         throw new Error("Session not found");
     }
-    const image = session.image;
+    const image = await getImageFromUser(id, username);
+    console.log(image)
 
     const querySelectImages : string = `SELECT * FROM images WHERE image = '${image}'`;
+    console.log(querySelectImages)
     try {
         const [rows] = await connection.query<ImageRow[]>(querySelectImages);
 

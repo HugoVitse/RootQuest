@@ -31,7 +31,7 @@ export async function handleSocket(socket : Socket<any>) {
 
     socket.on('updateTeam', async (sessionId: string ,team1:string[], team2:string[]) => {
         const session = await getSession(sessionId);   
-        if (session) {
+        if (session && session.launched === false) {
             session.team1 = team1;
             session.team2 = team2;
             await setSession(sessionId, session);
@@ -49,6 +49,13 @@ export async function handleSocket(socket : Socket<any>) {
         socket.broadcast.emit('message', session?.messages);   
         }
     );
+
+    socket.on('messageRequest', async (sessionId:string) => {
+        const session = await getSession(sessionId);
+        if (session) {
+            socket.emit('message', session.messages);
+        }
+    });
 }
 
 export async function createGameSession(image: string, username: string) {
@@ -64,10 +71,43 @@ export async function createGameSession(image: string, username: string) {
 
 
     const sessionId = Math.random().toString(36).substring(2, 15);
-    setSession(sessionId, { host:username, image, players: [username] , team1: [username], team2: [], messages: []});
+    setSession(sessionId, { host:username, image, players: [username] , team1: [username], team2: [], messages: [], launched: false });
     return sessionId;
 }
 
+export async function isGameLaunched(sessionId: string) {
+    const session = await getSession(sessionId);
+    if (session) {
+        return session.launched;
+    }
+    return false;
+}
+
+export async function isGameExists(sessionId: string) {
+    const session = await getSession(sessionId);
+    console.log(session)
+    if (session) {
+        return true;
+    }
+    return false;
+}
+
+export async function launchGame(sessionId: string) {
+    const session = await getSession(sessionId);
+    if (session) {
+        session.launched = true;
+        await setSession(sessionId, session);
+    }
+    
+}
 
 
-
+export async function getImageFromUser(sessionId : string, username: string) {
+    const session = await getSession(sessionId);
+    if (session) {
+        const team = session.team1.includes(username) ? "1" : "2";
+        return session.image + team;
+    }
+    return null;
+}
+    

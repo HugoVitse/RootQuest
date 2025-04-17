@@ -76,12 +76,18 @@ const Lobby = () => {
 
     useEffect(()=>{
       const wrap = async() => {
+        try {
+          await axios.post(`/api/launchGame`, {id});
+        } catch (err) {
+          console.log(err);
+        }
         const nbFlags = await axios.post(`/api/getNbFlags`, {id});
         console.log(nbFlags.data);
         for(let i = 0; i < nbFlags.data; i++) {
           setFlags((prev) => [...prev, ""]);
         }
         const username_ = await fetchUsername();
+        socket.emit("messageRequest", id);
         setUsername(username_);
       }
 
