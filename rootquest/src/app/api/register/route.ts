@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
 
     } catch (error: unknown) {
         if (error instanceof Error) {
+            console.log(error.message);
             return NextResponse.json({ success: false, message: error.message }, { status: 500 });
         } else {
             return NextResponse.json({ success: false, message: "Error" }, { status: 500 });
