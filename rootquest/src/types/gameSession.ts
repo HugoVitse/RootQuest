@@ -9,4 +9,5 @@ export type Session = {
     team1: string[];
     team2: string[];
     messages : message[];
+    launched: boolean;
 };

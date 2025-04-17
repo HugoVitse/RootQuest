@@ -17,8 +17,8 @@ export async function POST(req: NextRequest) {
         if (typeof decrypted === 'string') {
             throw new Error("Unauthorized");
         }
-        
-        const rep : number = await getNbFlags(id)
+        const username  = decrypted.username;
+        const rep : number = await getNbFlags(id, username)
         
         if( rep === undefined) {
             return NextResponse.json({ message: "No images found" }, { status: 404 });
