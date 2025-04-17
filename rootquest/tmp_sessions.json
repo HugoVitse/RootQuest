@@ -39,5 +39,18 @@
     ],
     "team2": [],
     "messages": []
+  },
+  "suycdlhh1k": {
+    "host": "Aqssel",
+    "image": "cyberspace",
+    "players": [
+      "Aqssel"
+    ],
+    "team1": [
+      "Aqssel"
+    ],
+    "team2": [],
+    "messages": [],
+    "launched": false
   }
 }
