@@ -191,6 +191,35 @@
       font-size: 0.9em;
       border-top: 2px solid #00ffc3;
     }
+
+    /* Style for the clickable hint container */
+    .hint-container {
+      margin-top: 20px;
+      background-color: #333;
+      color: #00ffc3;
+      padding: 15px;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 1.1em;
+      box-shadow: 0 0 10px rgba(0, 255, 127, 0.3);
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .hint-container:hover {
+      background-color: #00e06f;
+      transform: scale(1.05);
+    }
+
+    .hidden-hint {
+      display: none;
+      background-color: #222;
+      color: #00ffc3;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 6px;
+      font-size: 1.1em;
+    }
   </style>
 </head>
 <body>
@@ -216,14 +245,34 @@
       <div class="difficulty">Difficile</div>
       <div class="theme">Thème : Analyse de paquet réseau corrompu</div>
       <p>Un paquet réseau corrompu contient des informations cruciales. Utilisez vos compétences pour découvrir le flag caché.</p>
-      <a href="challenge3_packet.pcap" download="challenge3_packet.pcap" class="download-link">📥 Télécharger le paquet réseau</a>
+      <a href="./apocalypse3.pcap" download="apocalypse3.pcap" class="download-link">📥 Télécharger le paquet réseau</a>
     </div>
   </div>
+
+  <div class="hint-container" onclick="toggleHint()">
+    Cliquez ici si vous avez besoin d'un indice !
+  </div>
+
+  <div id="hidden-hint" class="hidden-hint">
+    Si vous êtes bloqué, vérifiez les requêtes HTTP dans le paquet pour trouver des indices supplémentaires.
+  </div>
+
 </main>
 
 <footer>
   <p>&copy; 2025 CTF Challenge - Tous droits réservés. | Créé par votre équipe d'enquêteurs numériques</p>
 </footer>
+
+<script>
+  function toggleHint() {
+    var hint = document.getElementById('hidden-hint');
+    if (hint.style.display === 'none' || hint.style.display === '') {
+      hint.style.display = 'block';
+    } else {
+      hint.style.display = 'none';
+    }
+  }
+</script>
 
 </body>
 </html>
