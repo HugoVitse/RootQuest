@@ -193,6 +193,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
   </section>
 
+  <script>
+     const correctUsername = "admin";
+     const correctPassword = "password123";
+ </script>
+
   <footer>
     <p>&copy; 2025 - CTF Enquête & Sécurité - Tous droits réservés</p>
   </footer>
