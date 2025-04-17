@@ -156,72 +156,6 @@
     footer a:hover {
       text-decoration: underline;
     }
-
-    .flag-validation {
-      background: linear-gradient(to bottom, #111, #222);
-      border: 1px solid #00ffc355;
-      border-radius: 16px;
-      padding: 30px 25px;
-      margin-top: 40px;
-      width: 100%;
-      max-width: 600px;
-      text-align: center;
-      box-shadow: 0 0 20px #00ffc355;
-    }
-
-    .flag-validation h3 {
-      font-size: 1.5em;
-      color: #00ffc3;
-      margin-bottom: 20px;
-      text-shadow: 0 0 5px #00ffc3aa;
-    }
-
-    .flag-validation input[type="text"] {
-      padding: 10px;
-      font-size: 1em;
-      width: 80%;
-      max-width: 350px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      border: 1px solid #00ffc355;
-      background-color: #000;
-      color: #00ffc3;
-    }
-
-    .flag-validation button {
-      padding: 12px 25px;
-      background-color: #00ffc3;
-      color: #000;
-      font-weight: bold;
-      text-transform: uppercase;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .flag-validation button:hover {
-      background-color: #00e6b2;
-      transform: scale(1.05);
-    }
-
-    .result {
-      margin-top: 20px;
-    }
-
-    .result p {
-      font-size: 1.1em;
-      line-height: 1.6;
-    }
-
-    .result .success {
-      color: #adff2f;
-    }
-
-    .result .error {
-      color: #ff4d4d;
-    }
   </style>
 </head>
 <body>
@@ -268,36 +202,6 @@
         <a href="/apocalypse4.php" class="access-btn">Accéder au dossier</a>
       </div>
 
-    </div>
-  </section>
-
-  <section>
-    <div class="flag-validation">
-      <h3>🔐 Validation de Flag</h3>
-      <form method="POST">
-        <input type="text" name="flag" placeholder="Entrez votre flag ici..." required />
-        <br />
-        <button type="submit">Valider</button>
-      </form>
-
-      <div class="result">
-        <?php
-          if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $flag = trim($_POST['flag']);
-            $valid_flags = [
-              'infected_file_found',
-              'secret_message_decoded',
-              'virus_traffic_analyzed',
-              'backdoor_exploited'
-            ];
-            if (in_array($flag, $valid_flags)) {
-              echo "<p class='success'>✅ Flag valide, mission réussie !</p>";
-            } else {
-              echo "<p class='error'>❌ Mauvais flag. Indice : vérifiez les indices dans les dossiers…</p>";
-            }
-          }
-        ?>
-      </div>
     </div>
   </section>
 
