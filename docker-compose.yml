@@ -1,0 +1,92 @@
+version: '3'
+
+networks:
+  vm-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  default: 
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+
+services:
+  #openvpn:
+  #  image: vpn-image
+  #  container_name: openvpn-server
+  #  volumes:
+  #    - ./data:/etc/openvpn
+  #  ports:
+  #    - "1194:1194/udp"  # Ouvre le port 1194 pour OpenVPN
+  #  cap_add:
+  #    - NET_ADMIN  # Permet à OpenVPN de manipuler les interfaces réseau
+  #  networks:
+  #    - vm-net
+  #  restart: always
+  #  sysctls:
+  #    - net.ipv4.ip_forward=1
+
+
+  db:
+    image: mysql:5.7
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    networks:
+      - default
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - ./my-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    networks:
+      - default
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "8181:80"
+    depends_on:
+      - db
+
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: web-app
+  #   ports:
+  #     - "80:3000"
+  #   volumes:
+  #     - ./userProfiles:/app/userProfiles
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   networks:
+  #     - default
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:3000"]
+  #     interval: 10s
+  #     retries: 5
+  #     start_period: 20s
+  #     timeout: 5s

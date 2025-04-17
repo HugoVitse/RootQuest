@@ -1,0 +1,44 @@
+{
+  "pmzbbplg6ca": {
+    "host": "Evawdunos",
+    "image": "cyberspace",
+    "players": [
+      "Evawdunos",
+      "hugo",
+      "username"
+    ],
+    "team1": [
+      "Evawdunos"
+    ],
+    "team2": [
+      "hugo",
+      "username"
+    ],
+    "messages": [
+      {
+        "message": "lol",
+        "sender": "hugo"
+      },
+      {
+        "message": "fdp",
+        "sender": "hugo"
+      },
+      {
+        "message": "ntm pd",
+        "sender": "Evawdunos"
+      }
+    ]
+  },
+  "hjaza8v5ld5": {
+    "host": "aqssel",
+    "image": "cyberspace",
+    "players": [
+      "aqssel"
+    ],
+    "team1": [
+      "aqssel"
+    ],
+    "team2": [],
+    "messages": []
+  }
+}
