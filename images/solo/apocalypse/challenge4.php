@@ -136,7 +136,7 @@ if (!isset($_SESSION['flag'])) {
 <body>
 
 <header>
-  <a href="/apocalypse.php" class="back-button" title="Retour à l'accueil">↩</a>
+  <a href="challenge.php" class="back-button" title="Retour à l'accueil">↩</a>
   <h1>🕵️ Dossier 04 : Exploitation de Backdoor</h1>
   <p class="subtitle">Quelque chose rôde sur le réseau. Une présence silencieuse. Saurez-vous écouter ?</p>
 </header>

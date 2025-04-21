@@ -157,6 +157,8 @@
       flex-direction: row;
       margin-top : 20px;
       align-items: center;
+      min-height: 250px;
+      min-width: 500px;
     }
 
     .briefing img {
@@ -208,7 +210,7 @@
     Des messages ennemis interceptés sont chiffrés avec un simple César. Retrouve la clé et brise le silence.
     <br><strong>Compétence :</strong> Cryptanalyse basique
   </p>
-  <a href="/op_enigma1.php" class="access-btn">Lancer le challenge</a>
+  <a href="challenge1.php" class="access-btn">Lancer le challenge</a>
     </div>
   
     <div class="briefing" style="flex-direction: column; margin:20px">

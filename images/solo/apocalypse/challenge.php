@@ -241,7 +241,7 @@
         <p>
           Un fichier exfiltré contient une menace. Analysez, identifiez et neutralisez le code malveillant avant qu’il ne se propage.
         </p>
-        <a href="challenge.php" class="access-btn">Accéder au dossier</a>
+        <a href="challenge1.php" class="access-btn">Accéder au dossier</a>
       </div>
 
       <div class="challenge-card">
@@ -249,7 +249,7 @@
         <p>
           Un signal crypté circule dans le réseau. Décryptez ses secrets avant qu’il ne disparaisse dans l’ombre.
         </p>
-        <a href="challenge.php" class="access-btn">Accéder au dossier</a>
+        <a href="challenge2.php" class="access-btn">Accéder au dossier</a>
       </div>
 
       <div class="challenge-card">
@@ -257,7 +257,7 @@
         <p>
           Un réseau souterrain propulse des virus via des cookies. Remontez la filière et infiltrez leur protocole.
         </p>
-        <a href=challenge3.php" class="access-btn">Accéder au dossier</a>
+        <a href="challenge3.php" class="access-btn">Accéder au dossier</a>
       </div>
 
       <div class="challenge-card">
@@ -265,7 +265,7 @@
         <p>
           Une porte dérobée a été installée. Pénétrez dans les serveurs ennemis en utilisant leur propre faille contre eux.
         </p>
-        <a href=challenge4.php" class="access-btn">Accéder au dossier</a>
+        <a href="challenge4.php" class="access-btn">Accéder au dossier</a>
       </div>
 
     </div>
