@@ -68,3 +68,39 @@ export async function startContainer(image : string, username: string) : Promise
     }
 
 }
+
+export async function stopContainer(image : string, username: string) : Promise<DockerResponse> {
+    const querySelectImages : string = `SELECT * FROM images`;
+
+
+    try {
+        const rows : [RowDataPacket[],FieldPacket[]] = await connection.query<RowDataPacket[]>(querySelectImages);
+        const imageExists = (element:any) => element.image === image;
+        const exists : boolean = rows[0].some(imageExists);
+        if (!exists) {
+            throw new Error('Image doesnt exists');
+        }
+        let image_name = `${image}_${username}`
+
+        if(!await containerExists(image_name)) {
+            throw new Error("Container not even started");
+        }
+
+        const command = `docker stop ${image_name}`;
+        const { stdout, stderr } = await execPromise(command);
+
+        if (stderr) {
+            throw new Error(stderr);
+        }
+
+       
+        return { ip:  "", success: true , message: ""};
+
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return { ip : "", success: false, message: error.message };
+        } else {
+            return { ip : "", success: false, message: "Error" };
+        }
+    }
+}

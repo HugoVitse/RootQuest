@@ -14,6 +14,7 @@ networks:
 
 services:
   openvpn:
+<<<<<<< Updated upstream
     image: vpn-image
     container_name: openvpn-server
     volumes:
@@ -27,6 +28,21 @@ services:
     restart: always
     sysctls:
       - net.ipv4.ip_forward=1
+=======
+   image: vpn-image
+   container_name: openvpn-server
+   volumes:
+     - ./data:/etc/openvpn
+   ports:
+     - "1194:1194/udp"  # Ouvre le port 1194 pour OpenVPN
+   cap_add:
+     - NET_ADMIN  # Permet à OpenVPN de manipuler les interfaces réseau
+   networks:
+     - vm-net
+   restart: always
+   sysctls:
+     - net.ipv4.ip_forward=1
+>>>>>>> Stashed changes
 
 
   db:
@@ -39,7 +55,8 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     networks:
-      - default
+      default:
+        ipv4_address: 172.21.0.2
     ports:
       # <Port exposed> : <MySQL Port running inside container>
       - '3306:3306'
@@ -79,6 +96,7 @@ services:
   #     - "80:3000"
   #   volumes:
   #     - ./userProfiles:/app/userProfiles
+  #     - /var/run/docker.sock:/var/run/docker.sock
   #   depends_on:
   #     db:
   #       condition: service_healthy

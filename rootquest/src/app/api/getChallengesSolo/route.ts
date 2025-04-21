@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
             throw new Error("Unauthorized");
         }
         
-        const rep : ImageResponse = await getImages(false, true);
+        const rep : ImageResponse = await getImages(false, false);
         
         if( rep.images === undefined) {
             return NextResponse.json({ message: "No images found" }, { status: 404 });

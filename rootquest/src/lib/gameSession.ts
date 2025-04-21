@@ -56,6 +56,21 @@ export async function handleSocket(socket : Socket<any>) {
             socket.emit('message', session.messages);
         }
     });
+
+    socket.on('go', async (sessionId:string) => {
+        socket.broadcast.emit('go', sessionId);
+    });
+
+    socket.on('flagsFound', async (sessionId:string, team:number) => {
+        const session = await getSession(sessionId);
+        console.log("session", team)
+        if (session) {
+            team === 1 ? session.team1Success = true : session.team2Success = true;
+            await setSession(sessionId, session);
+        }
+        socket.broadcast.emit('flagsFound', sessionId, team);   
+    }
+    );
 }
 
 export async function createGameSession(image: string, username: string) {
@@ -71,7 +86,7 @@ export async function createGameSession(image: string, username: string) {
 
 
     const sessionId = Math.random().toString(36).substring(2, 15);
-    setSession(sessionId, { host:username, image, players: [username] , team1: [username], team2: [], messages: [], launched: false });
+    setSession(sessionId, { host:username, image, players: [username] , team1: [username], team2: [], messages: [], launched: false , team1Success: false, team2Success: false });
     return sessionId;
 }
 

@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { fetchUsername } from "@/lib/infoClient";
 import { isGameExists , isGameLaunched} from "@/lib/infoGame";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 interface Player {
   team: number;
@@ -72,8 +73,9 @@ const Lobby = () => {
   const [team1, setTeam1] = useState<string[]>([]);
   const [team2, setTeam2] = useState<string[]>([]);
   const [name, setName] = useState("");
-  const [isReady, setIsReady] = useState(false);
+  const [go, setGo] = useState(false);
   const [username, setUsername] = useState("");
+  const [host, setHost] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [error, setError] = useState("");
   const [isLaunched, setIsLaunched] = useState(false);
@@ -94,12 +96,12 @@ const Lobby = () => {
         console.log("Session does not exist");
         return;
       }
-      const launched = await isGameLaunched(id);
-      console.log(launched)
-      if(launched){
+      const data = await isGameLaunched(id)
+      setHost(data.host);
+      if(data.launched){
         setError("La partie a déjà commencé !");
       }
-      setIsLaunched(launched);
+      setIsLaunched(data.launched);
 
       const username_ = await fetchUsername();
       setUsername(username_);
@@ -125,6 +127,20 @@ const Lobby = () => {
       
     })
 
+    socket.on("go", async (idSession:string) => {
+      console.log("ok");
+      console.log(idSession, id);
+      if(idSession === id) {
+        const rep = await axios.post(`/api/launchGame`, {id: id});
+        if(rep.status === 200) {
+          router.push(`/game/${id}`);
+        }
+        else {
+          setError("Erreur lors du lancement de la partie");
+        }
+      }
+    });
+
 
     wrap();
     checkTeams();
@@ -138,6 +154,9 @@ const Lobby = () => {
     else if(team2.length > 1) {
       setError("Trop de joueurs dans l'équipe 2 !");
     }
+    else if(team1.length === 1 && team2.length === 1 && !isLaunched) {
+      setError("");
+    }
   }
 
   const handleJoin = () => {
@@ -150,8 +169,17 @@ const Lobby = () => {
     router.push(`/game/${id}`);
   }
 
-  const handleReady = () => {
-    setIsReady(true);
+  const handleReady = async() => {
+    console.log(id,"ok");
+    socket.emit("go", id);
+    const rep = await axios.post(`/api/launchGame`, {id: id});
+    if(rep.status === 200) {
+      router.push(`/game/${id}`);
+    }
+    else {
+      setError("Erreur lors du lancement de la partie");
+    }
+
   };
 
   useEffect(() => {
@@ -182,6 +210,25 @@ const Lobby = () => {
         Lobby Multijoueur
       </motion.h1>
 
+      <motion.div
+        className="flex items-center gap-4 mb-4"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <span className="text-lg font-semibold">ID de la session :</span>
+        <div className="flex items-center bg-gray-800 px-4 py-2 rounded-xl">
+          <span className="text-white">{id}</span>
+          <button
+            onClick={async () => {
+              await navigator.clipboard.writeText(id);
+            }}
+            className="ml-2 text-blue-500 hover:text-blue-400 transition"
+          >
+            Copier
+          </button>
+        </div>
+      </motion.div>
+
       <motion.h2
         className="text-1xl font-bold mb-8 text-red-500"
         initial={{ opacity: 0, y: -20 }}
@@ -210,7 +257,7 @@ const Lobby = () => {
                 <AvatarFallback>{player[0]}</AvatarFallback>
                 </Avatar>
                 <span className="text-lg font-semibold">{player}</span>
-                {player === username && (<Button
+                {player === username && !isLaunched && (<Button
                   onClick={() => {
                     let newTeam1 = team1.filter((p) => p !== player);
                     let newTeam2 = [...team2, player];
@@ -240,7 +287,7 @@ const Lobby = () => {
                 <AvatarFallback>{player[0]}</AvatarFallback>
                 </Avatar>
                 <span className="text-lg font-semibold">{player}</span>
-                {player === username && (<Button
+                {player === username && !isLaunched && (<Button
                 onClick={() => {
                   let newTeam2 = team2.filter((p) => p !== player);
                   let newTeam1 = [...team1, player];
@@ -264,13 +311,11 @@ const Lobby = () => {
         </CardContent>
       </Card>
 
-      <Button
-        variant={isReady ? "outline" : "default"}
+      { (username===host || isLaunched) && <Button
         onClick={isLaunched ? handleRejoin : handleReady}
-        disabled={!isLaunched && (isReady  || error.length > 0)}
       >
-        {isReady ?  "Prêt !" : (isLaunched ? "Revenir en jeu" : "Je suis prêt")}
-      </Button>
+        {isLaunched ? "Revenir en jeu":"Lancer la partie !"}
+      </Button>}
     </div>
   );
 };

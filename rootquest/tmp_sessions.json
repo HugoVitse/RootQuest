@@ -1,31 +1,45 @@
 {
-  "pmzbbplg6ca": {
+  "xj7wg67kkp8": {
     "host": "Evawdunos",
-    "launched": true,
     "image": "cyberspace",
     "players": [
       "Evawdunos",
       "hugo"
     ],
     "team1": [
-      "hugo"
+      "Evawdunos"
     ],
     "team2": [
-      "Evawdunos"
+      "hugo"
     ],
     "messages": [
       {
-        "message": "lol",
+        "message": "slt",
         "sender": "hugo"
       },
       {
-        "message": "fdp",
+        "message": "envoie le flag",
         "sender": "hugo"
       },
       {
-        "message": "ntm pd",
+        "message": "frrere",
+        "sender": "hugo"
+      },
+      {
+        "message": "j'ai trouvé ca U3VwZXJTcGFjZQ== ",
+        "sender": "hugo"
+      },
+      {
+        "message": "wtf",
         "sender": "Evawdunos"
       }
+<<<<<<< Updated upstream
     ]
+=======
+    ],
+    "launched": false,
+    "team1Success": true,
+    "team2Success": true
+>>>>>>> Stashed changes
   }
 }

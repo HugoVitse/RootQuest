@@ -1,25 +1,39 @@
 import {connection } from '@/db';
-import { ImageResponse, ImageRow, Image } from "@/types/image";
+import { ImageResponse, ImageRow, Image, ImageClient } from "@/types/image";
 import { getSession } from './sessionStore';
 import { getImageFromUser } from './gameSession';
 
 
-export async function getImages() : Promise<ImageResponse> {
+export async function getImages(duo : boolean, all: boolean) : Promise<ImageResponse> {
 
-    const querySelectImages : string = `SELECT * FROM images`;
+    let querySelectImages : string = `SELECT * FROM images`;
+
+    if (!all) {
+        querySelectImages += ` WHERE duo = ${duo}`;
+    }
 
 
     try {
         const [rows] = await connection.query<ImageRow[]>(querySelectImages);
 
-        const images: Image[] = rows.map(row => ({
-            image: row.image,
+        const images: ImageClient[] = rows.map(row => ({
+            image: duo? row.image.substring(0,row.image.length-1) : row.image,
             name: row.name,
+            difficulty: "Easy",
         }));
 
-               
+        const uniqueImages = new Map<string, ImageClient>();
+
+        images.forEach(image => {
+            if (!uniqueImages.has(image.image)) {
+                uniqueImages.set(image.image, image);
+            }
+        });
+
+        const deduplicatedImages = Array.from(uniqueImages.values());
+
         return {
-            images: images,
+            images: deduplicatedImages,
             message: "Images retrieved successfully"
         };
 
@@ -32,6 +46,8 @@ export async function getImages() : Promise<ImageResponse> {
     }
 
 }
+
+
 
 export async function getNbFlags(id:string, username:string) : Promise<number> {
 

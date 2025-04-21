@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DockerData, DockerResponse } from "@/types/docker";
-import { startContainer } from "@/lib/docker";
+import { startContainer, stopContainer } from "@/lib/docker";
 import { decrypt } from "@/lib/session";
 import { SessionPayload } from "@/types/auth";
 import { getImageFromUser } from "@/lib/gameSession";
@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
 
     try {
-        const { id } = await req.json();
+        const { sessionId } = await req.json();
         const token = req.cookies.get("session")?.value
 
         if (token === undefined) {
@@ -21,15 +21,15 @@ export async function POST(req: NextRequest) {
             throw new Error("Unauthorized");
         }
         const username  = decrypted.username;
-        const image = await getImageFromUser(id, username) || "";
-        const rep : DockerResponse = await startContainer(image, username);
+        const image = await getImageFromUser(sessionId, username) || "";
+        const rep : DockerResponse = await stopContainer(image, username);
         
         if( rep.success) {
-            let session = await getSession(id);
+            let session = await getSession(sessionId);
             console.log("session", session)
             if(session) {
-                session.launched = true;
-                setSession(id, session);
+                session.launched = false;
+                setSession(sessionId, session);
             }
             return NextResponse.json({ success: true, ip : rep.ip }, { status: 200 });
         }
