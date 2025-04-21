@@ -1,0 +1,210 @@
+body {
+    background: url('https://images7.alphacoders.com/743/743102.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.container {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.85);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 25px rgba(255, 0, 0, 0.5);
+    max-width: 600px;
+}
+
+.intro {
+    background: rgba(255, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 5px solid red;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(90deg, #990000, #cc0000);
+    border: 2px solid white;
+    border-radius: 10px;
+    transition: 0.3s;
+    box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.7);
+}
+
+.btn:hover {
+    background: white;
+    color: black;
+    transform: scale(1.1);
+}
+
+.success {
+    background: rgba(0, 128, 0, 0.1);
+    border-left: 5px solid limegreen;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-weight: bold;
+    box-shadow: 0px 0px 10px rgba(0,255,0,0.3);
+}
+
+.hint {
+    background: rgba(255, 0, 0, 0.1);
+    border-left: 5px dashed red;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-style: italic;
+    color: #ffcccc;
+    box-shadow: 0px 0px 10px rgba(255,0,0,0.2);
+}
+
+.btn {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(90deg, #990000, #cc0000);
+    border: 2px solid white;
+    border-radius: 10px;
+    transition: 0.3s;
+    box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.7);
+}
+
+.btn:hover {
+    background: white;
+    color: black;
+    transform: scale(1.1);
+}
+
+.logs, .files {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid #ccc;
+    padding: 20px;
+    margin-top: 25px;
+    text-align: left;
+    border-radius: 8px;
+    font-family: monospace;
+    color: #ddd;
+    box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+.fake-link {
+    color: #00ffff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.highlight {
+    color: gold;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+
+#sam {
+    background-color: rgba(10, 10, 10, 0.8);
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.05);
+    max-width: 700px;
+}
+
+.terminal {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.terminal .output {
+    white-space: pre-line;
+    margin-bottom: 10px;
+    color: #00ff99;
+}
+
+.terminal input[type="text"] {
+    width: calc(100% - 110px);
+    padding: 10px;
+    background: black;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    font-family: monospace;
+}
+
+.terminal button {
+    padding: 10px 15px;
+    background: #003300;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.terminal button:hover {
+    background: #005500;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 10px;
+    margin: 10px 0;
+    width: 80%;
+    max-width: 400px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0px 0px 5px rgba(255, 0, 0, 0.6);
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background: #cc0000;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: white;
+    color: #cc0000;
+}
+
+.success {
+    background: rgba(0, 128, 0, 0.2);
+    padding: 15px;
+    border-left: 5px solid lime;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
