@@ -1,30 +1,31 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import PictureProfil from "@/components/pictureProfil";  // Assure-toi que ce composant existe
-import { MdOutlineLock, MdOutlineLogout } from "react-icons/md";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import NavBar from "@/components/navBar";
-
+import { Pencil } from 'lucide-react';
 
 const ProfilePage: React.FC = () => {
-  const [user, setUser] = useState<any>(null); // Stocke les données utilisateur
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+  const inputFileRef = useRef<HTMLInputElement | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.post("/api/infoClient"); // API pour récupérer les infos de l'utilisateur
+        const response = await axios.post("/api/infoClient");
         if (response.data.username) {
-          setUser(response.data); // Stocker les infos dans le state
+          setUser(response.data);
+          setPreviewImage(response.data.profilePicture);
         } else {
-          setUser(null); // Si pas de user, rien à afficher
+          setUser(null);
         }
       } catch (error) {
         console.error("Erreur lors de la récupération des données utilisateur:", error);
-        setUser(null); // Gestion d'erreur
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -33,30 +34,67 @@ const ProfilePage: React.FC = () => {
     fetchUserData();
   }, []);
 
-  if (loading) {
-    return <div>Chargement...</div>;
-  }
+  const handleImageClick = () => {
+    inputFileRef.current?.click();
+  };
 
-  if (!user) {
-    return <div>Utilisateur non authentifié</div>; // Afficher un message si l'utilisateur n'est pas authentifié
-  }
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("profilePicture", file);
+
+    try {
+      const res = await axios.post("/api/uploadProfilePic", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.data?.imageUrl) {
+        setPreviewImage(res.data.imageUrl); // met à jour avec l'URL retournée
+      } else {
+        const localUrl = URL.createObjectURL(file);
+        setPreviewImage(localUrl); // fallback local si pas d'URL
+      }
+    } catch (err) {
+      console.error("Erreur d'upload :", err);
+    }
+  };
+
+  if (loading) return <div>Chargement...</div>;
+  if (!user) return <div>Utilisateur non authentifié</div>;
 
   return (
     <div className="min-h-screen w-full bg-gray-900 text-white font-sans">
-     <NavBar />
+      <NavBar />
 
       <div className="pt-24 px-6 max-w-4xl mx-auto">
-        {/* HEADER PROFIL */}
         <div className="bg-gray-800 p-6 rounded-lg shadow-md flex flex-col items-center text-center border border-gray-700">
-          <PictureProfil
-            imageUrl={user.imageUrl || "https://www.portraitprofessionnel.fr/wp-content/uploads/2020/02/portrait-professionnel-corporate-4.jpg"}
-            size={100}
-          />
+          {/* Avatar avec survol */}
+          <div className="relative group cursor-pointer" style={{ width: 100, height: 100 }} onClick={handleImageClick}>
+            <img
+              src={previewImage || "https://www.portraitprofessionnel.fr/wp-content/uploads/2020/02/portrait-professionnel-corporate-4.jpg"}
+              alt="Photo de profil"
+              className="w-full h-full object-cover rounded-full transition duration-300 group-hover:brightness-75"
+            />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+              <div className="bg-white bg-opacity-80 p-2 rounded-full shadow">
+                <Pencil className="w-5 h-5 text-gray-800" />
+              </div>
+            </div>
+            <input
+              type="file"
+              ref={inputFileRef}
+              onChange={handleImageChange}
+              accept="image/*"
+              className="hidden"
+            />
+          </div>
+
           <h1 className="text-3xl font-bold mt-4">{user.name} (@{user.username})</h1>
           <p className="text-blue-400 text-lg font-medium">"Description{user.rank}"</p>
         </div>
 
-        {/* STATISTIQUES */}
         <div className="grid grid-cols-3 gap-6 mt-8">
           <div className="p-6 bg-gray-800 rounded-lg text-center border border-gray-700">
             <p className="text-lg font-semibold">Challenges</p>
@@ -71,33 +109,6 @@ const ProfilePage: React.FC = () => {
             <p className="text-2xl font-bold text-blue-400">1230 {user.rank}</p>
           </div>
         </div>
-
-        {/* BADGES */}
-        {/* <div className="mt-8 bg-gray-800 p-6 rounded-lg border border-gray-700">
-          <h2 className="text-xl font-bold mb-4">Achievements</h2>
-          <div className="flex flex-wrap gap-4">
-            {user.badges.map((badge: string, index: number) => (
-              <span key={index} className="px-4 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white">
-                {badge}
-              </span>
-            ))}
-          </div>
-        </div> */}
-
-        {/* MINI-TERMINAL
-        <div className="mt-8 bg-gray-800 p-6 rounded-lg border border-gray-700">
-          <h2 className="text-xl font-bold mb-4">Recent Challenges</h2>
-          <div className="text-sm font-mono text-blue-300 bg-black p-4 rounded-lg">
-            {user.recentChallenges.map((challenge: { title: string; difficulty: string }, index: number) => (
-              <p key={index} className="mb-1">
-                <span className="text-green-400">[✔]</span> {challenge.title} - 
-                <span className={challenge.difficulty === "Easy" ? "text-green-300" : challenge.difficulty === "Medium" ? "text-yellow-300" : "text-red-300"}>
-                  {challenge.difficulty}
-                </span>
-              </p>
-            ))}
-          </div>
-        </div> */}
       </div>
     </div>
   );
