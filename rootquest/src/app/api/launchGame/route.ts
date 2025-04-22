@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
         }
         const username  = decrypted.username;
         const image = await getImageFromUser(id, username) || "";
-        console.log(image)
         const rep : DockerResponse = await startContainer(image, username);
         
         if( rep.success) {

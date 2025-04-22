@@ -38,8 +38,8 @@
         "sender": "Evawdunos"
       }
     ],
-    "launched": false,
-    "team1Success": true,
-    "team2Success": true
+    "launched": true,
+    "team1Success": false,
+    "team2Success": false
   }
 }
