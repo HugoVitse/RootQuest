@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salle 2 - Sam</title>
-    <link rel="stylesheet" href="../style/style.css">
+    <title>Sam</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <div class="container">

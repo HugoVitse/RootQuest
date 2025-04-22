@@ -41,5 +41,23 @@
     "launched": true,
     "team1Success": false,
     "team2Success": false
+  },
+  "wddzzp7u9o": {
+    "host": "Evawdunos",
+    "image": "jailbreak",
+    "players": [
+      "Evawdunos",
+      "hugo"
+    ],
+    "team1": [
+      "Evawdunos"
+    ],
+    "team2": [
+      "hugo"
+    ],
+    "messages": [],
+    "launched": false,
+    "team1Success": true,
+    "team2Success": true
   }
 }

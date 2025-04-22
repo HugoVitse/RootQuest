@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choisissez votre rôle</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Alex</title>
+    <link rel="stylesheet" href="style/style.css">
 </head>
 
 <body>
@@ -22,11 +22,11 @@
         </div>
 
         <div class="role-box">
-            <h2>Choisissez votre rôle :</h2>
+            <h2>Souhaitez-vous commencer ?</h2>
         </div>
         
         <div class="buttons">
-            <a href="j2home.php" class="btn">Entrer</a>
+            <a href="joueur1/j1home.php" class="btn">Entrer</a>
         </div>
     </div>
 </body>

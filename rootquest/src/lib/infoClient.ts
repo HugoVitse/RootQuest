@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+
 export async function fetchUsername() {
     try {
         const response = await axios.post("/api/infoClient");

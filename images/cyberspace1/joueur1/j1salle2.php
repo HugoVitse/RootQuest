@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Salle 2 - Alex</title>
+        <title>Alex</title>
         <link rel="stylesheet" href="../style/style.css">
     </head>
 

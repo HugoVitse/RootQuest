@@ -26,7 +26,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion au Vaisseau</title>
+    <title>Alex</title>
     <link rel="stylesheet" href="../style/style.css">
 </head>
 <body>
