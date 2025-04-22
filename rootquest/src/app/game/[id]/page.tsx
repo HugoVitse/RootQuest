@@ -195,6 +195,9 @@ const Lobby = () => {
       const wrap = async() => { 
         if(team1Success && team2Success){
           const rep = await axios.post(`/api/stopGame`, {sessionId: id});
+          if(rep.data.success) {
+            router.push("/duo");
+          }
         }
       }
       wrap();

@@ -28,7 +28,7 @@ export async function containerExists(image : string) : Promise<boolean> {
 
 export async function startContainer(image : string, username: string) : Promise<DockerResponse> {
 
-    const querySelectImages : string = `SELECT * FROM images WHERE duo = 0`;
+    const querySelectImages : string = `SELECT * FROM images`;
 
 
     try {

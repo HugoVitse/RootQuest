@@ -151,6 +151,9 @@ const Lobby = () => {
       const wrap = async() => { 
         if(success){
           const rep = await axios.post(`/api/stopGameSolo`, {image: image});
+          if(rep.data.success) {
+            router.push("/solo");
+          }
         }
       }
       wrap();
