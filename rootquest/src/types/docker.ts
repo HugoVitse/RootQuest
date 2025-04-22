@@ -5,5 +5,7 @@ export type DockerData = {
 export type DockerResponse = {
     ip : string;
     success: boolean;
+    nbflags : number;
     message : string;
+
 }

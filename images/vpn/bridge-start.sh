@@ -15,9 +15,9 @@ tap="tap0"
 # Define physical ethernet interface to be bridged
 # with TAP interface(s) above.
 eth="eth0"
-eth_ip="172.18.0.2"
+eth_ip="172.20.0.2"
 eth_netmask="255.255.0.0"
-eth_broadcast="172.18.255.255"
+eth_broadcast="172.20.255.255"
 
 
 brctl addbr $br

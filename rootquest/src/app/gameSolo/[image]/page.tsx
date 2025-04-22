@@ -59,8 +59,7 @@ const Lobby = () => {
       validated: boolean;
     }
     const params = useParams();
-    const id = params.id;
-    console.log(id);
+    const image = params.image;
 
     const [flags, setFlags] = useState<flag[]>([]);
     const [messages, setMessages] = useState<message[]>([]);
@@ -69,29 +68,20 @@ const Lobby = () => {
     const [ip, setIp] = useState("");
     const [error, setError] = useState("");
     const [team, setTeam] = useState(0);
-    const [team1Success, setTeam1Success] = useState(false);
-    const [team2Success, setTeam2Success] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const handleFlagSubmit =  async (index: number) => {
-      const rep_image = await axios.post(`/api/gameImage`, {sessionId:id});
-      const rep = await axios.post(`/api/validateFlag`, {flag: flags[index].flag, image: rep_image.data.image, flag_number:index});
+      const rep = await axios.post(`/api/validateFlag`, {flag: flags[index].flag, image: image, flag_number:index});
       if(rep.data.success) {
 
         const newFlags = [...flags];
         newFlags[index].validated = true;
         setFlags(newFlags);
-        const success = newFlags.every(flag => flag.validated);
+        const success_ = newFlags.every(flag => flag.validated);
   
 
-        if (success) {
-          if(team === 1) {
-            setTeam1Success(true);
-          }
-          else {
-            setTeam2Success(true);
-          }
-          console.log(team, "ok")
-          socket.emit("flagsFound", id, team);
+        if (success_) {
+          setSuccess(true);
         }
         
         toast.success(`Good flag ! ${rep.data.message} `, {
@@ -121,65 +111,33 @@ const Lobby = () => {
     
     }
 
-    const handleSendMessage = () => {
-        if (message.trim()) {
-            setMessages((prev) => [...prev, {message:message, sender: username}]);
-            setMessage("");
-            console.log(id,message,username)
-            socket.emit("message", id, message, username);
-        }
-    };
+
 
     useEffect(()=>{
       const wrap = async() => {
         try {
 
-          const gameOk = await axios.post(`/api/isGameOk`, {id});
+          const gameOk = await axios.post(`/api/isGameOkSolo`, {image});
           if(!gameOk.data.ok) {
             router.push("/");
-            return;
-          }
-
-          setTeam(gameOk.data.team);
-
-          const rep = await axios.post(`/api/gameLaunched`, {sessionId: id});
+          }   
           
-          if(!gameOk.data.launched) {
-            setError("La partie n'a pas encore commencé !");
-            return;
-          }
           else {
-            setIp(rep.data.ip);
+            setIp(gameOk.data.ip);
+            const nbFlags = gameOk.data.nbflags;
+            console.log("nbFlags", nbFlags);
+            for(let i = 0; i < nbFlags; i++) {
+              setFlags((prev) => [...prev, {flag:"",validated:false}]);
+            }
           }
           
         } catch (err) {
           console.log(err);
         }
-        const nbFlags = await axios.post(`/api/getNbFlags`, {id});
-        console.log(nbFlags.data);
-        for(let i = 0; i < nbFlags.data; i++) {
-          setFlags((prev) => [...prev, {flag:"",validated:false}]);
-        }
+        
         const username_ = await fetchUsername();
-        socket.emit("messageRequest", id);
         setUsername(username_);
       }
-
-      socket.on("message", (messages: message[]) => {
-          setMessages(messages);
-      });
-
-      socket.on("flagsFound", (sessionId:string, team:number) => {
-        console.log("team", team)
-        if(sessionId == id) {
-          if(team === 1) {
-            setTeam1Success(true);
-          }
-          else {
-            setTeam2Success(true);
-          }
-        }
-      });
 
       wrap();
         
@@ -190,15 +148,13 @@ const Lobby = () => {
     },[])
 
     useEffect(() => {
-      console.log("team1Success", team1Success);
-      console.log("team2Success", team2Success);
       const wrap = async() => { 
-        if(team1Success && team2Success){
-          const rep = await axios.post(`/api/stopGame`, {sessionId: id});
+        if(success){
+          const rep = await axios.post(`/api/stopGameSolo`, {image: image});
         }
       }
       wrap();
-    },[team1Success, team2Success])
+    },[success])
 
   
 
@@ -221,12 +177,13 @@ const Lobby = () => {
         window.location.href = `/api/vpnClient`;
       }}>Obtenez votre fichier client OpenVPN</Button>
     </div>
+
     <motion.h1
       className="text-4xl font-bold mb-8"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      Lobby Multijoueur
+      Game Solo
     </motion.h1>
 
     <motion.h3
@@ -268,26 +225,7 @@ const Lobby = () => {
       </CardContent>
     </Card>
 
-    <Card className="w-full max-w-xl p-6">
-      <CardContent>
-        <h2 className="text-2xl font-semibold mb-4">Chat</h2>
-        <div className="h-40 overflow-y-auto bg-gray-800 p-4 rounded-xl mb-4">
-        {messages.map((msg, index) => (
-          <div key={index} className="mb-2">
-            <span className="font-bold">{msg.sender}:</span> {msg.message}
-          </div>
-        ))}
-        </div>
-        <div className="flex gap-2">
-        <Input
-          placeholder="Entrez un message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <Button onClick={handleSendMessage}>Envoyer</Button>
-        </div>
-      </CardContent>
-    </Card>
+   
     </div>
   );
 };

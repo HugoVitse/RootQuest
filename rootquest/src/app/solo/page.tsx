@@ -1,14 +1,9 @@
 "use client";
 
-<<<<<<< Updated upstream
-import React, { useState } from "react";
-import NavBar from "@/components/navBar";
-=======
 import NavBar from "@/components/navBar";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ImageClient } from "@/types/image";
->>>>>>> Stashed changes
 
 const challenges = [
   { title: "SQL Injection", difficulty: "Medium" },
@@ -63,15 +58,6 @@ const ChallengeSolo: React.FC = () => {
           {filteredChallenges.map((challenge, index) => (
             <div key={index} className="p-4 bg-gray-900 rounded-lg flex justify-between items-center border border-gray-700">
               <div>
-<<<<<<< Updated upstream
-                <h2 className="text-xl font-semibold">{challenge.title}</h2>
-                <p className="text-sm text-gray-400">Difficulté : 
-                  <span className={
-                    challenge.difficulty === "Easy" ? "text-green-400" : 
-                    challenge.difficulty === "Medium" ? "text-yellow-400" : 
-                    "text-red-400"
-                  }>
-=======
                 <h2 className="text-xl font-semibold">{challenge.name}</h2>
                 <p className="text-sm text-gray-400">
                   Difficulté :
@@ -84,7 +70,6 @@ const ChallengeSolo: React.FC = () => {
                         : "text-red-400"
                     }
                   >
->>>>>>> Stashed changes
                     {" " + challenge.difficulty}
                   </span>
                 </p>

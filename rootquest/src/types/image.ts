@@ -29,11 +29,13 @@ export interface ImageRow extends RowDataPacket {
 export interface FlagRow extends RowDataPacket {
     flag: string;
     image_id: number;
+    nbPoints: number;
 }
 
 export interface UserRow extends RowDataPacket {
     username: string;
     password: string;
     email: string;
+    points: number;
     flags_validated: string[];
 }

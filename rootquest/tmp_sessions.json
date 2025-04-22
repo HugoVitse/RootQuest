@@ -32,14 +32,14 @@
       {
         "message": "wtf",
         "sender": "Evawdunos"
+      },
+      {
+        "message": "j'ai trouvé un indice",
+        "sender": "Evawdunos"
       }
-<<<<<<< Updated upstream
-    ]
-=======
     ],
     "launched": false,
     "team1Success": true,
     "team2Success": true
->>>>>>> Stashed changes
   }
 }

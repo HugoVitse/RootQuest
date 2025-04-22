@@ -21,7 +21,7 @@ export default async function validateFlag(username : string, flag_to_check: str
 
 
         // get the flag from the id
-        const queryGetFlag : string = `SELECT flag FROM flags WHERE id = '${flag_id}'`;
+        const queryGetFlag : string = `SELECT flag,nbPoints FROM flags WHERE id = '${flag_id}'`;
         const [rows_flag]  = await connection.query<FlagRow[]>(queryGetFlag);
 
         const flag = rows_flag[0].flag;
@@ -33,8 +33,9 @@ export default async function validateFlag(username : string, flag_to_check: str
 
 
         // if it is correct, get the array of flags validated from the user
-        const queryGetUserFlags : string = `SELECT flags_validated FROM users WHERE username = '${username}'`;
+        const queryGetUserFlags : string = `SELECT flags_validated,points FROM users WHERE username = '${username}'`;
         const [rows_user]  = await connection.query<UserRow[]>(queryGetUserFlags);
+        console.log(rows_user[0])
 
         const user: UserRow = rows_user[0];
         let flags_validated = user.flags_validated;
@@ -43,14 +44,18 @@ export default async function validateFlag(username : string, flag_to_check: str
             flags_validated = [];
         }
 
-        console.log(flags_validated)
+        let points = user.points;
+        points += rows_flag[0].nbPoints;
+        console.log(rows_flag[0])
 
         // check if the flag is already validated
         let msg = "Flag already validated";
 
         if (!flags_validated.includes(flag_id)) {
             flags_validated.push(flag_id);
-            const queryUpdateUser : string = `UPDATE users SET flags_validated = '${JSON.stringify(flags_validated)}' WHERE username = '${username}'`;
+            const queryUpdateUser : string = `UPDATE users SET flags_validated = '${JSON.stringify(flags_validated)}', points = ${points} WHERE username = '${username}'`;
+            console.log(queryUpdateUser)
+            console.log(flags_validated)
             await connection.query(queryUpdateUser);
             msg = "Continue";
         }   

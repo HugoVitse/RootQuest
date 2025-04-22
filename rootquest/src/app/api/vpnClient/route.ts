@@ -5,12 +5,13 @@ import fs from 'fs/promises';
 import { vpnResponse } from "@/types/vpn";
 import { createVpnClient } from "@/lib/vpnClient";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
 
 
     try {
         const token = req.cookies.get("session")?.value
-        const PATH = process.env.PATH  || '';
+        const PATH = process.env.APP_PATH  || '';
+        console.log(PATH);
 
         if (token === undefined) {
             throw new Error("Unauthorized");
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
 
             const response = new NextResponse(fileBuffer, {
                 headers: {
-                    'Content-Type': 'application/pdf',
+                    'Content-Type': 'application/octet-stream',
                     'Content-Disposition': `attachment; filename="${username}.ovpn"`,
                 },
             });
