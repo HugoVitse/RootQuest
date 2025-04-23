@@ -57,18 +57,28 @@ const ChallengeDuo: React.FC = () => {
         <p className="text-gray-300 mt-2">Affronte ou collabore avec un partenaire pour résoudre des défis en cybersécurité.</p>
 
         {/* Filtres */}
-        <div className="mt-6 flex space-x-4">
-          {["All", "Easy", "Medium", "Hard"].map(level => (
+        <div className="mt-6 flex justify-between items-center">
+          <div className="flex space-x-4">
+            {["All", "Easy", "Medium", "Hard"].map(level => (
+              <button
+          key={level}
+          className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+            difficulty === level ? "bg-blue-500 text-white" : "bg-gray-800 hover:bg-gray-700"
+          }`}
+          onClick={() => setDifficulty(level)}
+              >
+          {level}
+              </button>
+            ))}
+          </div>
+          <div>
             <button
-              key={level}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
-                difficulty === level ? "bg-blue-500 text-white" : "bg-gray-800 hover:bg-gray-700"
-              }`}
-              onClick={() => setDifficulty(level)}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition bg-blue-500 text-white`}
+              onClick={() => router.push("/lobby")}
             >
-              {level}
+              Rejoindre un Lobby
             </button>
-          ))}
+          </div>
         </div>
 
         {/* Liste des challenges */}
@@ -91,7 +101,7 @@ const ChallengeDuo: React.FC = () => {
                 className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400"
                 onClick={() => launchContainer(challenge.image)}
                 >
-                Trouver un partenaire
+                Créer une partie
                 </button>
             </div>
           ))}

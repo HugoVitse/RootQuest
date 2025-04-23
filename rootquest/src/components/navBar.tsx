@@ -31,7 +31,7 @@ const NavBar: React.FC = () => {
       </div>
       <div className=" flex items-center justify-end px-5">
         <PictureProfil
-          imageUrl="https://www.portraitprofessionnel.fr/wp-content/uploads/2020/02/portrait-professionnel-corporate-4.jpg"
+          imageUrl={`/public/upload/${username}.jpg`}
           size={50}
         />
       </div>

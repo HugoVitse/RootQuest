@@ -4,6 +4,7 @@ import NavBar from "@/components/navBar";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ImageClient } from "@/types/image";
+import { useRouter } from "next/navigation";
 
 const challenges = [
   { title: "SQL Injection", difficulty: "Medium" },
@@ -14,6 +15,7 @@ const challenges = [
 ];
 
 const ChallengeSolo: React.FC = () => {
+  const router = useRouter();
   const [difficulty, setDifficulty] = useState("All");
   const [challenges, setChallenges] = useState<ImageClient[]>([]);
 
@@ -83,7 +85,7 @@ const ChallengeSolo: React.FC = () => {
                   </span>
                 </p>
               </div>
-              <button className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400">
+              <button onClick={()=> {router.push(`/gameSolo/${challenge.image}`)}} className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400">
                 Commencer
               </button>
             </div>
