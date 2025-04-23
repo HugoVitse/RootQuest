@@ -195,9 +195,9 @@
       </div>
 
       <div class="challenge-card">
-        <h2>Dossier 04 – 🔴 [Hard] Exploitation de Backdoor</h2>
+        <h2>Dossier 04 – 🔴 [Hard] Interpréteur Trompeur</h2>
         <p>
-          Une porte dérobée a été installée. Pénétrez dans les serveurs ennemis en utilisant leur propre faille contre eux.
+          Le paramètre <code>page</code> semble anodin… et pourtant. Apprenez à exploiter l'encodage et les chemins détournés pour déverrouiller un accès insoupçonné.
         </p>
         <a href="/apocalypse4.php" class="access-btn">Accéder au dossier</a>
       </div>
