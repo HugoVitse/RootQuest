@@ -18,7 +18,7 @@ function check_secret($param) {
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Dossier 04 : Port Caché Admin</title>
+  <title>Dossier 04 : Interpréteur Trompeur</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -180,16 +180,18 @@ function check_secret($param) {
 
 <header>
   <a href="/apocalypse.php" class="back-button" title="Retour à l'accueil">↩</a>
-  <h1>🕵️ Dossier 04 : Port Caché Admin</h1>
-  <p class="subtitle">Un faux service vous détourne... mais le vrai est bien caché.</p>
+  <h1>🧪 Dossier 04 : Interpréteur Trompeur</h1>
+  <p class="subtitle">Quand l'encodage et les chemins détournés deviennent des armes.</p>
 </header>
 
 <div class="container">
-  <h2>Mission : Trouver le bon port</h2>
-  <p class="subtitle">Niveau : 🟩 Débutant | Spécialité : Pentest Réseau</p>
+  <h2>Mission : Trompez l'interpréteur</h2>
+  <p class="subtitle">Niveau : 🟨 Intermédiaire | Spécialité : Paramètres & Encodage</p>
 
   <div class="highlight">
-    🔍 <strong>Contexte :</strong> La machine cible expose deux ports : l'un "visiteur", accessible et sans danger. L'autre, plus discret, mène à une interface d’administration protégée. Le flag se cache derrière cette interface.
+    🧠 <strong>Contexte :</strong> Un simple paramètre dans l’URL peut cacher plus qu’il n’y paraît.
+    Le serveur analyse le paramètre <code>page</code>, mais il pourrait être plus naïf qu'on ne le pense...
+    À vous de trouver comment l’interpréter pour révéler ce qu’il ne devrait pas montrer.
   </div>
 
   <?php
@@ -199,7 +201,7 @@ function check_secret($param) {
     if (check_vulnerability($page)) {
       echo "<div class='highlight'>";
       echo "<h3 style='color:#00ffc3;'>🔓 Accès partiel obtenu</h3>";
-      echo "<p>Vous avez franchi la première porte... mais le chemin vers l'accès total reste dissimulé.</p>";
+      echo "<p>Le système reconnaît votre tentative. Mais ce n’est pas encore l’accès complet.</p>";
       echo "<p><strong>Indice :</strong> Seuls les plus curieux atteignent les privilèges suprêmes. Une <em>quête vers le root</em> vous attend... certains noms de plateforme peuvent éclairer votre chemin 🤫</p>";
       echo "<p>💡 Essayez d’enrichir cette URL avec un paramètre supplémentaire. Le point d’interrogation est souvent un bon début.<br><code>?page=admin%3F...</code></p>";
       echo "</div>";
@@ -212,23 +214,23 @@ function check_secret($param) {
       echo "</div>";
       echo "</div>";
     } else {
-      echo "<h2>Page non trouvée</h2>";
-      echo "<p>Il semble que l'URL ne soit pas correcte. Vous devez trouver l'URL exacte pour accéder au flag.</p>";
+      echo "<h2>🔍 Accès refusé</h2>";
+      echo "<p>Ce paramètre ne mène à rien d'intéressant. L’encodage correct et le bon contenu sont essentiels pour percer le secret.</p>";
     }
   } else {
     echo "<div style='text-align: center; margin-top: 100px;'>";
-    echo "<h2>Bienvenue sur Apocalypse 4</h2>";
-    echo "<p>Indiquez un paramètre valide pour accéder à l'information.</p>";
+    echo "<h2>Bienvenue dans l’épreuve</h2>";
+    echo "<p>Manipulez l’URL avec le paramètre <code>?page=...</code> pour commencer votre enquête.</p>";
     echo "</div>";
   }
   ?>
 
-  <p style="text-align: center; margin-top: 40px;">🧪 Essayez de manipuler les paramètres de l'URL pour découvrir le flag caché :<br><strong>http://localhost:8000/apocalypse4.php?page=...</strong></p>
+  <p style="text-align: center; margin-top: 40px;">🔎 Essayez différentes combinaisons de paramètres :<br><strong>/apocalypse4.php?page=...</strong></p>
 </div>
 
 <footer>
-  <p>&copy; 2025 CTF Challenge - Tous droits réservés. | Apprentissage confidentiel pour futurs experts</p>
-</footer> 
+  <p>&copy; 2025 CTF Challenge - Tous droits réservés. | L'encodage est un art</p>
+</footer>
 
 </body>
 </html>
