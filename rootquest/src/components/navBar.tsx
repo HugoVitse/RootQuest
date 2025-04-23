@@ -1,23 +1,47 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PictureProfil from "./pictureProfil";
 import Link from "next/link";
-import { fetchUsername } from "@/lib/infoClient";
+import axios from "axios";
 
 const NavBar: React.FC = () => {
+  const [username, setUsername] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string>("/defaultAvatar.jpg");
 
-  const [username, setUsername] = React.useState<string | null>(null);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.post("/api/infoClient");
+        const username = response.data?.username;
 
-  React.useEffect(() => {
-    
-    const wrap = async () => { 
-      const username = await fetchUsername();
-      setUsername(username); };
-    wrap();
+        if (username) {
+          setUsername(username);
+
+          const profilePicPath = `/uploads/${username}.jpg`;
+          const exists = await checkIfFileExists(profilePicPath);
+          if (exists) {
+            setProfileImage(profilePicPath);
+          } else {
+            setProfileImage("/defaultAvatar.jpg");
+          }
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération de l'utilisateur :", error);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
-
+  const checkIfFileExists = async (filePath: string): Promise<boolean> => {
+    try {
+      const res = await fetch(filePath, { method: "HEAD" });
+      return res.ok;
+    } catch (err) {
+      return false;
+    }
+  };
 
   return (
     <nav className="py-4 px-0 flex items-center justify-end">
@@ -29,11 +53,8 @@ const NavBar: React.FC = () => {
           <button className="mx-2">Contact</button>
         </div>
       </div>
-      <div className=" flex items-center justify-end px-5">
-        <PictureProfil
-          imageUrl="https://www.portraitprofessionnel.fr/wp-content/uploads/2020/02/portrait-professionnel-corporate-4.jpg"
-          size={50}
-        />
+      <div className="flex items-center justify-end px-5">
+        <PictureProfil imageUrl={profileImage} size={50} />
       </div>
     </nav>
   );
