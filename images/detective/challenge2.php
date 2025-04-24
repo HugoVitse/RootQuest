@@ -3,7 +3,7 @@ $flag = null;
 $error = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $motDePasseCorrect = "cpasbiendurmotdepasse";
+  $motDePasseCorrect = "cpasbiendurpassword";
 
   if (isset($_POST['password']) && $_POST['password'] === $motDePasseCorrect) {
     $flag = "FLAG{encodage_maîtrisé_007}";

@@ -2,7 +2,7 @@ import { exec } from "child_process";
 import { RowDataPacket, FieldPacket } from "mysql2";
 import util from "util";
 import {connection } from '@/db';
-import { DockerResponse } from "../types/docker";
+import { DockerResponse, IpResponse } from "../types/docker";
 import { ImageRow } from "@/types/image";
 
 const execPromise = util.promisify(exec);
@@ -116,4 +116,11 @@ export async function stopContainer(image : string, username: string) : Promise<
             return { ip : "", success: false, message: "Error" , nbflags:0};
         }
     }
+}
+
+
+export async function getContainerIp(image_name : string) : Promise<IpResponse> {
+    const commandInfo  = `docker exec ${image_name} ip -4 addr show eth0 | grep -oP 'inet \\K[\\d.]+'`;
+    const { stdout: stdout1, stderr: stderr1 } = await execPromise(commandInfo);
+    return { ip : stdout1.trim() };
 }

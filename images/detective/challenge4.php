@@ -14,7 +14,7 @@ function validerJWT($jwt) {
   $payloadJson = base64_decode(strtr($payloadB64, '-_', '+/'));
   $payload = json_decode($payloadJson, true);
 
-  // Vérifie simplement si le rôle est "admin"
+  // Vérifie si le rôle est "admin"
   if (isset($payload['role']) && $payload['role'] === 'admin') {
     return true;
   }
@@ -22,16 +22,30 @@ function validerJWT($jwt) {
   return false;
 }
 
-// Simulation de login (aucune base de données ici)
+// Fonction pour encoder JSON en Base64 URL
+function base64url_encode($data) {
+  return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
+// Génère un faux JWT avec role: visitor
+function genererFauxJWT() {
+  $header = ['alg' => 'none', 'typ' => 'JWT'];
+  $payload = ['username' => 'john', 'role' => 'visitor'];
+
+  $headerB64 = base64url_encode(json_encode($header));
+  $payloadB64 = base64url_encode(json_encode($payload));
+
+  return "$headerB64.$payloadB64.signature";
+}
+
+// Simulation de login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = $_POST['username'] ?? '';
   $password = $_POST['password'] ?? '';
 
-  // Simule un utilisateur légitime
   if ($username === 'admin' && $password === 'jwtmaster') {
-    // Simule un JWT avec rôle admin (aucune signature réelle ici)
-    $header = base64_encode(json_encode(['alg' => 'none', 'typ' => 'JWT']));
-    $payload = base64_encode(json_encode(['username' => $username, 'role' => 'admin']));
+    $header = base64url_encode(json_encode(['alg' => 'none', 'typ' => 'JWT']));
+    $payload = base64url_encode(json_encode(['username' => $username, 'role' => 'admin']));
     $jwt = "$header.$payload.signature";
 
     setcookie('session', $jwt, time() + 3600, '/');
@@ -42,10 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-// Vérifie si l'utilisateur est authentifié avec un rôle admin
+// Vérifie si l'utilisateur est authentifié
 if (isset($_COOKIE['session']) && validerJWT($_COOKIE['session'])) {
   $flag = "FLAG{contrôle_d'accès_révélé}";
 }
+
+// Faux token à afficher (role: visitor)
+$faux_token = genererFauxJWT();
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +102,7 @@ if (isset($_COOKIE['session']) && validerJWT($_COOKIE['session'])) {
 
     section {
       padding: 50px 20px;
-      max-width: 600px;
+      max-width: 700px;
       margin: auto;
     }
 
@@ -152,6 +169,15 @@ if (isset($_COOKIE['session']) && validerJWT($_COOKIE['session'])) {
       font-size: 1.2em;
     }
 
+    .token-box {
+      background-color: #222;
+      padding: 15px;
+      border: 1px dashed #FFD700;
+      margin-top: 20px;
+      font-size: 0.9em;
+      word-wrap: break-word;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -194,8 +220,13 @@ if (isset($_COOKIE['session']) && validerJWT($_COOKIE['session'])) {
   <h2>🔐 Contrôle d'accès via JWT</h2>
   <p>
     Vous avez intercepté un cookie contenant un JWT. Ce cookie est utilisé pour maintenir la session et contrôler l'accès aux pages protégées.
-    Mais que se passerait-il si vous pouviez manipuler ce JWT pour devenir un administrateur ?
+    Voici un jeton intercepté, mais il ne vous donne pas encore les droits administrateur...
   </p>
+
+  <div class="token-box">
+    <strong>Token JWT trouvé :</strong><br/>
+    <?= htmlspecialchars($faux_token) ?>
+  </div>
 
   <?php if (!$flag): ?>
     <form method="POST">

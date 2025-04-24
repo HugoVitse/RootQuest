@@ -58,8 +58,17 @@ const Lobby = () => {
       flag: string;
       validated: boolean;
     }
+
+
+
+    const fiches = {
+      detective: ["source-leak", "obfuscation", "cookie-admin", "jwt"],
+      apocalypse: ["metadonnees", "encodage-double", "trafic-reseau", "directory-traversal"],
+    };
+
+
     const params = useParams();
-    const image = params.image;
+    const image = params.image?.toString() as keyof typeof fiches || "";
 
     const [flags, setFlags] = useState<flag[]>([]);
     const [messages, setMessages] = useState<message[]>([]);
@@ -114,6 +123,7 @@ const Lobby = () => {
 
 
     useEffect(()=>{
+
       const wrap = async() => {
         try {
 
@@ -163,18 +173,18 @@ const Lobby = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
-    <ToastContainer
-      position="top-center"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick={false}
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="colored"
-    />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     <div className="absolute top-4 right-4">
       <Button onClick={() => {
         window.location.href = `/api/vpnClient`;
@@ -227,6 +237,18 @@ const Lobby = () => {
         ))}
       </CardContent>
     </Card>
+
+    <div className="absolute bottom-4 left-4 flex flex-col gap-2">
+      {fiches[image]?.map((fiche, index) => (
+        <Button
+          key={index}
+          variant="outline"
+          onClick={() => window.open(`/fiches/${fiche}`, "_blank")}
+        >
+          Aide flag n°{index+1}
+        </Button>
+      ))}
+    </div>
 
    
     </div>

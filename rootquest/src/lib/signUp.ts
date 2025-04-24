@@ -8,7 +8,7 @@ export default async function signUp(username : string, password: string, email:
 
 
     const queryCheckUser : string = `SELECT COUNT(*) as count FROM users WHERE username = '${username}'`;
-    const queryInsertUser : string = `INSERT INTO users (username, password, email) VALUES ('${username}', '${hash}', '${email}')`;
+    const queryInsertUser : string = `INSERT INTO users (username, password, email, flags_validated, points) VALUES ('${username}', '${hash}', '${email}', '[]', 0)`;
 
     try {
         const rows : [RowDataPacket[],FieldPacket[]] = await connection.query<RowDataPacket[]>(queryCheckUser);

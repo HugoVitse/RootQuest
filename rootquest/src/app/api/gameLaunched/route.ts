@@ -11,16 +11,22 @@ const execPromise = util.promisify(exec);
 export async function POST(req: NextRequest) {
 
     try {
+        const body = await req.json();
+
+        const sessionId = body?.sessionId;
+        if (!sessionId) {
+            throw new Error("Session ID is required");
+        }
+
         const token = req.cookies.get("session")?.value
-        const { sessionId } = await req.json();
         if (token === undefined) {
             throw new Error("Unauthorized");
         }
+        
         const decrypted = await decrypt(token);
-        if (typeof decrypted === 'string') {
-            throw new Error("Unauthorized");
-        }
         const username = decrypted.username;
+
+
         const session : Session | undefined  = await getSession(sessionId)
         if (!session) {
             throw new Error("Session not found");
