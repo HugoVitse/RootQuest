@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { Session } from '../types/gameSession';
+import type { Session } from '../types/gameSessionTypes';
 
 const SESSION_FILE = path.join(process.cwd(), 'tmp_sessions.json');
 

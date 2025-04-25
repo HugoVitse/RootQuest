@@ -9,27 +9,24 @@ export async function GET(req: NextRequest) {
 
     try {
         const token = req.cookies.get("session")?.value
-
         if (token === undefined) {
             throw new Error("Unauthorized");
         }
-        const decrypted : SessionPayload | string = await decrypt(token);
-        if (typeof decrypted === 'string') {
-            throw new Error("Unauthorized");
-        }
-        
+
+        await decrypt(token);
+
         const rep : ImageResponse = await getImages(true, false);
         
         if( rep.images === undefined) {
-            return NextResponse.json({ message: "No images found" }, { status: 404 });
+            throw new Error("No images found");
         }
-        return NextResponse.json(rep, { status: 200 });
+        return NextResponse.json({success:true, ...rep}, { status: 200 });
         
     } catch (error: unknown) {
         if (error instanceof Error) {
-            return NextResponse.json({ message: error.message }, { status: 401 });
+            return NextResponse.json({ success: false, message: error.message }, { status: 401 });
         } else {
-            return NextResponse.json({ message: "Error" }, { status: 500 });
+            return NextResponse.json({ success: false, message: "Error" }, { status: 500 });
         }
     }
  

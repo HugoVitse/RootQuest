@@ -56,10 +56,8 @@ export async function getNbFlags(id:string, username:string) : Promise<number> {
         throw new Error("Session not found");
     }
     const image = await getImageFromUser(id, username);
-    console.log(image)
 
     const querySelectImages : string = `SELECT * FROM images WHERE image = '${image}'`;
-    console.log(querySelectImages)
     try {
         const [rows] = await connection.query<ImageRow[]>(querySelectImages);
 

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { socket } from "@/lib/socket";
 import { useParams, useRouter } from "next/navigation";
-import { message } from "@/types/gameSession";
+import { message } from "@/types/gameSessionTypes";
 import { fetchUsername } from "@/lib/infoClient";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';

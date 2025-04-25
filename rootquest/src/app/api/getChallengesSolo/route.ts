@@ -13,17 +13,14 @@ export async function GET(req: NextRequest) {
         if (token === undefined) {
             throw new Error("Unauthorized");
         }
-        const decrypted : SessionPayload | string = await decrypt(token);
-        if (typeof decrypted === 'string') {
-            throw new Error("Unauthorized");
-        }
-        
+        await decrypt(token);
+                
         const rep : ImageResponse = await getImages(false, false);
         
         if( rep.images === undefined) {
-            return NextResponse.json({ message: "No images found" }, { status: 404 });
+            throw new Error("No images found");
         }
-        return NextResponse.json(rep, { status: 200 });
+        return NextResponse.json( {success: true, ...rep}, { status: 200 });
         
     } catch (error: unknown) {
         if (error instanceof Error) {

@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "@/lib/session";
-import { Session } from "@/types/gameSession";
-import { getSession } from "@/lib/sessionStore";
 import { getImageFromUser } from "@/lib/gameSession";
 
 export async function POST(req: NextRequest) {

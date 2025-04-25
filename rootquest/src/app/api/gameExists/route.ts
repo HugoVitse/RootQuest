@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
         const exists = await isGameExists(sessionId);
 
-        return NextResponse.json({ exists: exists }, { status: 200 });
+        return NextResponse.json({ success:true, exists: exists }, { status: 200 });
 
     } catch (error: unknown) {  
         if (error instanceof Error) {

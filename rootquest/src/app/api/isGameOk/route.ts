@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "@/lib/session";
-import { Session } from "@/types/gameSession";
+import { Session } from "@/types/gameSessionTypes";
 import { getSession } from "@/lib/sessionStore";
 
 export async function POST(req: NextRequest) {

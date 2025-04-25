@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import PictureProfil from "./pictureProfil";
-import Link from "next/link";
 import axios from "axios";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import LogoutButton from "./logoutButton";
+import PictureProfil from "./pictureProfil";
 
 const NavBar: React.FC = () => {
   const [username, setUsername] = useState<string | null>(null);
-  const [profileImage, setProfileImage] = useState<string>("/defaultAvatar.jpg");
+  const [profileImage, setProfileImage] =
+    useState<string>("/defaultAvatar.jpg");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -27,7 +29,10 @@ const NavBar: React.FC = () => {
           }
         }
       } catch (error) {
-        console.error("Erreur lors de la récupération de l'utilisateur :", error);
+        console.error(
+          "Erreur lors de la récupération de l'utilisateur :",
+          error
+        );
       }
     };
 
@@ -48,9 +53,10 @@ const NavBar: React.FC = () => {
       <div className="flex items-center justify-between px-5 w-full">
         <h1 className="text-2xl font-bold">{username}</h1>
         <div className="flex items-center">
-          <Link href="/" className="mx-2">Home</Link>
-          <button className="mx-2">Challenges</button>
-          <button className="mx-2">Contact</button>
+          <Link href="/" className="mx-2">
+            Home
+          </Link>
+          <LogoutButton />
         </div>
       </div>
       <div className="flex items-center justify-end px-5">
