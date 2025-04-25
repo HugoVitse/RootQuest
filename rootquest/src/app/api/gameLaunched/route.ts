@@ -1,29 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "@/lib/session";
-import { Session } from "@/types/gameSession";
-import { getSession } from "@/lib/sessionStore";
+import { isGameLaunched } from "@/lib/gameSession";
 
 export async function POST(req: NextRequest) {
 
     try {
+        const body = await req.json();
+
+        const sessionId = body?.sessionId;
+        if (!sessionId) {
+            throw new Error("Session ID is required");
+        }
+
         const token = req.cookies.get("session")?.value
-        const { sessionId } = await req.json();
         if (token === undefined) {
             throw new Error("Unauthorized");
         }
+        
         const decrypted = await decrypt(token);
-        if (typeof decrypted === 'string') {
-            throw new Error("Unauthorized");
-        }
-        const session : Session | undefined  = await getSession(sessionId)
-        console.log(session,sessionId)
-        const launched = session ? session.launched : false;
-        return NextResponse.json({ launched: launched }, { status: 200 });
+        const username = decrypted.username;
 
-    } catch (error: unknown) {   
-        console.log(error);
-        return NextResponse.json({ launched: false }, { status: 500 });
-       
+
+        const launched = await isGameLaunched(sessionId, username);
+        return NextResponse.json({ success:true, launched: launched.launched, ip : launched.ip, host:launched.host }, { status: 200 });
+
+    } catch (error: unknown) {  
+        if (error instanceof Error) {
+            return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+        } else {
+            return NextResponse.json({ success: false, message: "Unknown error" }, { status: 500 });
+        }         
     }
 
 

@@ -1,7 +1,10 @@
 "use client";
 
 import NavBar from "@/components/navBar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { ImageClient } from "@/types/image";
+import { useRouter } from "next/navigation";
 
 const challenges = [
   { title: "SQL Injection", difficulty: "Medium" },
@@ -12,7 +15,17 @@ const challenges = [
 ];
 
 const ChallengeSolo: React.FC = () => {
+  const router = useRouter();
   const [difficulty, setDifficulty] = useState("All");
+  const [challenges, setChallenges] = useState<ImageClient[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(`/api/getChallengesSolo`);
+      setChallenges(response.data.images);
+    }
+    fetchData();
+  }, []);
 
   // Filtrer les challenges par difficulté
   const filteredChallenges =
@@ -56,7 +69,7 @@ const ChallengeSolo: React.FC = () => {
               className="p-4 bg-gray-900 rounded-lg flex justify-between items-center border border-gray-700"
             >
               <div>
-                <h2 className="text-xl font-semibold">{challenge.title}</h2>
+                <h2 className="text-xl font-semibold">{challenge.name}</h2>
                 <p className="text-sm text-gray-400">
                   Difficulté :
                   <span
@@ -72,7 +85,7 @@ const ChallengeSolo: React.FC = () => {
                   </span>
                 </p>
               </div>
-              <button className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400">
+              <button onClick={()=> {router.push(`/gameSolo/${challenge.image}`)}} className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400">
                 Commencer
               </button>
             </div>

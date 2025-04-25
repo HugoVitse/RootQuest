@@ -14,7 +14,7 @@ export async function isGameLaunched(sessionId: string) {
     try {
         const response = await axios.post("/api/gameLaunched", { sessionId });
         console.log(response.data);
-        return response.data.launched;
+        return response.data;
     } catch (error) {
         console.error("Error checking game existence:", error);
         return false;

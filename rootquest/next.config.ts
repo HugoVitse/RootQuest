@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 import path from 'path';
 import dotenv from 'dotenv'
-import { clearStore, initStore } from './src/lib/sessionStore';
+import { initStore } from './src/lib/sessionStore';
 
 const projectDir =  path.resolve(process.cwd(), '../')
 dotenv.config({ path: `${projectDir}/.env` })

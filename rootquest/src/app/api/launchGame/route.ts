@@ -4,6 +4,7 @@ import { startContainer } from "@/lib/docker";
 import { decrypt } from "@/lib/session";
 import { SessionPayload } from "@/types/auth";
 import { getImageFromUser } from "@/lib/gameSession";
+import { getSession, setSession } from "@/lib/sessionStore";
 
 export async function POST(req: NextRequest) {
 
@@ -21,10 +22,15 @@ export async function POST(req: NextRequest) {
         }
         const username  = decrypted.username;
         const image = await getImageFromUser(id, username) || "";
-        console.log(image)
         const rep : DockerResponse = await startContainer(image, username);
         
         if( rep.success) {
+            let session = await getSession(id);
+            console.log("session", session)
+            if(session) {
+                session.launched = true;
+                setSession(id, session);
+            }
             return NextResponse.json({ success: true, ip : rep.ip }, { status: 200 });
         }
         else {

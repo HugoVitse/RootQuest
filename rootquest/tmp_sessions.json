@@ -1,43 +1,106 @@
 {
-  "pmzbbplg6ca": {
-    "host": "Evawdunos",
-    "launched": true,
+  "zyjijlisjbh": {
+    "host": "Usertest",
     "image": "cyberspace",
     "players": [
-      "Evawdunos",
-      "hugo"
+      "Usertest",
+      "User"
     ],
     "team1": [
-      "hugo"
+      "User"
     ],
     "team2": [
-      "Evawdunos"
+      "Usertest"
     ],
     "messages": [
       {
-        "message": "lol",
-        "sender": "hugo"
+        "message": "Bonjour",
+        "sender": "Usertest"
       },
       {
-        "message": "fdp",
-        "sender": "hugo"
+        "message": "slt",
+        "sender": "User"
       },
       {
-        "message": "ntm pd",
-        "sender": "Evawdunos"
+        "message": "U3VwZXJTcGFjZQ==",
+        "sender": "User"
+      },
+      {
+        "message": "SuperSpace",
+        "sender": "User"
       }
-    ]
+    ],
+    "launched": true,
+    "team1Success": false,
+    "team2Success": false
   },
-  "hjaza8v5ld5": {
-    "host": "aqssel",
+  "ywujk7oeiaq": {
+    "host": "UserDemo",
     "image": "cyberspace",
     "players": [
-      "aqssel"
+      "UserDemo",
+      "User"
     ],
     "team1": [
-      "aqssel"
+      "User"
+    ],
+    "team2": [
+      "UserDemo"
+    ],
+    "messages": [
+      {
+        "message": "j'ai trouvé ça U3VwZXJTcGFjZQ==",
+        "sender": "User"
+      },
+      {
+        "message": "le flag est SuperSpace",
+        "sender": "UserDemo"
+      }
+    ],
+    "launched": false,
+    "team1Success": true,
+    "team2Success": true
+  },
+  "kej0f2r56k": {
+    "host": "User",
+    "image": "jailbreak",
+    "players": [
+      "User",
+      "UserDemo"
+    ],
+    "team1": [
+      "User"
+    ],
+    "team2": [
+      "UserDemo"
+    ],
+    "messages": [
+      {
+        "message": "j'ai trouvé un flag : Gardi3n_4dm1n",
+        "sender": "User"
+      },
+      {
+        "message": "ce fichier semble intéressant : /files/hint.php",
+        "sender": "User"
+      }
+    ],
+    "launched": false,
+    "team1Success": true,
+    "team2Success": true
+  },
+  "cporfmamdal": {
+    "host": "Evawdunos",
+    "image": "cyberspace",
+    "players": [
+      "Evawdunos"
+    ],
+    "team1": [
+      "Evawdunos"
     ],
     "team2": [],
-    "messages": []
+    "messages": [],
+    "launched": false,
+    "team1Success": false,
+    "team2Success": false
   }
 }
