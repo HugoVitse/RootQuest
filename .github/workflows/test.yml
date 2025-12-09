@@ -25,3 +25,21 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: "**"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  run-security-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run security checks
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-list-type: 'all'
+          timeout: '10m'
