@@ -21,7 +21,7 @@ variable "tags" {
   description = "Tags pour les ressources"
   type        = map(string)
   default = {
-    Project = "RootQuest"
+    Project   = "RootQuest"
     ManagedBy = "Terraform"
   }
 }

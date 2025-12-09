@@ -14,7 +14,7 @@ resource "azurerm_mysql_flexible_server" "main" {
     auto_grow_enabled = true
     size_gb           = var.mysql_storage_gb
   }
-  version  = var.mysql_version
+  version = var.mysql_version
 
   # Backup
   backup_retention_days        = 7
@@ -37,6 +37,6 @@ resource "azurerm_mysql_flexible_server_firewall_rule" "allow_azure_services" {
   name                = "AllowAzureServices"
   resource_group_name = azurerm_resource_group.main.name
   server_name         = azurerm_mysql_flexible_server.main.name
-  start_ip_address     = "0.0.0.0"
-  end_ip_address       = "0.0.0.0"
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
 }
