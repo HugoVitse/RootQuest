@@ -1,27 +1,101 @@
-name: Run Tests
+name: CI - Tests & Validation
 
 on:
   push:
     branches:
       - main
+      - develop
       - '**'
   pull_request:
     branches:
       - main
+      - '**'
 
 jobs:
-  run-lint:
+  # Lint du code
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: "**"
+          DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Tests Next.js
+  build-nextjs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'rootquest/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./rootquest
+        run: npm ci
+
+      - name: Lint Next.js
+        working-directory: ./rootquest
+        run: npm run lint
+
+      - name: Build Next.js
+        working-directory: ./rootquest
+        run: npm run build
+
+      - name: npm audit (check vulnerabilities)
+        working-directory: ./rootquest
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+  # Validation Terraform
+  terraform-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init -backend=false
+
+      - name: Terraform Format Check
+        working-directory: ./terraform
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        working-directory: ./terraform
+        run: terraform validate
+
+  # Vérifier les secrets
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TruffleHog Secret Scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug
