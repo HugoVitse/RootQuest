@@ -4,4 +4,4 @@ FROM kylemanna/openvpn
 COPY ./bridge-start.sh /startup.sh
 RUN chmod +x /startup.sh
 
-CMD ["ovpn_run"]
+CMD ["sleep","infinity"]

@@ -101,6 +101,7 @@ const Lobby = () => {
       if(data.launched){
         setError("La partie a déjà commencé !");
       }
+      console.log(data)
       setIsLaunched(data.launched);
 
       const username_ = await fetchUsername();

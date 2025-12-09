@@ -14,8 +14,11 @@ export async function GET(req: NextRequest) {
             throw new Error("Unauthorized");
         }
         await decrypt(token);
+        
                 
         const rep : ImageResponse = await getImages(false, false);
+        console.log(rep);
+
         
         if( rep.images === undefined) {
             throw new Error("No images found");

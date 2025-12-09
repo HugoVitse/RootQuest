@@ -1,105 +1,37 @@
 {
-  "zyjijlisjbh": {
-    "host": "Usertest",
+  "xsfqlweexm": {
+    "host": "hugo",
     "image": "cyberspace",
     "players": [
-      "Usertest",
-      "User"
+      "hugo",
+      "Evawdunos"
     ],
     "team1": [
-      "User"
+      "hugo"
     ],
     "team2": [
-      "Usertest"
+      "Evawdunos"
     ],
-    "messages": [
-      {
-        "message": "Bonjour",
-        "sender": "Usertest"
-      },
-      {
-        "message": "slt",
-        "sender": "User"
-      },
-      {
-        "message": "U3VwZXJTcGFjZQ==",
-        "sender": "User"
-      },
-      {
-        "message": "SuperSpace",
-        "sender": "User"
-      }
-    ],
+    "messages": [],
     "launched": true,
     "team1Success": false,
     "team2Success": false
   },
-  "ywujk7oeiaq": {
-    "host": "UserDemo",
-    "image": "cyberspace",
-    "players": [
-      "UserDemo",
-      "User"
-    ],
-    "team1": [
-      "User"
-    ],
-    "team2": [
-      "UserDemo"
-    ],
-    "messages": [
-      {
-        "message": "j'ai trouvé ça U3VwZXJTcGFjZQ==",
-        "sender": "User"
-      },
-      {
-        "message": "le flag est SuperSpace",
-        "sender": "UserDemo"
-      }
-    ],
-    "launched": false,
-    "team1Success": true,
-    "team2Success": true
-  },
-  "kej0f2r56k": {
-    "host": "User",
-    "image": "jailbreak",
-    "players": [
-      "User",
-      "UserDemo"
-    ],
-    "team1": [
-      "User"
-    ],
-    "team2": [
-      "UserDemo"
-    ],
-    "messages": [
-      {
-        "message": "j'ai trouvé un flag : Gardi3n_4dm1n",
-        "sender": "User"
-      },
-      {
-        "message": "ce fichier semble intéressant : /files/hint.php",
-        "sender": "User"
-      }
-    ],
-    "launched": false,
-    "team1Success": true,
-    "team2Success": true
-  },
-  "cporfmamdal": {
+  "53xworwh2ki": {
     "host": "Evawdunos",
     "image": "cyberspace",
     "players": [
-      "Evawdunos"
+      "Evawdunos",
+      "hugo"
     ],
     "team1": [
       "Evawdunos"
     ],
-    "team2": [],
+    "team2": [
+      "hugo"
+    ],
     "messages": [],
-    "launched": false,
+    "launched": true,
     "team1Success": false,
     "team2Success": false
   }

@@ -30,11 +30,19 @@ export async function isGameLaunched(sessionId: string, username: string) : Prom
 
     const team = session.team1.includes(username) ? 1 : session.team2.includes(username) ? 2 : undefined;
     const image = `${session.image}${team}_${username}`;
+    
+    if (!session.launched) {
+        return {
+            ip: "",
+            host: session.host,
+            launched: session.launched
+        }
+    }
 
-    const ip = await getContainerIp(image);
+    const ipResp = await getContainerIp(image);
 
     return {
-        ip: ip.ip,
+        ip: ipResp.ip,
         host: session.host,
         launched: session.launched
     }

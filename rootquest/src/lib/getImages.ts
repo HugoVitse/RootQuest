@@ -1,4 +1,4 @@
-import {connection } from '@/db';
+import { pool } from '@/db';
 import { ImageResponse, ImageRow, Image, ImageClient } from "@/types/image";
 import { getSession } from './sessionStore';
 import { getImageFromUser } from './gameSession';
@@ -14,7 +14,7 @@ export async function getImages(duo : boolean, all: boolean) : Promise<ImageResp
 
 
     try {
-        const [rows] = await connection.query<ImageRow[]>(querySelectImages);
+    const [rows] = await pool.query<ImageRow[]>(querySelectImages);
 
         const images: ImageClient[] = rows.map(row => ({
             image: duo? row.image.substring(0,row.image.length-1) : row.image,
@@ -59,7 +59,7 @@ export async function getNbFlags(id:string, username:string) : Promise<number> {
 
     const querySelectImages : string = `SELECT * FROM images WHERE image = '${image}'`;
     try {
-        const [rows] = await connection.query<ImageRow[]>(querySelectImages);
+    const [rows] = await pool.query<ImageRow[]>(querySelectImages);
 
         if (rows.length === 0) {
             throw new Error("Image not found");

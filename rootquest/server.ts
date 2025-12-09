@@ -3,12 +3,22 @@ import next from "next";
 import { Server } from "socket.io";
 import { handleSocket } from "./src/lib/handleSocket.ts";
 
+import path from 'path';
+import dotenv from 'dotenv'
+import { initStore } from './src/lib/sessionStore.ts';
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
 const port = 3000;
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
+//test
+
+const projectDir =  path.resolve(process.cwd(), '../')
+dotenv.config({ path: `${projectDir}/.env` })
+
+initStore();
+//clearStore();
 
 app.prepare().then(() => {
   const httpServer = createServer(handler);

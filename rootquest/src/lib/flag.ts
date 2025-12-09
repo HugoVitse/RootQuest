@@ -1,4 +1,4 @@
-import { connection } from '@/db';
+import { pool } from '@/db';
 import { AuthResponse } from '@/types/auth';
 import { ImageRow, Image, FlagRow, UserRow } from '@/types/image';
 
@@ -9,7 +9,7 @@ export default async function validateFlag(username : string, flag_to_check: str
 
     try {
         //get id of the flag
-        const [rows]  = await connection.query<ImageRow[]>(queryGetFlags);
+    const [rows]  = await pool.query<ImageRow[]>(queryGetFlags);
 
         const images: Image[] = rows.map(row => ({
             image: row.image,
@@ -22,7 +22,7 @@ export default async function validateFlag(username : string, flag_to_check: str
 
         // get the flag from the id
         const queryGetFlag : string = `SELECT flag,nbPoints FROM flags WHERE id = '${flag_id}'`;
-        const [rows_flag]  = await connection.query<FlagRow[]>(queryGetFlag);
+    const [rows_flag]  = await pool.query<FlagRow[]>(queryGetFlag);
 
         const flag = rows_flag[0].flag;
 
@@ -34,7 +34,7 @@ export default async function validateFlag(username : string, flag_to_check: str
 
         // if it is correct, get the array of flags validated from the user
         const queryGetUserFlags : string = `SELECT flags_validated,points FROM users WHERE username = '${username}'`;
-        const [rows_user]  = await connection.query<UserRow[]>(queryGetUserFlags);
+    const [rows_user]  = await pool.query<UserRow[]>(queryGetUserFlags);
         console.log(rows_user[0])
 
         const user: UserRow = rows_user[0];
@@ -56,7 +56,7 @@ export default async function validateFlag(username : string, flag_to_check: str
             const queryUpdateUser : string = `UPDATE users SET flags_validated = '${JSON.stringify(flags_validated)}', points = ${points} WHERE username = '${username}'`;
             console.log(queryUpdateUser)
             console.log(flags_validated)
-            await connection.query(queryUpdateUser);
+            await pool.query(queryUpdateUser);
             msg = "Continue";
         }   
         

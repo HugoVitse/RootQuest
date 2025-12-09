@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "node server.ts",
     "build": "next build",
-    "start": "NODE_ENV=production node server.ts",
+    "start": "NODE_ENV=production next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure/arm-containerinstance": "^9.1.0",
+    "@azure/identity": "^4.13.0",
     "@next/env": "^15.2.4",
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
