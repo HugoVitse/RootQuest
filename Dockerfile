@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copier les fichiers de dépendances du répertoire rootquest
 COPY rootquest/package*.json ./
-COPY .env.docker ./rootquest/.env
+#COPY .env.docker ./rootquest/.env
 
 # Installer les dépendances
 RUN npm install

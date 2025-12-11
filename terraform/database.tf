@@ -6,6 +6,12 @@ resource "azurerm_mysql_flexible_server" "main" {
   resource_group_name = azurerm_resource_group.main.name
   zone                = "1"
 
+  delegated_subnet_id = azurerm_subnet.db.id
+  private_dns_zone_id = azurerm_private_dns_zone.mysql.id
+  
+  
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.main]
+
   administrator_login    = var.mysql_admin_username
   administrator_password = var.mysql_admin_password
 
@@ -30,13 +36,4 @@ resource "azurerm_mysql_flexible_database" "main" {
   server_name         = azurerm_mysql_flexible_server.main.name
   charset             = "utf8mb4"
   collation           = "utf8mb4_unicode_ci"
-}
-
-# Règle de pare-feu pour autoriser les services Azure
-resource "azurerm_mysql_flexible_server_firewall_rule" "allow_azure_services" {
-  name                = "AllowAzureServices"
-  resource_group_name = azurerm_resource_group.main.name
-  server_name         = azurerm_mysql_flexible_server.main.name
-  start_ip_address     = "0.0.0.0"
-  end_ip_address       = "0.0.0.0"
 }
