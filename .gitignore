@@ -30,7 +30,7 @@ pinggy
 # misc
 .DS_Store
 *.pem
-*.sql
+init-db-full.sql
 
 # debug
 npm-debug.log*

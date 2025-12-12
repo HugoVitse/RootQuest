@@ -116,7 +116,7 @@ flowchart LR
 
 ### Préparation
 
-- Placez le fichier SQL d'initialisation dans terraform/db-init/init-db.sql.
+- Placez le fichier SQL d'initialisation dans terraform/db-init/init-db.sql. **(BIEN REMPLACER PAR LE COMPLET FOURNI, CELUI PRESENT SUR GIT NE FOURNIT QUE LA STRUCTURE)**
 
 - Créez le fichier terraform/terraform.tfvars en s'aidant de l'exemple ci-dessous
 
