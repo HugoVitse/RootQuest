@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+#script d'installation
+
 
 
 VPN_IP="${vpn_ip}"
@@ -8,8 +10,7 @@ STORAGE_ACCOUNT="${storage_account_name}"
 STORAGE_KEY="${storage_account_key}"
 # use a fixed default port to avoid Terraform template interpolation issues
 OPENVPN_PORT="1194"
-# fixed easy-rsa passphrase (change if you want to pass this via terraform)
-EASYRSA_PASSIN="hugo"
+EASYRSA_PASSIN="rootquest"
 OVPN_SHARE="//$STORAGE_ACCOUNT.file.core.windows.net/openvpn-data"
 MOUNT_POINT="/mnt/openvpn-share"
 
@@ -17,11 +18,12 @@ sudo umount "$MOUNT_POINT" || true
 
 echo "iptables-persistent iptables-persistent/autosave_v4 boolean true" | debconf-set-selections
 echo "iptables-persistent iptables-persistent/autosave_v6 boolean true" | debconf-set-selections
-# 1) Installer prérequis
+
+
 apt-get update
 apt-get install -y --no-install-recommends ca-certificates curl gnupg lsb-release apt-transport-https software-properties-common cifs-utils iptables-persistent
 
-# Install Docker (simple method)
+
 if ! command -v docker >/dev/null 2>&1; then
   curl -fsSL https://get.docker.com | sh
 fi
@@ -47,8 +49,7 @@ mkdir -p "$MOUNT_POINT/openvpn-data"
 chown root:root "$MOUNT_POINT/openvpn-data"
 chmod 0777 "$MOUNT_POINT/openvpn-data"
 
-# 3.a) Deploy helper script vm_renew_certificate.sh so the App Service can trigger it remotely
-# This creates /home/vpnadmin/vm_renew_certificate.sh and makes it executable.
+# renew file write
 cat > /home/vpnadmin/vm_renew_certificate.sh <<'VM_RENEW'
 #!/bin/bash
 # vm_renew_certificate.sh
@@ -68,7 +69,7 @@ set -euo pipefail
 # This must match the mount point created by the install script / cloud-init
 OVPN_DATA_DIR=$MOUNT_POINT/openvpn-data
 OVPN_IMAGE="kylemanna/openvpn"
-EASYRSA_PASSIN="hugo"
+EASYRSA_PASSIN="rootquest"
 
 # ensure mount points exist
 mkdir -p $MOUNT_POINT/userProfiles
@@ -120,11 +121,7 @@ VM_RENEW
 chmod 750 /home/vpnadmin/vm_renew_certificate.sh
 chown vpnadmin:vpnadmin /home/vpnadmin/vm_renew_certificate.sh || true
 
-# install-vpn.sh
-
-# ... (Après le déploiement de vm_renew_certificate.sh, avant l'étape 4)
-
-# 3.b) Deploy Docker Compose file
+#docker compose yml write
 cat > /home/vpnadmin/docker-compose.yml <<'EODC'
 version: '3.8'
 services:
@@ -151,7 +148,7 @@ services:
     command: sh -c "apt-get update && apt-get install -y util-linux && pip install flask && python /vpn_api.py"
 EODC
 
-# 3.c) Deploy Python API script
+# api write
 cat > /home/vpnadmin/vpn_api.py <<'EOPY'
 import subprocess
 import os
@@ -195,46 +192,34 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
 EOPY
 
-# Mettre le propriétaire et les droits sur les nouveaux fichiers
+
+
 chown vpnadmin:vpnadmin /home/vpnadmin/docker-compose.yml /home/vpnadmin/vpn_api.py || true
 chmod 644 /home/vpnadmin/docker-compose.yml /home/vpnadmin/vpn_api.py || true
 
-# 4) Generate config & PKI using kylemanna/openvpn, mounting the file share as /etc/openvpn
 OVPN_DATA_DIR="$MOUNT_POINT/openvpn-data"
 OVPN_IMAGE="kylemanna/openvpn"
 
-# Generate server config (routed) - push route to Azure VNet (example 10.0.0.0/16)
-# Use the VNet prefix you want clients to access (replace 10.0.0.0/16 if different)
 docker run --rm -v "$OVPN_DATA_DIR":/etc/openvpn "$OVPN_IMAGE" ovpn_genconfig -u udp://$VPN_IP:$OPENVPN_PORT -r 10.0.0.0/16 -t
 
-# Initialize PKI (non-interactive)
 export EASYRSA_PASSIN="pass:$EASYRSA_PASSIN"
 export EASYRSA_BATCH=1
 docker run --rm -v "$OVPN_DATA_DIR":/etc/openvpn -e EASYRSA_PASSIN="$EASYRSA_PASSIN" -e EASYRSA_BATCH="$EASYRSA_BATCH" "$OVPN_IMAGE" ovpn_initpki nopass
 
-# 5) Start OpenVPN server container
 docker run -d --name openvpn-server --cap-add=NET_ADMIN -p 1194:1194/udp -v "$OVPN_DATA_DIR":/etc/openvpn "$OVPN_IMAGE"
 
-# 6) Enable IP forwarding & NAT so VPN clients can reach Azure resources (masquerade VPN subnet)
 sysctl -w net.ipv4.ip_forward=1
-# Use the client subnet that image will hand out (kylemanna defaults to 10.8.0.0/24; if you configured 172.20.0.0/16 use that)
-# Here we assume server pushes 172.20.0.0/16 (adjust if different)
+
 VPN_CLIENT_SUBNET="10.0.1.0/24"
 iptables -t nat -C POSTROUTING -s "$VPN_CLIENT_SUBNET" -o eth0 -j MASQUERADE 2>/dev/null || \
   iptables -t nat -A POSTROUTING -s "$VPN_CLIENT_SUBNET" -o eth0 -j MASQUERADE
 
-# Persist iptables (requires iptables-persistent installed)
 netfilter-persistent save || true
 
-# 7) Ensure the userProfiles dir exists for storing client configs
 mkdir -p "$MOUNT_POINT/userProfiles"
 chmod 0777 "$MOUNT_POINT/userProfiles"
 
-# install-vpn.sh
 
-# ... (Après netfilter-persistent save || true)
-
-# 8) Lancer l'API Web VPN via Docker Compose
 cd /home/vpnadmin
 docker compose -f docker-compose.yml up -d
 cd - > /dev/null

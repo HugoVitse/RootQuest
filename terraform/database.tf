@@ -1,13 +1,14 @@
-# Configuration de la base de données MySQL Azure (version simple)
+# base de données mysql
 
+#server
 resource "azurerm_mysql_flexible_server" "main" {
   name                = "${var.project_name}-${var.environment}-mysql"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   zone                = "1"
 
-  delegated_subnet_id = azurerm_subnet.db.id
-  private_dns_zone_id = azurerm_private_dns_zone.mysql.id
+  delegated_subnet_id = azurerm_subnet.db.id #db dans son propre subnet
+  private_dns_zone_id = azurerm_private_dns_zone.mysql.id #dns privé
   
   
   depends_on = [azurerm_private_dns_zone_virtual_network_link.main]
@@ -29,7 +30,7 @@ resource "azurerm_mysql_flexible_server" "main" {
   tags = var.tags
 }
 
-# Base de données principale
+# Bdd
 resource "azurerm_mysql_flexible_database" "main" {
   name                = var.project_name
   resource_group_name = azurerm_resource_group.main.name

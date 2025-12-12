@@ -1,3 +1,5 @@
+#config du provider (azure)
+
 terraform {
   required_version = ">= 1.0"
 
@@ -12,13 +14,7 @@ terraform {
     }
   }
 
-  # Backend configuration (optionnel - à configurer plus tard pour le state)
-  # backend "azurerm" {
-  #   resource_group_name  = "terraform-state-rg"
-  #   storage_account_name = "terraformstate"
-  #   container_name       = "tfstate"
-  #   key                  = "rootquest.terraform.tfstate"
-  # }
+
 }
 
 provider "azurerm" {
@@ -27,8 +23,5 @@ provider "azurerm" {
       prevent_deletion_if_contains_resources = false
     }
   }
-
-  # L'authentification se fera via Azure CLI (az login)
-  # ou via des variables d'environnement pour CI/CD
 }
 

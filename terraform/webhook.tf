@@ -1,4 +1,4 @@
-# webhook.tf
+# webhook pour que la webapp pull l'image dès qu'un nouveau build arrive sur l'acr
 
 resource "azurerm_container_registry_webhook" "main" {
   name                = "${var.project_name}${var.environment}hook"
@@ -6,12 +6,11 @@ resource "azurerm_container_registry_webhook" "main" {
   registry_name       = azurerm_container_registry.main.name
   location            = azurerm_resource_group.main.location
 
-  # C'est ici que la magie opère : on récupère les identifiants de déploiement de l'App Service
   service_uri = "https://${azurerm_linux_web_app.main.site_credential[0].name}:${azurerm_linux_web_app.main.site_credential[0].password}@${azurerm_linux_web_app.main.name}.scm.azurewebsites.net/docker/hook"
   
   status = "enabled"
   
-  # IMPORTANT : On restreint le scope à l'image et au tag que tu utilises
+  #le webhook est destiné que a la webapp!!!!!
   scope  = "rootquest:${var.image_tag}" 
   actions = ["push"]
 

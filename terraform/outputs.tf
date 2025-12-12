@@ -1,4 +1,4 @@
-# Outputs principaux
+# outputs  clean
 
 output "resource_group_name" {
   description = "Nom du Resource Group"

@@ -1,11 +1,14 @@
-# vpn.tf
+# vconfig du vpn
+# le serveur openvpn est hebergé sur une vm.
+# les renovuellement de fichier client s'effectuetn via un appel api sur la vm (depuis la webapp node)
 
+#secret api pour communication avec webapp
 resource "random_password" "vpn_api_secret" {
   length  = 32
   special = false
 }
 
-# 1. IP Publique pour que les joueurs puissent se connecter
+#ip publique pour le vpn (vpn et webapp pas sur le meme vnet)
 resource "azurerm_public_ip" "vpn" {
   name                = "${var.project_name}-vpn-ip"
   location            = azurerm_resource_group.main.location
@@ -15,7 +18,7 @@ resource "azurerm_public_ip" "vpn" {
   tags                = var.tags
 }
 
-# 2. Interface Réseau
+# interface réseau
 resource "azurerm_network_interface" "vpn" {
   name                = "${var.project_name}-vpn-nic"
   location            = azurerm_resource_group.main.location
@@ -23,26 +26,21 @@ resource "azurerm_network_interface" "vpn" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.vpn.id # Le subnet isolé pour le VPN
+    subnet_id                     = azurerm_subnet.vpn.id #  subnet vpn
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.vpn.id
   }
 }
 
-# 3. Security Group (Pare-feu) : Ouverture des ports VPN (1194 UDP) et SSH (22 TCP)
 
 
-resource "azurerm_network_interface_security_group_association" "vpn" {
-  network_interface_id      = azurerm_network_interface.vpn.id
-  network_security_group_id = azurerm_network_security_group.vpn.id
-}
 
-# 4. La VM OpenVPN (Petite, suffisante pour ce rôle)
+# la VM OpenVPN 
 resource "azurerm_linux_virtual_machine" "vpn" {
   name                = "${var.project_name}-vpn-vm"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
-  size                = "Standard_B1s" # Très économique
+  size                = "Standard_B1s" 
   admin_username      = "vpnadmin"
   network_interface_ids = [
     azurerm_network_interface.vpn.id,
@@ -50,7 +48,7 @@ resource "azurerm_linux_virtual_machine" "vpn" {
 
   admin_ssh_key {
     username   = "vpnadmin"
-    public_key = file("~/.ssh/id_rsa.pub") # Assure-toi que cette clé existe localement!
+    public_key = file("~/.ssh/id_rsa.pub") # pour se connecter a la vm en ssh (s'assurer d'avoir ce fichier sur son pc)
   }
 
   os_disk {
@@ -60,12 +58,12 @@ resource "azurerm_linux_virtual_machine" "vpn" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
+    offer     = "0001-com-ubuntu-server-jammy" #image legere mais complete pour openvpn
     sku       = "22_04-lts"
     version   = "latest"
   }
 
-  # 5. Script de démarrage (Cloud-init) pour installer Docker et lancer OpenVPN
+  # script de démarrage  pour installer docker et les dependances necessaire et lancer le container openvpn
   custom_data = base64encode(
     templatefile("${path.module}/../scripts/install-vpn.sh", {
       vpn_ip = azurerm_public_ip.vpn.ip_address

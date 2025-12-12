@@ -74,7 +74,7 @@ const Lobby = () => {
     const [messages, setMessages] = useState<message[]>([]);
     const [message, setMessage] = useState("");
     const [username, setUsername] = useState("");
-    const [ip, setIp] = useState("");
+    const [ip, setIp] = useState("Chargement...");
     const [error, setError] = useState("");
     const [team, setTeam] = useState(0);
     const [success, setSuccess] = useState(false);

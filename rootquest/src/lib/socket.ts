@@ -1,3 +1,5 @@
 import io from "socket.io-client";
 
-export const socket = io();
+
+const API_URL = "https://rootquest-dev-app.azurewebsites.net";
+export const socket = io(API_URL, { transports: ["websocket", "polling"]});

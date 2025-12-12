@@ -1,4 +1,4 @@
-# keyvault.tf
+# keyvault
 
 data "azurerm_client_config" "current" {}
 
@@ -15,7 +15,7 @@ resource "azurerm_key_vault" "main" {
 
   
 
-  # Politique d'accès pour TOI (celui qui lance Terraform) afin de pouvoir écrire les secrets
+  # access policy pour developpeur
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
     object_id = data.azurerm_client_config.current.object_id
@@ -26,6 +26,8 @@ resource "azurerm_key_vault" "main" {
   }
 }
 
+
+#access policy pour la webapp
 resource "azurerm_key_vault_access_policy" "webapp" {
   depends_on = [
     azurerm_linux_web_app.main
@@ -39,30 +41,30 @@ resource "azurerm_key_vault_access_policy" "webapp" {
   ]
 }
 
-# --- DÉFINITION DES SECRETS ---
+# --- secrets ---
 
-# 1. Secret de l'API VPN (Généré par Terraform via random_password)
+#secret api du vpn
 resource "azurerm_key_vault_secret" "vpn_api_key" {
   name         = "VpnApiKey"
   value        = random_password.vpn_api_secret.result
   key_vault_id = azurerm_key_vault.main.id
 }
 
-# 2. Clé du Storage Account (Récupérée dynamiquement)
+# key du stockage account
 resource "azurerm_key_vault_secret" "storage_key" {
   name         = "StorageAccountKey"
   value        = azurerm_storage_account.main.primary_access_key
   key_vault_id = azurerm_key_vault.main.id
 }
 
-# 3. Mot de passe BDD (Venant de tes variables)
+# bdd password (il vient de terraform.tfvars (penser a bien l'inclure))
 resource "azurerm_key_vault_secret" "db_password" {
   name         = "DbPassword"
   value        = var.mysql_admin_password
   key_vault_id = azurerm_key_vault.main.id
 }
 
-# 4. Secret de Session (Généré aléatoirement pour la prod)
+# secret qui encode les cookies de session web
 resource "random_password" "session_secret" {
   length  = 64
   special = true
