@@ -69,4 +69,4 @@ jobs:
           path: ./
           base: ${{ github.event.before }} 
           head: ${{ github.sha }}
-          extra_args: --since-commit ${{ github.event.before }}
+          extra_args: --debug
