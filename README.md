@@ -152,5 +152,5 @@ Push tous les images dans l'acr (un script d'installation est prévu à cet effe
 
 #### clef privé ssh
 
-Si vous souhaitez pouvoir vous connecter en ssh a la VM openvpn, décommentez la ligne 51 de terraform/vpn.tf.
-Le cas échéant assurez vous d'avoir une cléf ssh sur votre machine comme précisé dans le commentaire à la ligne 51.
+Si vous souhaitez pouvoir vous connecter en ssh a la VM openvpn, décommentez la ligne 54 de terraform/vpn.tf.
+Le cas échéant assurez vous d'avoir une cléf ssh sur votre machine comme précisé dans le commentaire à la ligne 54.

@@ -100,3 +100,9 @@ variable "storage_account_replication_type" {
   type        = string
   default     = "LRS"
 }
+
+variable "vpn_ssh_public_key" {
+  description = "Contenu de la clé publique SSH pour la VM VPN. Fourni par la CI/CD ou lu en local."
+  type        = string
+  default     = null #  facultatif
+}
