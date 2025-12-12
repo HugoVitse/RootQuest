@@ -23,7 +23,7 @@ resource "azurerm_role_assignment" "webapp_acr_pull" {
   scope                = azurerm_container_registry.main.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_linux_web_app.main.identity[0].principal_id
-  depends_on = [azurerm_linux_web_app.main]
+  depends_on           = [azurerm_linux_web_app.main]
 }
 
 
@@ -50,50 +50,50 @@ resource "azurerm_linux_web_app" "main" {
     websockets_enabled  = true #multijoueur
     minimum_tls_version = "1.2"
     ftps_state          = "Disabled"
-    
+
     container_registry_use_managed_identity = true
 
     application_stack {
 
-        docker_image_name   = "rootquest:${var.image_tag}"                                #image docker de la webapp
-        docker_registry_url = "https://${azurerm_container_registry.main.login_server}"   # acr
+      docker_image_name   = "rootquest:${var.image_tag}"                              #image docker de la webapp
+      docker_registry_url = "https://${azurerm_container_registry.main.login_server}" # acr
     }
   }
 
   app_settings = {
     #variable d'environnements
-    "NODE_ENV"             = var.environment
+    "NODE_ENV" = var.environment
 
-    "DB_HOST"              = azurerm_mysql_flexible_server.main.fqdn
-    "DB_USER"              = var.mysql_admin_username
-    "DB_NAME"              = azurerm_mysql_flexible_database.main.name
+    "DB_HOST" = azurerm_mysql_flexible_server.main.fqdn
+    "DB_USER" = var.mysql_admin_username
+    "DB_NAME" = azurerm_mysql_flexible_database.main.name
 
     "AZURE_SUBSCRIPTION_ID" = data.azurerm_client_config.current.subscription_id
     "AZURE_RESOURCE_GROUP"  = azurerm_resource_group.main.name
     "AZURE_LOCATION"        = azurerm_resource_group.main.location
-    "AZURE_SUBNET_ID" = azurerm_subnet.challenges.id
+    "AZURE_SUBNET_ID"       = azurerm_subnet.challenges.id
 
-    "CHALLENGE_IDENTITY_ID" = azurerm_user_assigned_identity.challenges.id
-    "ACR_LOGIN_SERVER"      = azurerm_container_registry.main.login_server
+    "CHALLENGE_IDENTITY_ID"      = azurerm_user_assigned_identity.challenges.id
+    "ACR_LOGIN_SERVER"           = azurerm_container_registry.main.login_server
     "acrUseManagedIdentityCreds" = "true"
-    "VPN_PUBLIC_IP"        = azurerm_public_ip.vpn.ip_address # Ajouté dans vpn.tf
-    "SCRIPT_PATH"          = "/home/vpnadmin/vm_renew_certificate.sh"
-    "VPN_ADMIN_USER"       = "vpnadmin"
+    "VPN_PUBLIC_IP"              = azurerm_public_ip.vpn.ip_address # Ajouté dans vpn.tf
+    "SCRIPT_PATH"                = "/home/vpnadmin/vm_renew_certificate.sh"
+    "VPN_ADMIN_USER"             = "vpnadmin"
 
 
     #celles du keyvault
-    "VPN_API_KEY" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.vpn_api_key.id})"
+    "VPN_API_KEY"              = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.vpn_api_key.id})"
     "AZURE_STORAGE_KEY_SECRET" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.storage_key.id})"
-    "DB_PASSWORD" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.db_password.id})"
-    "SESSION_SECRET" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.session_secret.id})"
+    "DB_PASSWORD"              = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.db_password.id})"
+    "SESSION_SECRET"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.session_secret.id})"
 
-    "STORAGE_ACCOUNT_NAME"     = azurerm_storage_account.main.name
-    "STORAGE_SHARE_NAME"       = azurerm_storage_share.openvpn_data.name # openvpn-data
-    
+    "STORAGE_ACCOUNT_NAME" = azurerm_storage_account.main.name
+    "STORAGE_SHARE_NAME"   = azurerm_storage_share.openvpn_data.name # openvpn-data
+
     # logs Docker
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
 
-    "DOCKER_ENABLE_CI"     = "true"
+    "DOCKER_ENABLE_CI"           = "true"
     "DOCKER_REGISTRY_SERVER_URL" = "https://${azurerm_container_registry.main.login_server}"
   }
 

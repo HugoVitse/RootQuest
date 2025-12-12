@@ -8,7 +8,7 @@ resource "null_resource" "build_and_push_db_init" {
     file_hash = filemd5("db-init/Dockerfile")
     sql_hash  = filemd5("db-init/init-db.sql")
   }
-  
+
   provisioner "local-exec" {
     #on build l'image sur acr
     command = "az acr build --registry ${azurerm_container_registry.main.name} --image db-init:latest db-init/"
@@ -20,13 +20,13 @@ resource "azurerm_container_group" "db_initializer" {
   name                = "db-init-job"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
-  
-  ip_address_type     = "Private"
-  os_type             = "Linux"
 
-  subnet_ids          = [azurerm_subnet.aci.id] #son propre subnet mais meme vnet que la db
-  
-  restart_policy      = "Never" #une fois executé le container se détruit tout seul 
+  ip_address_type = "Private"
+  os_type         = "Linux"
+
+  subnet_ids = [azurerm_subnet.aci.id] #son propre subnet mais meme vnet que la db
+
+  restart_policy = "Never" #une fois executé le container se détruit tout seul 
 
   #identité managé
   identity {
@@ -58,7 +58,7 @@ resource "azurerm_container_group" "db_initializer" {
       "-c",
       "mariadb -h ${azurerm_mysql_flexible_server.main.name}.mysql.database.azure.com -u ${var.mysql_admin_username} -p${var.mysql_admin_password} --ssl ${var.project_name} < /init-db.sql"
     ]
-    
+
 
   }
 

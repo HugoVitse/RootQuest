@@ -40,7 +40,7 @@ resource "azurerm_linux_virtual_machine" "vpn" {
   name                = "${var.project_name}-vpn-vm"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
-  size                = "Standard_B1s" 
+  size                = "Standard_B1s"
   admin_username      = "vpnadmin"
   network_interface_ids = [
     azurerm_network_interface.vpn.id,
@@ -66,14 +66,14 @@ resource "azurerm_linux_virtual_machine" "vpn" {
   # script de démarrage  pour installer docker et les dependances necessaire et lancer le container openvpn
   custom_data = base64encode(
     templatefile("${path.module}/../scripts/install-vpn.sh", {
-      vpn_ip = azurerm_public_ip.vpn.ip_address
-      vpn_api_secret  = random_password.vpn_api_secret.result
-      vpn_private_ip  = azurerm_network_interface.vpn.private_ip_address # IP privée de la VM
+      vpn_ip               = azurerm_public_ip.vpn.ip_address
+      vpn_api_secret       = random_password.vpn_api_secret.result
+      vpn_private_ip       = azurerm_network_interface.vpn.private_ip_address # IP privée de la VM
       storage_account_name = azurerm_storage_account.main.name
       storage_account_key  = azurerm_storage_account.main.primary_access_key
-      MOUNT_POINT = "/mnt/openvpn-share"
+      MOUNT_POINT          = "/mnt/openvpn-share"
     })
   )
-  
+
   tags = var.tags
 }

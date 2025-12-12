@@ -7,10 +7,10 @@ resource "azurerm_mysql_flexible_server" "main" {
   resource_group_name = azurerm_resource_group.main.name
   zone                = "1"
 
-  delegated_subnet_id = azurerm_subnet.db.id #db dans son propre subnet
+  delegated_subnet_id = azurerm_subnet.db.id              #db dans son propre subnet
   private_dns_zone_id = azurerm_private_dns_zone.mysql.id #dns privé
-  
-  
+
+
   depends_on = [azurerm_private_dns_zone_virtual_network_link.main]
 
   administrator_login    = var.mysql_admin_username
@@ -21,7 +21,7 @@ resource "azurerm_mysql_flexible_server" "main" {
     auto_grow_enabled = true
     size_gb           = var.mysql_storage_gb
   }
-  version  = var.mysql_version
+  version = var.mysql_version
 
   # Backup
   backup_retention_days        = 7

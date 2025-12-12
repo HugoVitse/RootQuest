@@ -13,7 +13,7 @@ resource "azurerm_key_vault" "main" {
 
   sku_name = "standard"
 
-  
+
 
   # access policy pour developpeur
   access_policy {

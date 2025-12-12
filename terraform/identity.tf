@@ -24,7 +24,7 @@ resource "azurerm_role_assignment" "aci_acr_pull" {
   scope                = azurerm_container_registry.main.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_user_assigned_identity.aci_db_init_identity.principal_id
-  
+
   # dependances sans quoi ca plante 
   depends_on = [
     azurerm_container_registry.main,

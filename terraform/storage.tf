@@ -10,7 +10,7 @@ resource "azurerm_storage_account" "main" {
   # on restreint 
   network_rules {
     default_action = "Deny"
-    bypass = ["AzureServices"]
+    bypass         = ["AzureServices"]
     virtual_network_subnet_ids = [
       azurerm_subnet.vpn.id,
       azurerm_subnet.web.id,

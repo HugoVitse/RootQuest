@@ -35,7 +35,7 @@ resource "azurerm_network_security_group" "main" {
 
 #on associe ce parefeu a la webapp
 resource "azurerm_subnet_network_security_group_association" "webapp_nsg_link" {
-  subnet_id                 = azurerm_subnet.web.id 
+  subnet_id                 = azurerm_subnet.web.id
   network_security_group_id = azurerm_network_security_group.main.id
 }
 
@@ -81,7 +81,7 @@ resource "azurerm_network_security_group" "vpn" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "80"
-    source_address_prefix      = "*" 
+    source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 }
@@ -99,7 +99,7 @@ resource "azurerm_network_security_group" "database" {
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 
-  
+
   security_rule {
     name                       = "Allow_AppService"
     priority                   = 100
@@ -108,7 +108,7 @@ resource "azurerm_network_security_group" "database" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "3306" # Port  MySQL
-    source_address_prefix      = azurerm_subnet.web.address_prefixes[0] 
+    source_address_prefix      = azurerm_subnet.web.address_prefixes[0]
     destination_address_prefix = "*"
   }
 }
