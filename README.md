@@ -28,12 +28,10 @@ RootQuest est déployée principalement sur Microsoft Azure et utilise une archi
 - Un Azure Key Vault qui contient les secrets critiques (mot de passe MySQL, clef API VPN, secret de session, clé du storage) et qui est lié à la webapp via des access policies.
 - Des scripts d'amorçage (ex. `scripts/install-vpn.sh`) et des tâches d'initialisation (ACI/containeurs) pour préparer la base de données et démarrer les services.
 
-Cette configuration permet de déployer une plateforme de pentest où : la webapp orchestre les sessions et l'accès, les images vulnérables sont stockées et pullées depuis l'ACR, la base de données est isolée et sécurisée en privé, et l'accès réseau aux challenges passe par un VPN géré par une VM dédiée.
 
 
 ## Schéma d'architecture
 
-Ci-dessous le schéma Mermaid décrivant l'architecture Azure déployée par les fichiers Terraform. Vous pouvez coller ce bloc dans https://mermaid.live ou utiliser une extension VS Code pour prévisualiser le diagramme.
 
 ```mermaid
 flowchart LR
