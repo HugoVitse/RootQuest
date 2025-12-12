@@ -67,6 +67,6 @@ jobs:
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: ${{ github.ref_name }}
-          head: HEAD
+          base: ${{ github.event.before }} 
+          head: ${{ github.sha }}
           extra_args: --since-commit ${{ github.event.before }}
