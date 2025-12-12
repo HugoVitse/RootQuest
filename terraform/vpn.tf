@@ -47,14 +47,14 @@ resource "azurerm_linux_virtual_machine" "vpn" {
   ]
 
   admin_ssh_key {
-    username   = "vpnadmin"
-    
+    username = "vpnadmin"
+
     public_key = coalesce(
-      var.vpn_ssh_public_key,           # github action CI
-      file("~/.ssh/id_rsa.pub")  # pour se connecter a la vm en ssh (s'assurer d'avoir ce fichier sur son pc)
-    )       
+      var.vpn_ssh_public_key,   # github action CI
+      file("~/.ssh/id_rsa.pub") # pour se connecter a la vm en ssh (s'assurer d'avoir ce fichier sur son pc)
+    )
   }
-    
+
 
   os_disk {
     caching              = "ReadWrite"
