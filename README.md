@@ -112,7 +112,7 @@ flowchart LR
 - Docker installé et lancé (pour construire les images).
 
 
-## Étape 1 : Déploiement de l'Infrastructure avec teraform
+## Déploiement de l'Infrastructure avec teraform
 
 ### Préparation
 
@@ -126,7 +126,7 @@ project_name         = "rootquest"
 environment          = "dev"
 location             = "switzerlandnorth" #ou autre region dispo dans l'abonnement
 mysql_admin_password = "<password>" #en préciser un
-mysql_admin_username = "rootquest"
+mysql_admin_username = "rootquest" #par exemple
 
 mysql_version        = "5.7"
 app_service_sku      = "B1"
