@@ -173,3 +173,13 @@ terraform apply -auto-approve
 #### clef privé ssh
 
 Si vous souhaitez pouvoir vous connecter en ssh a la VM openvpn, assurez-vous d'avoir une clé publique ssh sur votre machine a l'emplacement précisé dans le fichier terraform/vpn.tf ligne 54. Sinon, supprimer la partie sur l'accès ssh.
+
+
+## Comptes test
+
+Voud pouvez vous créer un compte mais deux comptes test existent : 
+
+| Username | Password | 
+| :--- | :--- |
+| **admin** | password |
+| **test** | password | 
