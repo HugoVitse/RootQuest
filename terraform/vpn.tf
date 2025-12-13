@@ -49,8 +49,8 @@ resource "azurerm_linux_virtual_machine" "vpn" {
   admin_ssh_key {
     username = "vpnadmin"
 
-    
-    
+
+
     public_key = file("~/.ssh/id_rsa.pub")
   }
 
