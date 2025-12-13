@@ -1,8 +1,9 @@
 #ACI qui sert a initialiser la db avec un fichier SQL de base
 #Il consiste en un container APP light disposant de mariadb se connectant a la db pour injecter le init.db
-
+# à decommenter après le premier terraform apply
 
 #trigger quand init.db change (ou son dockerfile) (pour pas destroy la db a chaque terraform apply)
+
 resource "null_resource" "build_and_push_db_init" {
   triggers = {
     file_hash = filemd5("db-init/Dockerfile")

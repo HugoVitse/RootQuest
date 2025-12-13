@@ -99,3 +99,17 @@ resource "azurerm_linux_web_app" "main" {
 
   tags = var.tags
 }
+
+#access policy pour la webapp
+resource "azurerm_key_vault_access_policy" "webapp" {
+  depends_on = [
+    azurerm_linux_web_app.main
+  ]
+  key_vault_id = azurerm_key_vault.main.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = azurerm_linux_web_app.main.identity[0].principal_id
+
+  secret_permissions = [
+    "Get", "List"
+  ]
+}

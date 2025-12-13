@@ -7,16 +7,7 @@ resource "azurerm_storage_account" "main" {
   account_tier             = var.storage_account_tier
   account_replication_type = var.storage_account_replication_type
 
-  # on restreint 
-  network_rules {
-    default_action = "Deny"
-    bypass         = ["AzureServices"]
-    virtual_network_subnet_ids = [
-      azurerm_subnet.vpn.id,
-      azurerm_subnet.web.id,
-      azurerm_subnet.aci.id,
-    ]
-  }
+ 
 
   tags = var.tags
 }

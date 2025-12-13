@@ -1,4 +1,4 @@
-# RootQuest — plateforme de pentest
+# RootQuest — plateforme de pentest - Groupe 8
 
 RootQuest est une plateforme d'entraînement au pentest (lab / CTF) visant à fournir des environnements vulnérables et reproductibles pour l'apprentissage et la formation. Le dépôt contient :
 
@@ -142,6 +142,9 @@ terraform plan
 terraform apply -auto-approve
 ```
 
+Décommentez le fichier database-init.tf
+
+
 ### Push des images
 
 Push tous les images dans l'acr (un script d'installation est prévu à cet effet)
@@ -149,8 +152,24 @@ Push tous les images dans l'acr (un script d'installation est prévu à cet effe
 ```sh
 ./scritps/push_containers.sh
 ```
+Si l'image de la webapp ne s'est pas push
+
+```sh
+docker build -t rootquestdevacr.azurecr.io/rootquest:latest .
+docker push rootquestdevacr.azurecr.io/rootquest:latest  
+```
+
+
+### Deuxieme apply
+
+Pour initier la db.
+
+```sh
+terraform plan
+terraform apply -auto-approve
+```
+
 
 #### clef privé ssh
 
-Si vous souhaitez pouvoir vous connecter en ssh a la VM openvpn, décommentez la ligne 54 de terraform/vpn.tf.
-Le cas échéant assurez vous d'avoir une cléf ssh sur votre machine comme précisé dans le commentaire à la ligne 54.
+Si vous souhaitez pouvoir vous connecter en ssh a la VM openvpn, assurez-vous d'avoir une clé publique ssh sur votre machine a l'emplacement précisé dans le fichier terraform/vpn.tf ligne 54. Sinon, supprimer la partie sur l'accès ssh.

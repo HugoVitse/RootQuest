@@ -7,8 +7,8 @@ import path from 'path';
 import dotenv from 'dotenv'
 import { initStore } from './src/lib/sessionStore.ts';
 const dev = process.env.NODE_ENV !== "production";
-const hostname = "0.0.0.0";
-const port = parseInt(process.env.PORT || "3000", 10);
+const hostname = "localhost";
+const port = 3000
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
