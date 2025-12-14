@@ -46,13 +46,13 @@ resource "azurerm_linux_virtual_machine" "vpn" {
     azurerm_network_interface.vpn.id,
   ]
 
-  admin_ssh_key {
-    username = "vpnadmin"
+  # admin_ssh_key {
+  #   username = "vpnadmin"
 
 
 
-    public_key = file("~/.ssh/id_rsa.pub")
-  }
+  #   public_key = file("~/.ssh/id_rsa.pub")
+  # }
 
 
   os_disk {

@@ -122,7 +122,7 @@ flowchart LR
 
 ```tf
 # terraform/terraform.tfvars
-project_name         = "rootquest"
+project_name         = "rootquest-prof" #ne pas mettre "rootquest" cela collisionerait avec le projet actuellement déployé sur notre souscription. (car les noms doivent etre uniques sur Azure) 
 environment          = "dev"
 location             = "switzerlandnorth" #ou autre region dispo dans l'abonnement
 mysql_admin_password = "<password>" #en préciser un
@@ -142,7 +142,6 @@ terraform plan
 terraform apply -auto-approve
 ```
 
-Décommentez le fichier database-init.tf
 
 
 ### Push des images
@@ -163,6 +162,8 @@ docker push rootquestdevacr.azurecr.io/rootquest:latest
 ### Deuxieme apply
 
 Pour initier la db.
+Décommentez le fichier database-init.tf
+
 
 ```sh
 terraform plan
@@ -172,10 +173,18 @@ terraform apply -auto-approve
 
 #### clef privé ssh
 
-Si vous souhaitez pouvoir vous connecter en ssh a la VM openvpn, assurez-vous d'avoir une clé publique ssh sur votre machine a l'emplacement précisé dans le fichier terraform/vpn.tf ligne 54. Sinon, supprimer la partie sur l'accès ssh.
+Si vous souhaitez pouvoir vous connecter en ssh a la VM openvpn, assurez-vous d'avoir une clé publique ssh sur votre machine a l'emplacement précisé dans le fichier terraform/vpn.tf ligne 54. Dans ce cas, décommentez le bloc en question.
 
 
-## Comptes test
+## Utilisation
+
+### Url
+
+L'url du site sera la suivante : https://<project_name>-dev-app.azurewebsites.net/ (Avec le projet name que vous avez déclaré dans votre terraform.tfvars)
+
+Le site est actuellement déployé sur notre souscription à l'adresse https://rootquest-dev-app.azurewebsites.net/
+
+### Comptes test
 
 Voud pouvez vous créer un compte mais deux comptes test existent : 
 

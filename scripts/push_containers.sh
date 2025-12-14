@@ -10,9 +10,9 @@ REGISTRY="rootquestdevacr.azurecr.io"
 DO_PUSH=1
 
 
-cd "$TERRAFORM_DIR"
-acr_login_server="$(terraform output -raw acr_login_server 2>/dev/null || true)"
-cd - >/dev/null || true
+
+az acr login --name $REGISTRY
+
 
 
 
@@ -28,9 +28,10 @@ if [ ! -d "$IMAGES_DIR" ]; then
 	exit 1
 fi
 
-cd "$SCRIPT_DIR/.."
-docker build -t rootquestdevacr.azurecr.io/rootquest:latest .
-docker push rootquestdevacr.azurecr.io/db-init:latest
+docker build -t rootquestdevacr.azurecr.io/rootquest:latest $SCRIPT_DIR/..
+docker push rootquestdevacr.azurecr.io/rootquest:latest
+
+
 cd - >/dev/null || true
 
 for dir in "$IMAGES_DIR"/*/; do
